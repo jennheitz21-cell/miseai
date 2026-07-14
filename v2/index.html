@@ -197,6 +197,13 @@
   section.cream .door .free{color:var(--brand)}
   section.cream .cta-note{color:#7a6c58}
 
+
+  .journey{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
+  .jstep{background:#fff;border:1px solid #e0d3ba;border-top:4px solid var(--brand);padding:26px 24px}
+  .jnum{font-family:var(--disp);font-size:40px;line-height:1;color:var(--brand)}
+  .jstep h3{font-weight:900;font-size:20px;color:var(--deep);margin:10px 0 8px}
+  .jstep p{font-size:16px;color:#4a3a26}
+
   @media (max-width:640px){
     .hero{padding:56px 0 44px}
     section{padding:56px 0}
@@ -222,8 +229,7 @@
     <h1>Your numbers are waiting<br><span class="fire">when you wake up.</span></h1>
     <p class="sub">Mise.AI works the overnight shift — reading your invoices, your sales, your labor — and leaves one honest brief on the bar. Plain English. Chef to chef. You cook. It counts.</p>
     <div class="cta-row">
-      <a class="btn" href="#signup">Claim your number</a>
-      <a class="btn ghost" href="#menu">See the menu</a>
+      <a class="btn" href="#menu">See the menu</a>
     </div>
     <p class="cta-note" style="margin-top:16px">From 50¢ a day · Free onboarding · No contracts</p>
   </div>
@@ -357,25 +363,38 @@
 <!-- ONBOARDING -->
 <section id="signup" class="cream">
   <div class="wrap">
-    <div class="eyebrow">Getting In</div>
-    <h2>Two doors. Both free.</h2>
-    <div class="doors">
-      <div class="door">
-        <span class="free">Door one · minutes</span>
-        <h3>Walk yourself in.</h3>
-        <p>Sign up, claim your restaurant number, and your AI guide walks you through setup in a conversation — not a forms wizard. Got your recipes and invoices ready? You'll be live about as fast as a document loads.</p>
+    <div class="eyebrow">How It Works</div>
+    <h2>From handshake to first brief</h2>
+    <p class="lede">Onboarding is white-glove and free — a guide walks you in personally. Here's the whole trip.</p>
+    <div class="journey">
+      <div class="jstep">
+        <div class="jnum">1</div>
+        <h3>Claim your number.</h3>
+        <p>Sign in with your Gmail, pick your course, pay only for the days left this month. About two minutes. Your restaurant gets its own number — that number is your key to everything.</p>
       </div>
-      <div class="door">
-        <span class="free">Door two · zero effort</span>
-        <h3>Hand me the shoebox.</h3>
-        <p>Binder photos, invoice PDFs, that folder of who-knows-what — email it over or upload it, and I'll build your book for you personally. Takes a little longer. Costs the same: nothing.</p>
+      <div class="jstep">
+        <div class="jnum">2</div>
+        <h3>Meet your guide.</h3>
+        <p>First login, your personal AI walks you in — a conversation, not a forms wizard. It asks about your restaurant like a consultant would. Recipes and invoices ready? You're live about as fast as a document loads.</p>
+      </div>
+      <div class="jstep">
+        <div class="jnum">3</div>
+        <h3>Or hand me the shoebox.</h3>
+        <p>Binder photos, invoice PDFs, the folder of who-knows-what — email it over and I'll build your book for you personally. Takes a little longer. Costs the same: nothing.</p>
+      </div>
+      <div class="jstep">
+        <div class="jnum">4</div>
+        <h3>Wake up to your first brief.</h3>
+        <p>From night one, the system works your overnight shift. Your first House Paper is waiting with your coffee — and every morning after.</p>
       </div>
     </div>
-    <div class="cta-row" style="margin-top:36px">
-      <a class="btn" href="mailto:overyourmorningcupofcoffee@gmail.com?subject=Mise.AI%20—%20Claim%20my%20number">Claim your number</a>
-      <span class="cta-note">Online signup opening soon — for now, one email starts it.</span>
+    <div class="cta-row" style="margin-top:38px">
+      <button class="btn" id="gsignin" type="button">Sign in with Gmail — claim your number</button>
+      <a class="btn ghost" href="mailto:overyourmorningcupofcoffee@gmail.com?subject=Mise.AI%20—%20Shoebox">Email the shoebox</a>
     </div>
+    <p class="cta-note" id="authstate" style="margin-top:14px"></p>
   </div>
+</section>
 </section>
 
 <!-- PROMISE -->
@@ -393,7 +412,7 @@
   <div class="wrap">
     <h2>Run the kitchen.<br><span style="color:var(--hot)">The numbers run themselves.</span></h2>
     <p class="lede">Start with a free taste, or go straight to the coffee. Either way, your first brief is closer than you think.</p>
-    <a class="btn" href="mailto:overyourmorningcupofcoffee@gmail.com?subject=Mise.AI%20—%20Claim%20my%20number">Claim your number</a>
+    <a class="btn" href="#signup">Claim your number</a>
   </div>
 </section>
 
@@ -402,5 +421,30 @@
   <a href="mailto:overyourmorningcupofcoffee@gmail.com">overyourmorningcupofcoffee@gmail.com</a>
 </footer>
 
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const supabase = createClient(
+  'https://awzybqmplfqitzijkvdw.supabase.co',
+  'sb_publishable_h0VYK8QqyGLqUS2Rg3MDTA_3B71wuxv'
+);
+const btn = document.getElementById('gsignin');
+const state = document.getElementById('authstate');
+btn?.addEventListener('click', async () => {
+  state.textContent = 'Opening Google sign-in…';
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + window.location.pathname }
+  });
+  if (error) state.textContent = 'Sign-in hit a snag: ' + error.message;
+});
+supabase.auth.getSession().then(({ data }) => {
+  const user = data?.session?.user;
+  if (user) {
+    btn.textContent = 'Signed in as ' + (user.email || 'chef') + ' ✓';
+    state.textContent = 'You\u2019re in. Course selection & checkout open soon — you\u2019ll be first through the door.';
+  }
+});
+</script>
 </body>
 </html>
