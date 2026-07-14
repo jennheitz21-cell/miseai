@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mise.AI — Know your numbers before your first coffee.</title>
+<meta name="description" content="Mise.AI reads your restaurant's numbers every night and tells you what matters every morning. Built by a chef with 30 years in kitchens. For independent restaurants." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;700&family=Fraunces:ital,wght@0,400;0,600;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:      #0b0b0b;
+    --paper:    #f4efe6;
+    --paper-dk: #e8e1d2;
+    --alum:     #a8a8a0;
+    --red:      #c8231c;
+    --muted:    #3d3d3d;
+    --mono:     'JetBrains Mono', ui-monospace, monospace;
+    --disp:     'Anton', 'Arial Narrow', sans-serif;
+    --body:     'Fraunces', Georgia, serif;
+  }
+  *,*:before,*:after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--body); font-size: 17px; line-height: 1.55;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(0,0,0,0.02) 0.5px, transparent 0.5px),
+      radial-gradient(circle at 70% 60%, rgba(0,0,0,0.025) 0.5px, transparent 0.5px);
+    background-size: 3px 3px, 4px 4px;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* TOP BAR — minimal, no nav distraction */
+  .topbar {
+    border-bottom: 2px solid var(--ink);
+    padding: 12px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono); font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    position: sticky; top: 0; z-index: 100; background: var(--paper);
+  }
+  .topbar .id { font-weight: 700; }
+  .topbar .dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--red); margin-right: 6px; vertical-align: middle;
+    animation: pulse 2.4s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+  .topbar a.cta-mini {
+    color: var(--paper); background: var(--ink); text-decoration: none;
+    padding: 8px 14px; border: 1.5px solid var(--ink);
+  }
+  .topbar a.cta-mini:hover { background: var(--red); border-color: var(--red); }
+
+  /* HERO */
+  .hero { padding: 72px 0 56px; border-bottom: 3px solid var(--ink); }
+  .kicker {
+    font-family: var(--mono); font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--red); margin-bottom: 18px; font-weight: 700;
+  }
+  h1 {
+    font-family: var(--disp); font-weight: 400;
+    font-size: clamp(42px, 7vw, 84px);
+    line-height: 0.98; text-transform: uppercase; letter-spacing: 0.01em;
+    margin-bottom: 22px;
+  }
+  h1 .r { color: var(--red); }
+  .sub {
+    font-size: clamp(18px, 2.4vw, 22px); max-width: 640px;
+    color: var(--muted); margin-bottom: 32px;
+  }
+  .cta-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    display: inline-block; font-family: var(--mono); font-size: 14px;
+    text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;
+    padding: 16px 28px; text-decoration: none; cursor: pointer;
+    border: 2px solid var(--ink); transition: all .15s;
+  }
+  .btn-primary { background: var(--red); color: var(--paper); border-color: var(--red); }
+  .btn-primary:hover { background: var(--ink); border-color: var(--ink); transform: translate(-2px,-2px); box-shadow: 3px 3px 0 var(--red); }
+  .cta-note { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+  /* PROOF STRIP */
+  .proof {
+    border-bottom: 2px solid var(--ink); background: var(--paper-dk);
+    padding: 22px 0;
+  }
+  .proof .wrap {
+    display: flex; gap: 32px; flex-wrap: wrap; justify-content: space-between;
+    font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em;
+  }
+  .proof b { color: var(--red); }
+
+  /* BENEFITS */
+  section { padding: 64px 0; border-bottom: 2px solid var(--ink); }
+  h2 {
+    font-family: var(--disp); font-weight: 400; text-transform: uppercase;
+    font-size: clamp(30px, 4.5vw, 48px); line-height: 1.02; margin-bottom: 12px;
+  }
+  .section-sub { color: var(--muted); max-width: 560px; margin-bottom: 40px; font-size: 18px; }
+  .bene-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2px; background: var(--ink); border: 2px solid var(--ink); }
+  .bene {
+    background: var(--paper); padding: 28px 24px;
+  }
+  .bene .num { font-family: var(--mono); font-size: 12px; color: var(--red); font-weight: 700; letter-spacing: .1em; }
+  .bene h3 { font-family: var(--body); font-weight: 900; font-size: 21px; margin: 10px 0 8px; }
+  .bene p { color: var(--muted); font-size: 15.5px; }
+
+  /* THE BRIEF SAMPLE */
+  .brief-card {
+    border: 2px solid var(--ink); background: #fffdf7; padding: 28px;
+    max-width: 620px; box-shadow: 6px 6px 0 var(--ink);
+    font-size: 16px;
+  }
+  .brief-card .bc-head {
+    font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: .12em; border-bottom: 1px solid var(--alum);
+    padding-bottom: 10px; margin-bottom: 14px; display:flex; justify-content: space-between;
+  }
+  .brief-card p { margin-bottom: 12px; }
+  .brief-card .sig { font-family: var(--mono); font-size: 12.5px; color: var(--muted); margin-top: 16px; }
+  .brief-card .call { font-weight: 900; font-style: italic; }
+
+  /* HOW IT WORKS */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; }
+  .step { border-top: 4px solid var(--red); padding-top: 18px; }
+  .step .n { font-family: var(--disp); font-size: 44px; line-height: 1; }
+  .step h3 { font-weight: 900; font-size: 20px; margin: 10px 0 8px; }
+  .step p { color: var(--muted); font-size: 15.5px; }
+
+  /* SCREENSHOT SLOTS */
+  .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .shot {
+    border: 2px solid var(--ink); background: var(--paper-dk);
+    aspect-ratio: 16/10; display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em;
+    color: var(--muted);
+  }
+  .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .shot-cap { font-family: var(--mono); font-size: 12px; margin-top: 8px; letter-spacing: .05em; }
+
+  /* FINAL CTA */
+  .final { text-align: center; padding: 80px 0; border-bottom: none; }
+  .final h2 { margin-bottom: 16px; }
+  .final .sub { margin: 0 auto 32px; }
+
+  footer {
+    border-top: 3px solid var(--ink); padding: 28px 24px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: .05em;
+  }
+  footer a { color: var(--red); text-decoration: none; font-weight: 700; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 48px 0 40px; }
+    section { padding: 48px 0; }
+    .btn { width: 100%; text-align: center; }
+    .proof .wrap { gap: 10px; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="id"><span class="dot"></span>MISE.AI</span>
+  <a class="cta-mini" href="mailto:overyourmorningcupofcoffee@gmail.com">Get Started</a>
+</div>
+
+<!-- ABOVE THE FOLD -->
+<div class="hero">
+  <div class="wrap">
+    <div class="kicker">Built by a chef. For chefs.</div>
+    <h1>Know your numbers<br/>before your <span class="r">first coffee.</span></h1>
+    <p class="sub">Mise.AI reads your restaurant's sales, invoices, and labor every night — and every morning it tells you the one thing that needs your attention. In plain English. Like a chef talking to a chef.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:overyourmorningcupofcoffee@gmail.com?subject=Mise.AI%20—%20I%27m%20in">Get My Morning Brief</a>
+      <span class="cta-note">Starts at $12.50/mo · No contracts · Cancel anytime</span>
+    </div>
+  </div>
+</div>
+
+<!-- PROOF STRIP -->
+<div class="proof">
+  <div class="wrap">
+    <span><b>30 years</b> in professional kitchens behind the design</span>
+    <span><b>Not</b> another dashboard you'll never open</span>
+    <span>Made for independents under <b>$800K</b> a year</span>
+  </div>
+</div>
+
+<!-- BENEFITS -->
+<section>
+  <div class="wrap">
+    <h2>What it does for you</h2>
+    <p class="section-sub">No screens to watch. No reports to run. You're covering stations — the system reads the numbers so you don't have to.</p>
+    <div class="bene-grid">
+      <div class="bene">
+        <div class="num">01</div>
+        <h3>One honest brief, every morning.</h3>
+        <p>Yesterday's sales, food cost, and labor — solved overnight, delivered in plain language before you unlock the door. Ends with one clear call to make. Yours.</p>
+      </div>
+      <div class="bene">
+        <div class="num">02</div>
+        <h3>Catch vendors raising prices on you.</h3>
+        <p>The invoice sniffer compares every line item against your contract prices and price history. When the case of chicken quietly went up $4, you'll know before the rep does.</p>
+      </div>
+      <div class="bene">
+        <div class="num">03</div>
+        <h3>Every recipe costed to the penny.</h3>
+        <p>Yields change, prices change — your plate costs recalculate automatically. Know your real margin on every item, including add-ons and upsells.</p>
+      </div>
+      <div class="bene">
+        <div class="num">04</div>
+        <h3>Your crew, on the same page.</h3>
+        <p>Prep lists, station recipes, and daily tasks on one cook-facing screen — in English and Spanish. One login for the whole house. No per-seat charges.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE BRIEF (show, don't tell) -->
+<section style="background: var(--paper-dk);">
+  <div class="wrap">
+    <h2>The Morning Brief</h2>
+    <p class="section-sub">This is the whole product philosophy: one honest update about yesterday, not another dashboard about right now.</p>
+    <div class="brief-card">
+      <div class="bc-head"><span>THE HOUSE PAPER</span><span>6:10 AM</span></div>
+      <p>Morning, Chef. Solid Tuesday — sales landed at $2,340, about 8% over your trailing average. Food cost held at 29%.</p>
+      <p>One thing worth your eyes: Tuesday's produce invoice priced romaine 12% above your contract rate. Third week running. Might be time for a call.</p>
+      <p class="call">Your call, Chef.</p>
+      <p class="sig">— MISEai · Exec Chef</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="wrap">
+    <h2>How it works</h2>
+    <p class="section-sub">Three steps. No IT department required.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <h3>Sign up &amp; get your number</h3>
+        <p>Claim your restaurant number, answer a few questions in a guided chat — like talking to a consultant, not filling out forms.</p>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h3>Feed it your paper</h3>
+        <p>Upload invoices, snap photos of prep sheets, or import a CSV. The system parses it and builds your cost baseline.</p>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h3>Read one thing a day</h3>
+        <p>Every morning at 6:10, your brief is waiting. Thirty seconds to read. One decision to make. Then go cook.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE TOOLS / SCREENSHOTS -->
+<section style="background: var(--paper-dk);">
+  <div class="wrap">
+    <h2>The tools</h2>
+    <p class="section-sub">Straightforward, kitchen-proof screens. Built to be used with wet hands on a cracked tablet.</p>
+    <div class="shots">
+      <div>
+        <div class="shot"><!-- SCREENSHOT: recipe book --> Recipe Book — screenshot coming</div>
+        <div class="shot-cap">RECIPE BOOK &amp; COSTING</div>
+      </div>
+      <div>
+        <div class="shot"><!-- SCREENSHOT: cook dashboard --> Cook Dashboard — screenshot coming</div>
+        <div class="shot-cap">COOK DASHBOARD · EN/ES</div>
+      </div>
+      <div>
+        <div class="shot"><!-- SCREENSHOT: chef budget --> Chef Budget — screenshot coming</div>
+        <div class="shot-cap">CHEF BUDGET</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final">
+  <div class="wrap">
+    <h2>Run the kitchen.<br/><span style="color:var(--red)">Let the numbers run themselves.</span></h2>
+    <p class="sub">Starts at $12.50 a month. Built by someone who's closed the walk-in at 1 AM and opened it again at 7.</p>
+    <a class="btn btn-primary" href="mailto:overyourmorningcupofcoffee@gmail.com?subject=Mise.AI%20—%20I%27m%20in">Get Started</a>
+  </div>
+</section>
+
+<footer>
+  <span>MISE.AI © 2026</span>
+  <a href="mailto:overyourmorningcupofcoffee@gmail.com">overyourmorningcupofcoffee@gmail.com</a>
+</footer>
+
+</body>
+</html>
