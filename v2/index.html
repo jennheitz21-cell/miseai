@@ -36,10 +36,10 @@
   body{
     background:var(--midnight);
     background-image:
-      radial-gradient(ellipse 90% 60% at 50% -10%, rgba(200,84,10,.10), transparent 60%),
+      radial-gradient(ellipse 90% 60% at 50% -10%, rgba(240,120,64,.18), transparent 65%),
       linear-gradient(var(--midnight), var(--bark) 40%, var(--midnight));
     color:var(--parchment);
-    font-family:var(--body); font-size:17px; line-height:1.6;
+    font-family:var(--body); font-size:18px; line-height:1.65;
   }
   .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
   ::selection{background:var(--brand);color:var(--cream)}
@@ -58,7 +58,7 @@
     margin-right:8px;vertical-align:1px;box-shadow:0 0 8px var(--hot);animation:ember 3s infinite}
   @keyframes ember{0%,100%{opacity:1}50%{opacity:.35}}
   .topbar a{color:var(--cream);text-decoration:none;border:1px solid var(--brand);
-    padding:8px 16px;transition:.15s}
+    padding:14px 22px;transition:.15s;font-size:13px;display:inline-block}
   .topbar a:hover{background:var(--brand)}
 
   /* ── HERO ── */
@@ -70,9 +70,9 @@
     font-size:clamp(44px,8vw,96px);line-height:.96;letter-spacing:.01em;color:var(--cream)}
   h1 .fire{color:var(--hot);text-shadow:0 0 34px rgba(240,120,64,.35)}
   .hero .sub{margin:26px 0 34px;max-width:600px;font-size:clamp(18px,2.3vw,21px);color:#cdbfa8}
-  .btn{display:inline-block;font-family:var(--mono);font-size:14px;font-weight:700;
+  .btn{display:inline-block;font-family:var(--mono);font-size:16px;font-weight:700;
     letter-spacing:.1em;text-transform:uppercase;text-decoration:none;cursor:pointer;
-    padding:17px 30px;border:2px solid var(--bright);color:var(--cream);
+    padding:20px 36px;border:2px solid var(--bright);min-height:56px;color:var(--cream);
     background:linear-gradient(180deg,var(--bright),var(--brand));transition:.15s}
   .btn:hover{filter:brightness(1.12);transform:translateY(-2px);box-shadow:0 6px 24px rgba(224,96,32,.4)}
   .btn.ghost{background:none;border-color:var(--walnut);color:var(--warm)}
@@ -117,7 +117,7 @@
     background:var(--walnut);border:1px solid var(--walnut)}
   .bene{background:var(--bark);padding:28px 24px}
   .bene h3{font-family:var(--body);font-weight:900;font-size:20px;color:var(--warm);margin-bottom:8px}
-  .bene p{font-size:15px;color:#bfae94}
+  .bene p{font-size:16px;color:#bfae94}
   .bene .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
     color:var(--bright);display:block;margin-bottom:12px}
 
@@ -134,12 +134,12 @@
   .course .price{font-family:var(--mono);font-size:14px;color:var(--hot);font-weight:700;margin:6px 0 4px}
   .course .napkin{font-family:var(--mono);font-size:11px;color:#9a8a72;margin-bottom:18px;font-style:normal}
   .course ul{list-style:none;flex:1}
-  .course li{font-size:14.5px;color:#cdbfa8;padding:7px 0 7px 20px;position:relative;
+  .course li{font-size:16px;color:#cdbfa8;padding:10px 0 10px 22px;position:relative;
     border-bottom:1px dotted var(--walnut)}
   .course li::before{content:"—";position:absolute;left:0;color:var(--brand)}
   .course li:last-child{border-bottom:none}
-  .addons{margin-top:26px;background:var(--bark);border:1px dashed var(--deep);padding:20px 24px;
-    font-family:var(--mono);font-size:13.5px;color:#cdbfa8;line-height:2}
+  .addons{margin-top:26px;background:var(--bark);border:1px dashed var(--deep);padding:22px 26px;
+    font-family:var(--mono);font-size:15px;color:#cdbfa8;line-height:2}
   .addons b{color:var(--warm)}
 
   /* ── BOARDS / SCREENSHOTS ── */
@@ -156,7 +156,7 @@
   .doors{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
   .door{background:var(--espresso);border-top:3px solid var(--bright);padding:28px 26px}
   .door h3{font-weight:900;font-size:21px;color:var(--warm);margin-bottom:10px}
-  .door p{font-size:15.5px;color:#cdbfa8}
+  .door p{font-size:16.5px;color:#cdbfa8}
   .door .free{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
     color:var(--hot);display:block;margin-bottom:12px}
 
@@ -176,6 +176,26 @@
     font-family:var(--mono);font-size:12px;color:#9a8a72}
   footer a{color:var(--hot);text-decoration:none;font-weight:700}
   footer a:hover{text-decoration:underline}
+
+
+  /* cream rooms — paper sections */
+  section.cream{background:var(--cream);color:var(--ink)}
+  section.cream h2{color:var(--ink)}
+  section.cream .lede,section.cream .menu-note{color:#5a4630}
+  section.cream .eyebrow{color:var(--deep)}
+  section.cream .course{background:#fff;border:1px solid #e0d3ba;color:var(--ink)}
+  section.cream .course .cname{color:var(--ink)}
+  section.cream .course li{color:#4a3a26;border-bottom:1px dotted #e0d3ba}
+  section.cream .course .price{color:var(--brand)}
+  section.cream .course .napkin{color:#9a8a72}
+  section.cream .course.star{border-color:var(--brand);background:linear-gradient(180deg,#fff7ea,#fff);box-shadow:0 10px 40px rgba(200,84,10,.15)}
+  section.cream .addons{background:#fff7ea;border:1px dashed var(--brand);color:#4a3a26}
+  section.cream .addons b{color:var(--deep)}
+  section.cream .door{background:#fff;border-top:3px solid var(--brand)}
+  section.cream .door h3{color:var(--deep)}
+  section.cream .door p{color:#4a3a26}
+  section.cream .door .free{color:var(--brand)}
+  section.cream .cta-note{color:#7a6c58}
 
   @media (max-width:640px){
     .hero{padding:56px 0 44px}
@@ -257,7 +277,7 @@
 </section>
 
 <!-- THE MENU -->
-<section id="menu">
+<section id="menu" class="cream">
   <div class="wrap">
     <div class="eyebrow">The Menu</div>
     <h2>Priced like a napkin sketch</h2>
@@ -335,7 +355,7 @@
 </section>
 
 <!-- ONBOARDING -->
-<section id="signup">
+<section id="signup" class="cream">
   <div class="wrap">
     <div class="eyebrow">Getting In</div>
     <h2>Two doors. Both free.</h2>
