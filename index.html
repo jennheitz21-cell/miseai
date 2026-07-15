@@ -3,1130 +3,563 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mise.AI — Built by a Chef. For Chefs.</title>
+<title>Mise.AI — Your numbers are waiting when you wake up.</title>
+<meta name="description" content="Mise.AI reads your restaurant's numbers overnight and leaves one honest brief waiting when you wake up. Built by a chef with 30 years in kitchens. From 50¢ a day." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;0,600;0,900;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink:      #0b0b0b;
-    --paper:    #f4efe6;
-    --paper-dk: #e8e1d2;
-    --alum:     #a8a8a0;
-    --red:      #c8231c;
-    --muted:    #3d3d3d;
-    --mono:     'JetBrains Mono', ui-monospace, monospace;
-    --disp:     'Anton', 'Arial Narrow', sans-serif;
-    --body:     'Fraunces', Georgia, serif;
+  :root{
+    /* THE WOOD — bark ladder */
+    --midnight:#0e0906;
+    --bark:#1c1410;
+    --espresso:#241a13;
+    --walnut:#332319;
+    --darkgrey:#1e1e1e;
+    /* THE FIRE — orange scale */
+    --deep:#8a3206;
+    --brand:#c8540a;
+    --bright:#e06020;
+    --hot:#f07840;
+    --warm:#f8a070;
+    /* THE PAPER */
+    --parchment:#f2e8d5;
+    --cream:#faf3e3;
+    --ink:#231508;
+    /* type */
+    --disp:'Anton', 'Arial Narrow', sans-serif;
+    --body:'Fraunces', Georgia, serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
   }
-
-  *,*:before,*:after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--body);
-    font-size: 17px;
-    line-height: 1.55;
-    min-height: 100vh;
-    overflow-x: hidden;
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--midnight);
     background-image:
-      radial-gradient(circle at 20% 30%, rgba(0,0,0,0.02) 0.5px, transparent 0.5px),
-      radial-gradient(circle at 70% 60%, rgba(0,0,0,0.025) 0.5px, transparent 0.5px),
-      radial-gradient(circle at 45% 80%, rgba(0,0,0,0.02) 0.5px, transparent 0.5px);
-    background-size: 3px 3px, 4px 4px, 5px 5px;
+      radial-gradient(ellipse 90% 60% at 50% -10%, rgba(240,120,64,.18), transparent 65%),
+      linear-gradient(var(--midnight), var(--bark) 40%, var(--midnight));
+    color:var(--parchment);
+    font-family:var(--body); font-size:18px; line-height:1.65;
   }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  ::selection{background:var(--brand);color:var(--cream)}
 
   /* ── TOP BAR ── */
-  .topbar {
-    border-bottom: 2px solid var(--ink);
-    padding: 14px 40px;
-    display: flex; justify-content: space-between; align-items: center;
-    font-family: var(--mono);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    background: var(--paper);
-    position: sticky; top: 0; z-index: 100;
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(14,9,6,.92);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--walnut);
+    display:flex;justify-content:space-between;align-items:center;
+    padding:12px 22px;
+    font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
   }
-  .topbar .id { font-weight: 700; flex-shrink: 0; }
-  .topbar .dot {
-    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
-    background: var(--red); margin-right: 6px; vertical-align: middle;
-    animation: pulse 2.4s infinite;
-  }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-  .topbar nav { display: flex; gap: 40px; align-items: center; flex: 1; justify-content: flex-end; }
-  .topbar nav a { color: var(--ink); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; }
-  .topbar nav a:hover { border-bottom-color: var(--red); }
-
-  .google-btn {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 16px;
-    background: transparent;
-    border: 1.5px solid var(--ink);
-    font-family: var(--mono);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    transition: all 0.15s;
-    color: var(--ink);
-    margin-left: 24px;
-  }
-  .google-btn:hover { background: var(--ink); color: var(--paper); transform: translate(-1px,-1px); box-shadow: 2px 2px 0 var(--red); }
-  .google-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
-
-  .topbar-email {
-    font-family: var(--mono); font-weight: 700; font-size: 15px;
-    letter-spacing: 0.04em; text-transform: none;
-    color: var(--red); text-decoration: none; white-space: nowrap;
-    margin: 0 28px;
-  }
-  .topbar-email:hover { text-decoration: underline; }
-  @media (max-width: 700px) { .topbar-email { font-size: 12px; margin: 0 8px; } }
+  .flame{color:var(--hot);font-weight:700}
+  .flame .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--hot);
+    margin-right:8px;vertical-align:1px;box-shadow:0 0 8px var(--hot);animation:ember 3s infinite}
+  @keyframes ember{0%,100%{opacity:1}50%{opacity:.35}}
+  .topbar a{color:var(--cream);text-decoration:none;border:1px solid var(--brand);
+    padding:14px 22px;transition:.15s;font-size:13px;display:inline-block}
+  .topbar a:hover{background:var(--brand)}
 
   /* ── HERO ── */
-  .hero {
-    padding: 80px 40px 60px;
-    border-bottom: 3px solid var(--ink);
-  }
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1fr 360px;
-    gap: 60px;
-    max-width: 1400px;
-    margin: 0 auto;
-    align-items: end;
-  }
-  .kicker {
-    font-family: var(--mono);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.22em;
-    color: var(--red);
-    margin-bottom: 24px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .kicker::before { content: ""; display: inline-block; width: 48px; height: 2px; background: var(--red); }
-  h1 {
-    font-family: var(--disp);
-    font-size: clamp(64px, 10vw, 148px);
-    line-height: 0.9;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-    margin-bottom: 28px;
-  }
-  h1 .red { color: var(--red); }
-  h1 .strike { position: relative; display: inline-block; }
-  h1 .strike::after {
-    content: ""; position: absolute; left: -4%; right: -4%; top: 54%;
-    height: 10px; background: var(--red); transform: rotate(-1.5deg);
-  }
-  .hero-sub {
-    font-family: var(--body);
-    font-style: italic;
-    font-size: 22px;
-    color: var(--muted);
-    max-width: 640px;
-    margin-bottom: 40px;
-  }
-  .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
-  .btn {
-    font-family: var(--mono);
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    padding: 16px 28px;
-    border: 2px solid var(--ink);
-    text-decoration: none;
-    font-weight: 700;
-    display: inline-flex; align-items: center; gap: 10px;
-    transition: all 0.15s;
-    cursor: pointer;
-    background: transparent;
-    color: var(--ink);
-  }
-  .btn.primary { background: var(--ink); color: var(--paper); }
-  .btn.primary:hover { background: var(--red); border-color: var(--red); transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--ink); }
-  .btn:hover { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--ink); }
-  .btn .arrow { transition: transform 0.15s; }
-  .btn:hover .arrow { transform: translateX(4px); }
+  .hero{padding:88px 0 64px;text-align:left;position:relative;overflow:hidden}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--warm);margin-bottom:22px}
+  .kicker::before{content:"— ";color:var(--brand)}
+  h1{font-family:var(--disp);font-weight:400;text-transform:uppercase;
+    font-size:clamp(44px,8vw,96px);line-height:.96;letter-spacing:.01em;color:var(--cream)}
+  h1 .fire{color:var(--hot);text-shadow:0 0 34px rgba(240,120,64,.35)}
+  .hero .sub{margin:26px 0 34px;max-width:600px;font-size:clamp(18px,2.3vw,21px);color:#cdbfa8}
+  .btn{display:inline-block;font-family:var(--mono);font-size:16px;font-weight:700;
+    letter-spacing:.1em;text-transform:uppercase;text-decoration:none;cursor:pointer;
+    padding:20px 36px;border:2px solid var(--bright);min-height:56px;color:var(--cream);
+    background:linear-gradient(180deg,var(--bright),var(--brand));transition:.15s}
+  .btn:hover{filter:brightness(1.12);transform:translateY(-2px);box-shadow:0 6px 24px rgba(224,96,32,.4)}
+  .btn.ghost{background:none;border-color:var(--walnut);color:var(--warm)}
+  .btn.ghost:hover{border-color:var(--brand);box-shadow:none}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .cta-note{font-family:var(--mono);font-size:12px;color:#9a8a72}
 
-  .chef-stamp {
-    border: 2px solid var(--ink);
-    padding: 24px 24px 20px;
-    background: var(--paper-dk);
-    position: relative;
-    transform: rotate(1.5deg);
-    box-shadow: 6px 6px 0 var(--ink);
-  }
-  .chef-stamp::before {
-    content: "CERTIFIED BY CHEF";
-    position: absolute; top: -14px; left: 16px;
-    background: var(--red); color: var(--paper);
-    font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
-    padding: 4px 10px;
-  }
-  .chef-stamp .line { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 4px; }
-  .chef-stamp .big { font-family: var(--disp); font-size: 52px; line-height: 0.95; margin: 6px 0 10px; }
-  .chef-stamp .quote { font-style: italic; font-size: 15px; line-height: 1.5; color: var(--ink); margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--ink); }
-  .chef-stamp .sig { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; margin-top: 10px; font-size: 14px; }
+  /* ── PROOF STRIP ── */
+  .proof{border-top:1px solid var(--walnut);border-bottom:1px solid var(--walnut);
+    background:var(--espresso);padding:18px 0;margin-top:70px}
+  .proof .wrap{display:flex;gap:14px 40px;flex-wrap:wrap;justify-content:space-between;
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:#bfae94}
+  .proof b{color:var(--hot);font-weight:700}
 
-  /* ── FOUNDER STRIP ── */
-  .founder-strip {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 44px 40px;
-    border-bottom: 3px solid var(--ink);
-  }
-  .founder-inner {
-    max-width: 1100px; margin: 0 auto;
-    display: grid; grid-template-columns: auto 1fr;
-    gap: 40px; align-items: center;
-  }
-  .founder-badge {
-    font-family: var(--disp); font-size: 140px; line-height: 0.85;
-    color: var(--red); border-right: 2px solid var(--alum); padding-right: 40px;
-  }
-  .founder-badge small { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--alum); text-transform: uppercase; }
-  .founder-text { font-size: 18px; line-height: 1.6; font-family: var(--body); }
-  .founder-text em { color: var(--red); font-style: normal; font-weight: 600; }
+  /* ── SECTIONS ── */
+  section{padding:76px 0}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--brand);margin-bottom:14px}
+  h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;
+    font-size:clamp(32px,5vw,54px);line-height:1;color:var(--cream);margin-bottom:14px}
+  .lede{color:#cdbfa8;max-width:580px;font-size:18px;margin-bottom:44px}
 
-  /* ── SECTION BASE ── */
-  section { padding: 80px 40px; border-bottom: 3px solid var(--ink); }
-  .section-head {
-    max-width: 1400px; margin: 0 auto 50px;
-    display: flex; justify-content: space-between; align-items: flex-end;
-    border-bottom: 2px solid var(--ink); padding-bottom: 20px;
+  /* ── THE PAPER (brief) ── */
+  .paper-scene{background:radial-gradient(ellipse 70% 90% at 50% 50%, rgba(200,84,10,.08), transparent 70%)}
+  .brief{
+    background:var(--parchment);color:var(--ink);
+    max-width:600px;padding:34px 36px;
+    box-shadow:0 24px 70px rgba(0,0,0,.6), 0 0 0 1px rgba(138,50,6,.25);
+    transform:rotate(-.5deg);
+    font-size:16.5px;
   }
-  .section-head h2 {
-    font-family: var(--disp);
-    font-size: clamp(42px, 6vw, 76px);
-    text-transform: uppercase;
-    letter-spacing: -0.01em; line-height: 0.95;
-  }
-  .section-head .idx { font-family: var(--mono); font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .brief .head{display:flex;justify-content:space-between;font-family:var(--mono);
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--deep);
+    border-bottom:2px solid var(--deep);padding-bottom:10px;margin-bottom:16px}
+  .brief p{margin-bottom:13px}
+  .brief .flag{background:rgba(200,84,10,.12);border-left:3px solid var(--brand);padding:10px 14px}
+  .brief .call{font-weight:900;font-style:italic}
+  .brief .sig{font-family:var(--mono);font-size:12px;color:var(--deep);margin-top:18px}
 
-  /* ── TIERS ── */
-  .tiers {
-    max-width: 900px; margin: 0 auto;
-    display: grid; grid-template-columns: 0.85fr 1fr; gap: 24px;
-    align-items: start;
-  }
-  .tier {
-    background: var(--paper); border: 2px solid var(--ink);
-    padding: 36px 30px 32px;
-    display: flex; flex-direction: column;
-    position: relative;
-    transition: transform 0.2s, box-shadow 0.2s;
-    min-height: 580px;
-  }
-  .tier.free { min-height: auto; background: var(--paper-dk); }
-  .tier-addon {
-    max-width: 1320px; margin: 28px auto 0;
-    border: 2px dashed var(--ink); padding: 18px 24px;
-    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
-    text-transform: uppercase; display: flex; align-items: center; gap: 10px;
-    justify-content: center; text-align: center;
-  }
-  .tier-addon .amt-inline { color: var(--red); font-weight: 700; }
-  .tier:hover { transform: translate(-4px,-4px); box-shadow: 8px 8px 0 var(--ink); }
-  .tier.featured { background: var(--ink); color: var(--paper); }
-  .tier.featured .tier-name, .tier.featured .tier-tag, .tier.featured .tier-feat li { color: var(--paper); }
-  .tier.featured .tier-price .amt { color: var(--red); }
-  .tier.featured .tier-sub { color: var(--alum); }
-  .tier.featured .tier-feat li::before { color: var(--red); }
-  .tier.featured .btn-pick { background: var(--red); color: var(--paper); border-color: var(--red); }
-  .tier.featured .btn-pick:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
-  .tier.featured .best-tag {
-    position: absolute; top: -14px; right: 20px;
-    background: var(--red); color: var(--paper);
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
-    padding: 5px 12px; font-weight: 700; text-transform: uppercase;
-  }
-  .tier-num { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; }
-  .tier.featured .tier-num { color: var(--alum); }
-  .tier-name { font-family: var(--disp); font-size: 42px; line-height: 1; text-transform: uppercase; margin-bottom: 4px; }
-  .tier-tag { font-family: var(--body); font-style: italic; font-size: 15px; color: var(--muted); margin-bottom: 22px; min-height: 42px; }
-  .tier-price {
-    border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
-    padding: 18px 0; margin-bottom: 8px;
-    display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap;
-  }
-  .tier.featured .tier-price { border-color: var(--alum); }
-  .tier-price .amt { font-family: var(--disp); font-size: 56px; line-height: 1; }
-  .tier-price .cur { font-family: var(--mono); font-size: 16px; align-self: flex-start; margin-top: 6px; }
-  .tier-price .per { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-left: auto; letter-spacing: 0.1em; }
-  .tier.featured .tier-price .per { color: var(--alum); }
-  .tier-day { font-family: var(--mono); font-size: 11px; color: var(--red); letter-spacing: 0.1em; margin-bottom: 16px; }
-  .tier-sub { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 22px; }
-  .tier-feat { list-style: none; margin-bottom: 26px; flex: 1; }
-  .tier-feat li {
-    font-family: var(--body); font-size: 15px; line-height: 1.45;
-    padding: 8px 0 8px 22px; position: relative;
-    border-bottom: 1px dotted rgba(0,0,0,0.15);
-  }
-  .tier.featured .tier-feat li { border-bottom-color: rgba(255,255,255,0.12); }
-  .tier-feat li::before { content: "→"; position: absolute; left: 0; font-family: var(--mono); font-weight: 700; color: var(--red); }
-  .tier-feat li:last-child { border-bottom: none; }
-  .tier-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--alum); margin-bottom: 16px; line-height: 1.6; }
-  .btn-pick {
-    font-family: var(--mono); font-size: 12px; text-transform: uppercase;
-    letter-spacing: 0.12em; padding: 14px;
-    border: 2px solid var(--ink); background: var(--paper); color: var(--ink);
-    text-decoration: none; text-align: center; font-weight: 700;
-    cursor: pointer; transition: all 0.15s;
-  }
-  .btn-pick:hover { background: var(--ink); color: var(--paper); }
+  /* ── BENEFITS ── */
+  .benes{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;
+    background:var(--walnut);border:1px solid var(--walnut)}
+  .bene{background:var(--bark);padding:28px 24px}
+  .bene h3{font-family:var(--body);font-weight:900;font-size:20px;color:var(--warm);margin-bottom:8px}
+  .bene p{font-size:16px;color:#bfae94}
+  .bene .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--bright);display:block;margin-bottom:12px}
 
-  /* ── BRIEF SAMPLE ── */
-  .brief-section {
-    max-width: 1100px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;
-  }
-  .brief-card {
-    background: var(--paper-dk);
-    border: 2px solid var(--ink);
-    border-left: 6px solid var(--red);
-    padding: 32px;
-    position: relative;
-  }
-  .brief-card::before {
-    content: "SAMPLE — MONDAY BRIEF";
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
-    color: var(--red); display: block; margin-bottom: 20px; padding-bottom: 16px;
-    border-bottom: 1px solid var(--ink);
-  }
-  .brief-card p { font-size: 15px; line-height: 1.8; color: var(--muted); margin-bottom: 14px; }
-  .brief-card p:first-of-type { color: var(--ink); font-weight: 600; }
-  .brief-card .highlight { color: var(--red); font-weight: 600; }
-  .brief-right h3 { font-family: var(--disp); font-size: 40px; text-transform: uppercase; line-height: 0.95; margin-bottom: 20px; }
-  .brief-right p { font-size: 17px; line-height: 1.8; color: var(--muted); margin-bottom: 14px; }
+  /* ── MENU (tiers) ── */
+  .menu-note{font-family:var(--mono);font-size:13px;color:var(--warm);margin-bottom:34px}
+  .courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+  .course{background:var(--espresso);border:1px solid var(--walnut);padding:28px 24px;
+    display:flex;flex-direction:column;transition:.2s}
+  .course:hover{border-color:var(--brand);transform:translateY(-4px)}
+  .course.star{border-color:var(--bright);background:linear-gradient(180deg,var(--walnut),var(--espresso));
+    box-shadow:0 0 40px rgba(224,96,32,.15)}
+  .course .cname{font-family:var(--disp);font-size:24px;text-transform:uppercase;color:var(--cream);
+    letter-spacing:.02em}
+  .course .price{font-family:var(--mono);font-size:14px;color:var(--hot);font-weight:700;margin:6px 0 4px}
+  .course .napkin{font-family:var(--mono);font-size:11px;color:#9a8a72;margin-bottom:18px;font-style:normal}
+  .course ul{list-style:none;flex:1}
+  .course li{font-size:16px;color:#cdbfa8;padding:10px 0 10px 22px;position:relative;
+    border-bottom:1px dotted var(--walnut)}
+  .course li::before{content:"—";position:absolute;left:0;color:var(--brand)}
+  .course li:last-child{border-bottom:none}
+  .addons{margin-top:26px;background:var(--bark);border:1px dashed var(--deep);padding:22px 26px;
+    font-family:var(--mono);font-size:15px;color:#cdbfa8;line-height:2}
+  .addons b{color:var(--warm)}
 
-  /* ── BRIGADE ── */
-  .brigade { background: var(--paper-dk); padding: 80px 40px; border-bottom: 3px solid var(--ink); }
-  .brigade-grid {
-    max-width: 1400px; margin: 0 auto;
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-  }
-  .brigade-top {
-    grid-column: 1 / 4;
-    background: var(--ink); color: var(--paper);
-    border: 2px solid var(--ink); padding: 32px 30px;
-    display: grid; grid-template-columns: auto 1fr auto;
-    gap: 28px; align-items: center;
-    margin-bottom: 4px;
-    transition: transform 0.2s;
-  }
-  .brigade-top:hover { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--red); }
-  .brigade-top .b-name { font-family: var(--disp); font-size: 42px; color: var(--red); line-height: 1; }
-  .brigade-top .b-role { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--alum); margin-bottom: 6px; }
-  .brigade-top .b-title { font-family: var(--disp); font-size: 22px; color: var(--paper); }
-  .brigade-top .b-job { font-size: 14px; line-height: 1.6; color: var(--alum); max-width: 440px; }
-  .brigade-top .b-badge { font-family: var(--disp); font-size: 13px; letter-spacing: 0.2em; color: var(--red); text-transform: uppercase; border: 1px solid var(--red); padding: 6px 14px; white-space: nowrap; }
-  .brigade-card {
-    background: var(--paper); border: 2px solid var(--ink);
-    padding: 24px 22px;
-    transition: transform 0.2s;
-  }
-  .brigade-card:hover { transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--ink); }
-  .b-num { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
-  .b-model { font-family: var(--disp); font-size: 22px; line-height: 1; text-transform: uppercase; margin-bottom: 2px; }
-  .b-kitchen { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); margin-bottom: 10px; }
-  .b-desc { font-size: 13px; line-height: 1.55; color: var(--muted); }
+  /* ── BOARDS / SCREENSHOTS ── */
+  .shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px}
+  .shot{border:1px solid var(--walnut);background:var(--darkgrey);aspect-ratio:16/10;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7a6c58}
+  .shot img{width:100%;height:100%;object-fit:cover;display:block}
+  .shot-cap{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--warm);margin-top:9px}
+  .es-badge{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+    border:1px solid var(--brand);color:var(--hot);padding:2px 7px;margin-left:8px;vertical-align:1px}
+
+  /* ── HOW / ONBOARDING ── */
+  .doors{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+  .door{background:var(--espresso);border-top:3px solid var(--bright);padding:28px 26px}
+  .door h3{font-weight:900;font-size:21px;color:var(--warm);margin-bottom:10px}
+  .door p{font-size:16.5px;color:#cdbfa8}
+  .door .free{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--hot);display:block;margin-bottom:12px}
+
+  /* ── PROMISE ── */
+  .promise{background:var(--espresso);border-top:1px solid var(--walnut);border-bottom:1px solid var(--walnut)}
+  .promise .inner{display:flex;gap:30px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+  .promise blockquote{font-size:clamp(19px,2.6vw,25px);font-style:italic;color:var(--cream);max-width:640px}
+  .promise .who{font-family:var(--mono);font-size:12px;color:var(--warm);margin-top:12px;font-style:normal}
+
+  /* ── FINAL ── */
+  .final{text-align:center;padding:96px 0}
+  .final h2{margin-bottom:14px}
+  .final .lede{margin:0 auto 34px}
+
+  footer{border-top:1px solid var(--walnut);padding:26px 22px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+    font-family:var(--mono);font-size:12px;color:#9a8a72}
+  footer a{color:var(--hot);text-decoration:none;font-weight:700}
+  footer a:hover{text-decoration:underline}
 
 
-
-  /* ── HOW IT WORKS ── */
-  .how-it-works {
-    max-width: 1000px; margin: 0 auto;
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 0; border: 2px solid var(--ink);
-  }
-  .hiw-step { padding: 28px 22px; border-right: 2px solid var(--ink); background: var(--paper); }
-  .hiw-step:last-child { border-right: none; }
-  .hiw-num { font-family: var(--disp); font-size: 48px; color: var(--red); line-height: 1; margin-bottom: 10px; }
-  .hiw-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px; font-weight: 700; }
-  .hiw-note { font-family: var(--body); font-size: 13px; line-height: 1.5; color: var(--muted); }
-
-  /* ── ONBOARDING FORM ── */
-  .onboard {
-    background: var(--ink); color: var(--paper);
-    padding: 80px 40px; border-bottom: none;
-  }
-  .onboard-inner {
-    max-width: 900px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 60px; align-items: start;
-  }
-  .onboard .kicker { color: var(--red); }
-  .onboard h2 { font-family: var(--disp); font-size: clamp(40px,5vw,60px); text-transform: uppercase; line-height: 0.95; margin-bottom: 18px; }
-  .onboard p { color: var(--alum); margin-bottom: 14px; font-size: 16px; line-height: 1.7; }
-  .onboard .slot {
-    font-family: var(--mono); font-size: 12px; color: var(--red);
-    letter-spacing: 0.15em; margin-top: 24px;
-    border-top: 1px solid var(--alum); padding-top: 18px;
-  }
-  form { display: flex; flex-direction: column; gap: 16px; }
-  form .field { display: flex; flex-direction: column; gap: 6px; }
-  form label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; color: var(--alum); text-transform: uppercase; }
-  form input, form select {
-    background: transparent; border: none;
-    border-bottom: 1.5px solid var(--alum);
-    padding: 12px 0; color: var(--paper);
-    font-family: var(--body); font-size: 16px;
-    outline: none; transition: border-color 0.15s;
-    -webkit-appearance: none;
-  }
-  form input:focus, form select:focus { border-bottom-color: var(--red); }
-  form input::placeholder { color: rgba(168,168,160,0.5); }
-  form select option { background: var(--ink); }
-  form .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .g-login-btn {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    background: var(--paper); color: var(--ink);
-    border: 2px solid var(--paper); padding: 16px;
-    font-family: var(--mono); font-size: 12px; text-transform: uppercase;
-    letter-spacing: 0.12em; font-weight: 700; cursor: pointer;
-    transition: all 0.15s; margin-bottom: 4px;
-  }
-  .g-login-btn:hover { background: transparent; color: var(--paper); }
-  .g-login-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
-  .divider-or {
-    display: flex; align-items: center; gap: 12px;
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--alum);
-  }
-  .divider-or::before, .divider-or::after { content: ""; flex: 1; height: 1px; background: var(--alum); }
-  .submit {
-    background: var(--red); color: var(--paper); border: 2px solid var(--red);
-    padding: 18px; margin-top: 6px;
-    font-family: var(--mono); font-size: 13px; text-transform: uppercase;
-    letter-spacing: 0.14em; font-weight: 700; cursor: pointer;
-    transition: all 0.15s;
-  }
-  .submit:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); transform: translate(-2px,-2px); box-shadow: 4px 4px 0 var(--red); }
-  .fineprint { font-family: var(--mono); font-size: 10px; color: var(--alum); letter-spacing: 0.05em; margin-top: 6px; line-height: 1.6; }
-  .thankyou { display: none; padding: 28px; border: 2px solid var(--red); text-align: center; }
-  .thankyou.on { display: block; }
-  .thankyou .rid-out { font-family: var(--disp); font-size: 48px; color: var(--red); margin: 10px 0; }
-
-  /* ── FOOTER ── */
-  footer {
-    background: var(--paper); padding: 40px;
-    border-top: 3px solid var(--ink);
-    font-family: var(--mono); font-size: 12px;
-    text-transform: uppercase; letter-spacing: 0.1em;
-  }
-  .foot-inner {
-    max-width: 1400px; margin: 0 auto;
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 20px;
-  }
-  footer .copy { color: var(--muted); }
-  footer a { color: var(--ink); text-decoration: none; margin-left: 20px; }
-  footer a:hover { color: var(--red); }
-  .footer-email-bar {
-    max-width: 1400px; margin: 0 auto 24px; text-align: center;
-  }
-  .footer-email-bar a {
-    font-family: var(--disp); font-size: 28px; letter-spacing: 0.02em;
-    text-transform: none; color: var(--red); text-decoration: none;
-  }
-  .footer-email-bar a:hover { text-decoration: underline; }
-  @media (max-width: 700px) { .footer-email-bar a { font-size: 19px; } }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 1100px) {
-    .hero-grid { grid-template-columns: 1fr; }
-    .chef-stamp { max-width: 420px; }
-    .tiers { grid-template-columns: 1fr; max-width: 480px; }
-    .brief-section { grid-template-columns: 1fr; }
-    .brigade-top { grid-column: auto; grid-template-columns: 1fr; }
-    .brigade-grid { grid-template-columns: 1fr 1fr; }
-    .brigade-top { grid-column: 1 / 3; }
-    .how-it-works { grid-template-columns: repeat(2,1fr); }
-    .hiw-step:nth-child(2) { border-right: none; }
-    .hiw-step:nth-child(1), .hiw-step:nth-child(2) { border-bottom: 2px solid var(--ink); }
-    .founder-inner { grid-template-columns: 1fr; gap: 20px; }
-    .founder-badge { border-right: none; border-bottom: 2px solid var(--alum); padding-right: 0; padding-bottom: 20px; font-size: 80px; }
-    .onboard-inner { grid-template-columns: 1fr; gap: 30px; }
-  }
-  @media (max-width: 640px) {
-    .topbar { padding: 12px 20px; flex-direction: column; gap: 8px; }
-    .topbar nav { gap: 16px; font-size: 10px; flex-wrap: wrap; justify-content: center; }
-    section, .hero, .founder-strip, .brigade { padding-left: 20px; padding-right: 20px; }
-    h1 { font-size: 56px; }
-    .hero-sub { font-size: 18px; }
-    .tier-name { font-size: 32px; }
-    .brigade-grid { grid-template-columns: 1fr; }
-    .brigade-top { grid-column: auto; }
-    .how-it-works { grid-template-columns: 1fr; }
-    .hiw-step { border-right: none; border-bottom: 2px solid var(--ink); }
-    .hiw-step:last-child { border-bottom: none; }
-    form .row2 { grid-template-columns: 1fr; }
-  }
+  /* cream rooms — paper sections */
+  section.cream{background:var(--cream);color:var(--ink)}
+  section.cream h2{color:var(--ink)}
+  section.cream .lede,section.cream .menu-note{color:#5a4630}
+  section.cream .eyebrow{color:var(--deep)}
+  section.cream .course{background:#fff;border:1px solid #e0d3ba;color:var(--ink)}
+  section.cream .course .cname{color:var(--ink)}
+  section.cream .course li{color:#4a3a26;border-bottom:1px dotted #e0d3ba}
+  section.cream .course .price{color:var(--brand)}
+  section.cream .course .napkin{color:#9a8a72}
+  section.cream .course.star{border-color:var(--brand);background:linear-gradient(180deg,#fff7ea,#fff);box-shadow:0 10px 40px rgba(200,84,10,.15)}
+  section.cream .addons{background:#fff7ea;border:1px dashed var(--brand);color:#4a3a26}
+  section.cream .addons b{color:var(--deep)}
+  section.cream .door{background:#fff;border-top:3px solid var(--brand)}
+  section.cream .door h3{color:var(--deep)}
+  section.cream .door p{color:#4a3a26}
+  section.cream .door .free{color:var(--brand)}
+  section.cream .cta-note{color:#7a6c58}
 
 
+  .journey{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
+  .jstep{background:#fff;border:1px solid #e0d3ba;border-top:4px solid var(--brand);padding:26px 24px}
+  .jnum{font-family:var(--disp);font-size:40px;line-height:1;color:var(--brand)}
+  .jstep h3{font-weight:900;font-size:20px;color:var(--deep);margin:10px 0 8px}
+  .jstep p{font-size:16px;color:#4a3a26}
 
-  /* ── LIVE CHART ── */
-  .live-section {
-    background: var(--ink);
-    border-bottom: 3px solid var(--ink);
-    padding: 0;
-    overflow: hidden;
+  @media (max-width:640px){
+    .hero{padding:56px 0 44px}
+    section{padding:56px 0}
+    .btn{width:100%;text-align:center}
+    .brief{transform:none;padding:26px 22px}
   }
-  .live-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 40px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
   }
-  .live-title {
-    font-family: var(--mono);
-    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--alum); display: flex; align-items: center; gap: 10px;
-  }
-  .live-dot {
-    width: 8px; height: 8px; border-radius: 50%; background: #4ade80;
-    animation: pulse 1.8s infinite;
-  }
-  .live-stats {
-    display: flex; gap: 32px;
-  }
-  .live-stat {
-    text-align: right;
-  }
-  .live-stat-val {
-    font-family: var(--mono); font-size: 22px; font-weight: 700; line-height: 1;
-  }
-  .live-stat-val.green { color: #4ade80; }
-  .live-stat-val.red { color: #f87171; }
-  .live-stat-label {
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--alum); margin-top: 3px;
-  }
-
-
-  /* ── COMPARISON STRIP ── */
-  .compare {
-    border-bottom: 3px solid var(--ink);
-    padding: 0;
-    overflow: hidden;
-  }
-  .compare-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    max-width: 100%;
-  }
-  .compare-col {
-    padding: 50px 60px;
-  }
-  .compare-col.them {
-    background: var(--paper-dk);
-    border-right: 3px solid var(--ink);
-  }
-  .compare-col.us {
-    background: var(--ink);
-    color: var(--paper);
-  }
-  .compare-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    margin-bottom: 28px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--ink);
-  }
-  .compare-col.us .compare-label {
-    color: var(--alum);
-    border-bottom-color: rgba(255,255,255,0.15);
-  }
-  .compare-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    padding: 16px 0;
-    border-bottom: 1px dotted rgba(0,0,0,0.15);
-    align-items: baseline;
-  }
-  .compare-col.us .compare-row {
-    border-bottom-color: rgba(255,255,255,0.08);
-  }
-  .compare-row:last-child { border-bottom: none; }
-  .compare-item-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .compare-col.us .compare-item-label { color: var(--alum); }
-  .compare-item-val {
-    font-family: var(--disp);
-    font-size: 28px;
-    line-height: 1;
-    color: var(--ink);
-  }
-  .compare-col.us .compare-item-val { color: var(--red); }
-  .compare-item-val.strikethrough {
-    text-decoration: line-through;
-    text-decoration-color: var(--red);
-    opacity: 0.5;
-  }
-  .compare-tagline {
-    font-family: var(--body);
-    font-style: italic;
-    font-size: 15px;
-    color: var(--muted);
-    margin-top: 6px;
-  }
-  .compare-col.us .compare-tagline { color: var(--alum); }
-  .compare-note {
-    margin-top: 24px;
-    padding: 16px 20px;
-    border: 1.5px solid rgba(255,255,255,0.15);
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    color: var(--alum);
-    line-height: 1.7;
-  }
-  .compare-note strong { color: var(--paper); }
-  @media (max-width: 640px) {
-    .compare-grid { grid-template-columns: 1fr; }
-    .compare-col.them { border-right: none; border-bottom: 3px solid var(--ink); }
-    .compare-col { padding: 36px 20px; }
-  }
-  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s, transform 0.6s; }
-  .reveal.on { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
 <div class="topbar">
-  <div class="id"><span class="dot"></span>MISE.AI</div>
-  <a href="mailto:overyourmorningcupofcoffee@gmail.com" class="topbar-email">overyourmorningcupofcoffee@gmail.com</a>
-  <nav>
-    <a href="#tiers">Tiers</a>
-    <a href="#brief">The Brief</a>
-    <a href="#brigade">The Brigade</a>
-    <a href="#start">Get Started</a>
-    <button class="google-btn" onclick="handleGoogleSignIn()">
-      <svg viewBox="0 0 18 18" fill="none">
-        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
-        <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
-        <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
-        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
-      </svg>
-      Sign In
-    </button>
-  </nav>
+  <span class="flame"><span class="dot"></span>MISE.AI</span>
+  <a href="#signup">Claim your number</a>
 </div>
 
 <!-- HERO -->
-<section class="hero reveal">
-  <div class="hero-grid">
-    <div>
-      <div class="kicker">Built for the solo operator · No bar, no back office, no problem</div>
-      <h1>
-        You're the chef,<br>
-        <span class="strike">the manager, the books</span><br>
-        <span class="red">— not anymore.</span>
-      </h1>
-      <p class="hero-sub">A morning brief delivered at 5 AM over your cup of coffee, prep and orders done before you unlock the doors, and an AI crew watching the numbers all night — so the person running everything finally gets a break.</p>
-      <div class="hero-ctas">
-        <a href="#start" class="btn primary">Claim Your Number <span class="arrow">→</span></a>
-        <a href="#tiers" class="btn">See The Tiers</a>
-      </div>
+<div class="hero">
+  <div class="wrap">
+    <div class="kicker">Built by a chef. For chefs.</div>
+    <h1>Your numbers are waiting<br><span class="fire">when you wake up.</span></h1>
+    <p class="sub">Mise.AI works the overnight shift — reading your invoices, your sales, your labor — and leaves one honest brief on the bar. Plain English. Chef to chef. You cook. It counts.</p>
+    <div class="cta-row">
+      <a class="btn" href="#menu">See the menu</a>
     </div>
-    <aside class="chef-stamp reveal">
-      <div class="line">Bay Area · 30 years</div>
-      <div class="big">Chef-<br>Founded.</div>
-      <div class="line">Ran the kitchen, the counter, and the books — solo.</div>
-      <p class="quote">"I built this for me. No manager, no back office, just me and a griddle trying to figure out food cost at midnight. Then I figured — every solo operator I know has this same problem. Might as well run with it."</p>
-      <div class="sig">— The Founder, #0010</div>
-    </aside>
+    <p class="cta-note" style="margin-top:16px">From 50¢ a day · Free onboarding · No contracts</p>
   </div>
-</section>
+</div>
 
-<!-- FOUNDER STRIP -->
-<div class="founder-strip">
-  <div class="founder-inner">
-    <div class="founder-badge">2<br><small>Tiers only</small></div>
-    <div class="founder-text reveal">
-      I owned a restaurant for 10 years. I used to be able to read an invoice and just know — this case went up, that one didn't. Not anymore. Prices move too fast now for anyone to track in their head, and that's the actual problem — not knowing you're slow, that's an easy eye. It's not knowing your chicken cost 12% more this week than last, until it's already eaten your margin. That's exactly why this exists. Big POS platforms charge <em>$200+</em> for reports built for a corporate office that's never read an invoice at 11pm. We charge <em>$50</em> to catch what you can't catch by memory anymore. Two tiers. Two prices. No nickel-and-dime. Read the brief at 5am with coffee. That's the whole deal.
-    </div>
+<div class="proof">
+  <div class="wrap">
+    <span><b>30 years</b> in professional kitchens behind every screen</span>
+    <span>Built for independents — <b>not</b> another $500/mo POS</span>
+    <span>Powered by the <b>most recent AI</b>, working the line 24/7</span>
   </div>
 </div>
 
 
+<!-- THE WEB -->
+<section id="web">
+  <div class="wrap">
+    <div class="eyebrow">The System, Drawn</div>
+    <h2>Everything connects</h2>
+    <p class="lede">This is the map we drew before we built anything &mdash; fifty years of shifts turned into a web. Your paper goes in at the top; your morning decision comes out at the bottom. Every line on it is explained below.</p>
 
+    <div style="overflow-x:auto">
+    <svg viewBox="0 0 720 980" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:0 auto" font-family="'JetBrains Mono',monospace">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#c8540a"/>
+        </marker>
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
 
-<!-- REAL VISIT COUNTER -->
-<div class="live-section">
-  <div class="live-header">
-    <div class="live-title">
-      <span class="live-dot"></span>
-      Real Visits · Tracked Live
-    </div>
-    <div class="live-stats">
-      <div class="live-stat">
-        <div class="live-stat-val green" id="statVisits">—</div>
-        <div class="live-stat-label">Total Visits</div>
-      </div>
-    </div>
-  </div>
-</div>
+      <!-- connection lines -->
+      <g stroke="#8a3206" stroke-width="2" fill="none" marker-end="url(#arr)">
+        <path d="M120,88 L120,150 Q120,170 160,178 L300,208"/>
+        <path d="M360,88 L360,190"/>
+        <path d="M600,88 L600,150 Q600,170 560,178 L420,208"/>
+        <path d="M360,268 L360,330"/>
+        <path d="M360,430 L360,492"/>
+        <path d="M300,560 Q180,600 180,660"/>
+        <path d="M420,560 Q540,600 540,660"/>
+        <path d="M180,740 Q180,790 300,812"/>
+        <path d="M540,740 Q540,790 420,812"/>
+        <path d="M360,872 L360,912"/>
+      </g>
+      <!-- feedback loop: decision back to top -->
+      <path d="M472,940 Q690,940 690,500 Q690,60 640,50" stroke="#f07840" stroke-width="1.5" stroke-dasharray="5,6" fill="none" marker-end="url(#arr)"/>
+      <text x="702" y="500" fill="#f8a070" font-size="11" letter-spacing="1" transform="rotate(90 702 500)" text-anchor="middle">YOUR TWEAKS FEED BACK IN</text>
 
-<!-- COMPARISON: THEM VS US -->
-<div class="compare">
-  <div class="compare-grid">
+      <!-- LAYER 1: what you send -->
+      <g>
+        <rect x="40" y="40" width="160" height="48" rx="6" fill="#241a13" stroke="#332319"/>
+        <text x="120" y="60" text-anchor="middle" fill="#f8a070" font-size="12" font-weight="bold">INVOICES</text>
+        <text x="120" y="76" text-anchor="middle" fill="#9a8a72" font-size="10">every one, every day</text>
 
-    <div class="compare-col them reveal">
-      <div class="compare-label">Corporate POS &amp; Restaurant Tech</div>
-      <div class="compare-row">
-        <div>
-          <div class="compare-item-label">Onboarding Fee</div>
-          <div class="compare-item-val strikethrough">$100–$800</div>
-          <div class="compare-tagline">Just to get started</div>
-        </div>
-        <div>
-          <div class="compare-item-label">Setup Time</div>
-          <div class="compare-item-val strikethrough">2–8 Weeks</div>
-          <div class="compare-tagline">Phone calls, installs, delays</div>
-        </div>
-      </div>
-      <div class="compare-row">
-        <div>
-          <div class="compare-item-label">Hardware</div>
-          <div class="compare-item-val strikethrough">$1,500+</div>
-          <div class="compare-tagline">Proprietary monitors, routers</div>
-        </div>
-        <div>
-          <div class="compare-item-label">Your Wholesale Data</div>
-          <div class="compare-item-val strikethrough">Not Your Call</div>
-          <div class="compare-tagline">Industry-standard, buried in fine print. You rarely see a cent back.</div>
-        </div>
-      </div>
-    </div>
+        <rect x="280" y="40" width="160" height="48" rx="6" fill="#241a13" stroke="#332319"/>
+        <text x="360" y="60" text-anchor="middle" fill="#f8a070" font-size="12" font-weight="bold">SALES</text>
+        <text x="360" y="76" text-anchor="middle" fill="#9a8a72" font-size="10">yesterday's numbers</text>
 
-    <div class="compare-col us reveal">
-      <div class="compare-label">Mise.AI</div>
-      <div class="compare-row">
-        <div>
-          <div class="compare-item-label">Onboarding Fee</div>
-          <div class="compare-item-val">Free.</div>
-          <div class="compare-tagline">Always. No exceptions.</div>
-        </div>
-        <div>
-          <div class="compare-item-label">Setup Time</div>
-          <div class="compare-item-val">1 Day.</div>
-          <div class="compare-tagline">Sign up today, upload tonight, wake up to your first brief.</div>
-        </div>
-      </div>
-      <div class="compare-row">
-        <div>
-          <div class="compare-item-label">Hardware</div>
-          <div class="compare-item-val">$0</div>
-          <div class="compare-tagline">Standalone system. No POS to rip out, no POS required.</div>
-        </div>
-        <div>
-          <div class="compare-item-label">Your Wholesale Data</div>
-          <div class="compare-item-val">Yours.</div>
-          <div class="compare-tagline">Opt-in only. Your data stays yours.</div>
-        </div>
-      </div>
-      <div class="compare-note">
-        <strong>Not ready right now?</strong> No pressure. Come back whenever you are. Your slot stays open and there's no deadline. The system is here when your operation is ready for it.
-      </div>
-    </div>
+        <rect x="520" y="40" width="160" height="48" rx="6" fill="#241a13" stroke="#332319"/>
+        <text x="600" y="60" text-anchor="middle" fill="#f8a070" font-size="12" font-weight="bold">RECIPES &amp; SCHEDULE</text>
+        <text x="600" y="76" text-anchor="middle" fill="#9a8a72" font-size="10">menu, pars, hourly</text>
+      </g>
 
-  </div>
-</div>
+      <!-- LAYER 2: sniffer -->
+      <rect x="250" y="208" width="220" height="60" rx="6" fill="#1c1410" stroke="#c8540a" stroke-width="2" filter="url(#glow)"/>
+      <text x="360" y="233" text-anchor="middle" fill="#f07840" font-size="14" font-weight="bold">THE SNIFFER</text>
+      <text x="360" y="252" text-anchor="middle" fill="#bfae94" font-size="10.5">cleans every line · flags every cent</text>
 
-<!-- TIERS -->
-<section id="tiers">
-  <div class="section-head">
-    <h2>Two Tiers</h2>
-    <div class="idx">§01 · Pick your station</div>
-  </div>
-  <div class="tiers">
+      <!-- LAYER 3: engine -->
+      <rect x="230" y="330" width="260" height="100" rx="6" fill="#1c1410" stroke="#e06020" stroke-width="2.5" filter="url(#glow)"/>
+      <text x="360" y="362" text-anchor="middle" fill="#f07840" font-size="15" font-weight="bold">THE ENGINE</text>
+      <text x="360" y="382" text-anchor="middle" fill="#bfae94" font-size="10.5">corporate-grade data machinery</text>
+      <text x="360" y="398" text-anchor="middle" fill="#bfae94" font-size="10.5">costs · pars · P&amp;L · labor · trends</text>
+      <text x="360" y="414" text-anchor="middle" fill="#9a8a72" font-size="10">the AI lives in here, next to your numbers</text>
 
-    <!-- FREE TIER -->
-    <div class="tier free reveal">
-      <div class="tier-num">Tier 01 · Free</div>
-      <div class="tier-name">Mise en Place</div>
-      <div class="tier-tag">Start here. No card, no commitment.</div>
-      <div class="tier-price">
-        <span class="cur">$</span><span class="amt">0</span><span class="per">/ month</span>
-      </div>
-      <div class="tier-sub">Sign in required · Monthly newsletter</div>
-      <ul class="tier-feat">
-        <li>Recipe Calculator — store up to 100 recipes</li>
-        <li>Track 3 yields per recipe</li>
-        <li>Batch cost — worked out automatically</li>
-        <li>Google sign-in, 60 seconds to start</li>
-      </ul>
-      <div class="tier-note">You'll get one email a month. Upgrade any time — no reset, nothing lost.</div>
-      <div class="tier-note"><a href="/tools/recipe-calculator.html" style="color:var(--red);text-decoration:none;font-weight:700;">SEE THE RECIPE BOARD LIVE →</a></div>
-      <a href="#start" class="btn-pick" onclick="selectTier('free')">Start Free →</a>
+      <!-- LAYER 4: brigade -->
+      <rect x="250" y="492" width="220" height="68" rx="6" fill="#1c1410" stroke="#c8540a" stroke-width="2"/>
+      <text x="360" y="518" text-anchor="middle" fill="#f07840" font-size="14" font-weight="bold">THE NIGHT BRIGADE</text>
+      <text x="360" y="537" text-anchor="middle" fill="#bfae94" font-size="10.5">prep cook → sous → exec</text>
+      <text x="360" y="551" text-anchor="middle" fill="#9a8a72" font-size="10">works while you sleep, when AI runs cheapest</text>
+
+      <!-- LAYER 5: outputs -->
+      <rect x="90" y="660" width="180" height="80" rx="6" fill="#241a13" stroke="#332319"/>
+      <text x="180" y="688" text-anchor="middle" fill="#f8a070" font-size="12" font-weight="bold">THE BOARDS</text>
+      <text x="180" y="706" text-anchor="middle" fill="#9a8a72" font-size="10">cook · chef · manager · owner</text>
+      <text x="180" y="721" text-anchor="middle" fill="#9a8a72" font-size="10">each sees their station</text>
+
+      <rect x="450" y="660" width="180" height="80" rx="6" fill="#f2e8d5" stroke="#8a3206"/>
+      <text x="540" y="688" text-anchor="middle" fill="#8a3206" font-size="12" font-weight="bold">THE MORNING BRIEF</text>
+      <text x="540" y="706" text-anchor="middle" fill="#5a4630" font-size="10">one honest page</text>
+      <text x="540" y="721" text-anchor="middle" fill="#5a4630" font-size="10">waiting when you wake up</text>
+
+      <!-- LAYER 6: you -->
+      <rect x="248" y="812" width="224" height="60" rx="30" fill="#c8540a"/>
+      <text x="360" y="837" text-anchor="middle" fill="#faf3e3" font-size="14" font-weight="bold">YOU, OVER COFFEE</text>
+      <text x="360" y="856" text-anchor="middle" fill="#f2e8d5" font-size="10.5">30 seconds · one decision</text>
+
+      <text x="360" y="945" text-anchor="middle" fill="#f8a070" font-size="13" font-style="italic" font-family="Fraunces,serif">"Your call, Chef."</text>
+    </svg>
     </div>
 
-    <!-- TIER 1 -->
-    <div class="tier featured reveal">
-      <div class="best-tag">★ The Real Deal</div>
-      <div class="tier-num">Tier 02</div>
-      <div class="tier-name">Amuse-Bouche</div>
-      <div class="tier-tag">The whole operation, covered. One price, one person, no staff required.</div>
-      <div class="tier-price">
-        <span class="cur">$</span><span class="amt">50</span><span class="per">/ month</span>
-      </div>
-      <div class="tier-day">$1.66 a day</div>
-      <div class="tier-sub">Built for the solo operator · No alcohol needed</div>
-      <ul class="tier-feat">
-        <li>Morning brief at 5 AM — over your cup of coffee, every day</li>
-        <li>Invoice parsing — line by line, every night</li>
-        <li>Daily prep lists — ready before you unlock the doors</li>
-        <li>Suggested order list — you approve, the math is already done</li>
-        <li>P&amp;L — clean owner view, no accountant needed to read it</li>
-        <li>Yield tracking — start weight, end weight, what you actually got per portion</li>
-        <li>Beverages — fountain sodas, coffee, juice, water, all sizes costed out</li>
-        <li>One dashboard included</li>
-        <li>Mise AI — 15 minutes a day, ask anything, get real answers</li>
-      </ul>
-      <div class="tier-note" style="background:var(--red);color:var(--paper);padding:10px 14px;margin-bottom:16px;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;line-height:1.7;">★ ZERO HARDWARE &nbsp;·&nbsp; ANY PHONE &nbsp;·&nbsp; NO POS TO RIP OUT</div>
-      <div class="tier-note"><a href="/dashboards/brigade.html" style="color:var(--red);text-decoration:none;font-weight:700;">SEE THE DASHBOARD LIVE →</a></div>
-      <a href="#start" class="btn-pick" onclick="selectTier('amuse')">Start Cooking →</a>
-    </div>
-
-  </div>
-  <div class="tier-addon">Questions? Email <a href="mailto:overyourmorningcupofcoffee@gmail.com" style="color:var(--red);">overyourmorningcupofcoffee@gmail.com</a> — we'll set it up.</div>
-</section>
-
-  <!-- DASHBOARD EXPLAINER -->
-  <div style="max-width:1000px;margin:50px auto 0;border:2px solid var(--ink);">
-    <div style="background:var(--ink);color:var(--paper);padding:20px 28px;font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;">
-      One dashboard, built for the person doing every job
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);border-top:none;">
-      <div style="padding:28px 24px;border-right:2px solid var(--ink);">
-        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">The Kitchen View</div>
-        <div style="font-family:'Anton','Arial Narrow',sans-serif;font-size:26px;text-transform:uppercase;margin-bottom:10px;">The Line</div>
-        <p style="font-family:'Fraunces',serif;font-size:14px;line-height:1.7;color:var(--muted);">Prep dollar vs labor dollar. Product mix flagged green, yellow, red. Waste log, yield tracking, food cost live. Everything that happened yesterday — before you pour your first cup.</p>
-      </div>
-      <div style="padding:28px 24px;border-right:2px solid var(--ink);">
-        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">The Counter View</div>
-        <div style="font-family:'Anton','Arial Narrow',sans-serif;font-size:26px;text-transform:uppercase;margin-bottom:10px;">The Traffic</div>
-        <p style="font-family:'Fraunces',serif;font-size:14px;line-height:1.7;color:var(--muted);">Labor vs sales chart. Break-even tracker — know the exact order count where you flip from red to black. Rush hours, order volume, ticket times. The window or counter in numbers.</p>
-      </div>
-      <div style="padding:28px 24px;">
-        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">The Books View</div>
-        <div style="font-family:'Anton','Arial Narrow',sans-serif;font-size:26px;text-transform:uppercase;margin-bottom:10px;">The Money</div>
-        <p style="font-family:'Fraunces',serif;font-size:14px;line-height:1.7;color:var(--muted);">P&amp;L, prime cost trend, weekly break-even chart, food cost percentage over time. The financial picture — clean, no noise.</p>
-      </div>
-    </div>
-  </div>
-
-
-<!-- THE BRIEF SAMPLE -->
-<section id="brief">
-  <div class="section-head">
-    <h2>The Morning Brief</h2>
-    <div class="idx">§02 · 5 AM every morning</div>
-  </div>
-  <div class="brief-section">
-    <div class="brief-card reveal">
-      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;color:var(--muted);margin-bottom:6px;text-transform:uppercase;">Executive Chef · Morning Brief · Mon, Jul 7</div>
-      <p>Good morning. Here's today, and here's yesterday.</p>
-      <p><strong>Today:</strong> Warm, high of 84°F, low chance of rain through close. No local events on the calendar, so expect a normal Monday — nothing to chase, nothing to brace for. One heads-up: your food cost will look heavy when you check tonight's numbers. That's just Monday prep. You know this — I'm noting it so it doesn't spook you at 9pm.</p>
-      <p><span class="highlight">Yesterday (Sunday):</span> Strong day. You did <strong>$1,240 in sales</strong>, up 12% over your last four Sundays. Your busiest window was 12–2pm — you were slammed by 12:15. Food cost landed at <strong>28.4%</strong>, right on target. Labor ran a little heavy at <strong>31.2%</strong>, about $22 more than your typical Sunday — closing took roughly 30 minutes longer than usual. Worth a look this week, not a fire drill.</p>
-      <p><strong>Invoices:</strong> Your produce delivery came through clean. One item worth flagging — <strong>avocados up 18%</strong> this week ($1.20 → $1.42 each). That's the second week in a row it's climbed. Everything else moved less than a few cents either way, so I'm not bothering you with it.</p>
-      <div style="margin-top:20px;padding-top:16px;border-top:2px solid var(--ink);">
-        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);margin-bottom:14px;">Last 4 Sundays</div>
-        <table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12px;">
-          <thead>
-            <tr style="border-bottom:1px solid var(--ink);">
-              <th style="text-align:left;padding:6px 4px;color:var(--muted);font-weight:700;">Date</th>
-              <th style="text-align:right;padding:6px 4px;color:var(--muted);font-weight:700;">Sales</th>
-              <th style="text-align:right;padding:6px 4px;color:var(--muted);font-weight:700;">Food Cost</th>
-              <th style="text-align:right;padding:6px 4px;color:var(--muted);font-weight:700;">Labor</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom:1px dotted rgba(0,0,0,0.15);"><td style="padding:6px 4px;">Jul 6</td><td style="text-align:right;padding:6px 4px;">$1,240</td><td style="text-align:right;padding:6px 4px;">28.4%</td><td style="text-align:right;padding:6px 4px;">31.2%</td></tr>
-            <tr style="border-bottom:1px dotted rgba(0,0,0,0.15);"><td style="padding:6px 4px;">Jun 29</td><td style="text-align:right;padding:6px 4px;">$1,105</td><td style="text-align:right;padding:6px 4px;">29.1%</td><td style="text-align:right;padding:6px 4px;">28.9%</td></tr>
-            <tr style="border-bottom:1px dotted rgba(0,0,0,0.15);"><td style="padding:6px 4px;">Jun 22</td><td style="text-align:right;padding:6px 4px;">$1,040</td><td style="text-align:right;padding:6px 4px;">30.2%</td><td style="text-align:right;padding:6px 4px;">29.5%</td></tr>
-            <tr><td style="padding:6px 4px;">Jun 15</td><td style="text-align:right;padding:6px 4px;">$1,180</td><td style="text-align:right;padding:6px 4px;">28.9%</td><td style="text-align:right;padding:6px 4px;">29.0%</td></tr>
-          </tbody>
-        </table>
-        <p style="font-size:13px;color:var(--muted);margin-top:12px;">Sales trending up, food cost holding steady under 30% four weeks straight. That's the work showing.</p>
-      </div>
-      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.08em;color:var(--muted);margin-top:16px;padding-top:14px;border-top:1px solid rgba(0,0,0,0.12);">Gemini 3.5 Flash · Executive Chef · Audit sealed 5:47am</div>
-    </div>
-    <div class="brief-right reveal">
-      <h3>Written Like An Owner.<br>Not An Accountant.</h3>
-      <p>Every morning at 5 AM the AI Executive Chef reads your numbers — weather, yesterday's sales, food cost, labor, and what invoices moved overnight.</p>
-      <p>It doesn't bury you in every line-item change. Small price shifts get skipped. Anything that jumps meaningfully — a real cost increase, a trend three or four weeks running — gets flagged, with the number and what it's costing you.</p>
-      <p>It does not say "food cost was 31.2%." It says why — and gives you the trend so you know if it's a blip or a pattern.</p>
-      <p>Tuesday mornings add the weekly newsletter — the full week in numbers, a 7-day forecast, neighborhood intel, wholesale deals, and the full Recap Letter from The Auditor.</p>
-      <p style="color: var(--red); font-weight: 600;">Day 1 it is good. Day 90 it knows your operation better than any manager you could hire.</p>
+    <div class="benes" style="margin-top:44px">
+      <div class="bene"><span class="tag">Line 1 · paper in</span>
+        <h3>Your house feeds the top.</h3>
+        <p>Invoices, sales, recipes, schedule — sent once, then it flows. You never key in a number; that's the house rule.</p></div>
+      <div class="bene"><span class="tag">Line 2 · the gate</span>
+        <h3>Nothing gets past the Sniffer.</h3>
+        <p>Every invoice is cleaned and checked before the books ever see it. The engine only takes clean data — a cent over gets flagged, purveyor against purveyor, prime never confused with commodity.</p></div>
+      <div class="bene"><span class="tag">Line 3 · the math</span>
+        <h3>The Engine solves everything once.</h3>
+        <p>Costs, pars, labor, P&amp;L — all computed in one place, next to your data. The AI never guesses at numbers; it reads answers the engine already proved.</p></div>
+      <div class="bene"><span class="tag">Line 4 · the night shift</span>
+        <h3>The Brigade turns math into words.</h3>
+        <p>Prep cook parses, sous verifies and loads your boards, exec fact-checks and writes the story — overnight, in the cheap hours. That's the pricing secret hiding in plain sight.</p></div>
+      <div class="bene"><span class="tag">Line 5 · the payoff</span>
+        <h3>Two things come out.</h3>
+        <p>Boards for every station, and one parchment page for you. Thirty seconds with your coffee, one decision made with time to act on it — on the drive to the market, not after close.</p></div>
+      <div class="bene"><span class="tag">Line 6 · the loop</span>
+        <h3>Your decision feeds back in.</h3>
+        <p>Tweak the menu, swap the purveyor, change a par — the web feels it and every number downstream moves. That dotted line back to the top is the whole reason this works.</p></div>
     </div>
   </div>
 </section>
 
-<!-- THE BRIGADE -->
-<div class="brigade" id="brigade">
-  <div class="section-head" style="max-width:1400px;margin:0 auto 40px;">
-    <h2>The Brigade</h2>
-    <div class="idx">§03 · Chain of command</div>
-  </div>
-  <div class="brigade-grid">
-
-    <!-- TOP: Executive Chef -->
-    <div class="brigade-top reveal">
-      <div>
-        <div class="b-role">Station 01 · Executive Chef</div>
-        <div class="b-name">Gemini 3.5 Flash</div>
-        <div class="b-kitchen">Google · Vertex AI · BigQuery Native</div>
-      </div>
-      <div class="b-job">
-        Writes the morning brief. Reads 90 days of P&amp;L history directly inside BigQuery — no data ever leaves Google's network. Tells the story of yesterday in chef language, not accountant language. The only member of the brigade who can call in the Auditor for help.
-      </div>
-      <div class="b-badge">★ The Authority</div>
-    </div>
-
-    <!-- CHEF DE PARTIE -->
-    <div class="brigade-card reveal">
-      <div class="b-num">Station 02 · Chef de Partie</div>
-      <div class="b-model">Gemini Flash Lite</div>
-      <div class="b-kitchen">The Line Cook · All day, real-time</div>
-      <p class="b-desc">First shot at everything — invoice scans, POS parsing, competitor lookups, chat questions. On all day, all night. If it cannot read something, it does not guess. It passes the file up the chain.</p>
-    </div>
-
-    <!-- SOUS CHEF -->
-    <div class="brigade-card reveal">
-      <div class="b-num">Station 03 · Sous Chef</div>
-      <div class="b-model">Gemini Flash</div>
-      <div class="b-kitchen">The Analyst · On-demand escalation</div>
-      <p class="b-desc">Steps in only when Flash-Lite passes something up. Triage override, scheduling analysis, complex order logic. Never called directly — only by escalation from the line.</p>
-    </div>
-
-  </div>
-</div>
-
-
-<!-- HOW IT WORKS -->
-<section id="how">
-  <div class="section-head">
-    <h2>How It Works</h2>
-    <div class="idx">§04 · Four steps, no nonsense</div>
-  </div>
-  <div class="how-it-works">
-    <div class="hiw-step reveal">
-      <div class="hiw-num">01</div>
-      <div class="hiw-title">Pick &amp; Pay</div>
-      <div class="hiw-note">Choose Amuse-Bouche or Avant-Garde. Google login or Stripe checkout. Your Restaurant ID is ready in 60 seconds.</div>
-    </div>
-    <div class="hiw-step reveal">
-      <div class="hiw-num">02</div>
-      <div class="hiw-title">Get Your ID</div>
-      <div class="hiw-note">Welcome email arrives with your Restaurant ID and upload instructions. Two rules: your ID in the subject line, your ID in the filename. That's it.</div>
-    </div>
-    <div class="hiw-step reveal">
-      <div class="hiw-num">03</div>
-      <div class="hiw-title">Upload At Night</div>
-      <div class="hiw-note">Scan invoices with your phone or forward your POS email. Takes 60 seconds. The brigade takes over while you sleep.</div>
-    </div>
-    <div class="hiw-step reveal">
-      <div class="hiw-num">04</div>
-      <div class="hiw-title">Read At 6 AM</div>
-      <div class="hiw-note">Open your phone at 5 AM over your first cup of coffee. Your brief is waiting. No login. No dashboard. Just the truth about yesterday and what to do today.</div>
+<!-- THE PAPER -->
+<section class="paper-scene">
+  <div class="wrap">
+    <div class="eyebrow">The Morning Brief</div>
+    <h2>One honest page.<br>Every morning.</h2>
+    <p class="lede">Not another dashboard about right now. One letter about yesterday — solved overnight, waiting whenever you wake up, read in the time it takes to pour a coffee.</p>
+    <div class="brief">
+      <div class="head"><span>The House Paper</span><span>While you slept</span></div>
+      <p>Morning, Chef. Solid Tuesday — sales landed at $2,340, about 8% over your usual. Food cost held at 29%.</p>
+      <p class="flag">Worth your eyes: Tuesday's produce invoice priced romaine 12% above your usual rate. Third week running. Might be time for a call.</p>
+      <p class="call">Your call, Chef.</p>
+      <p class="sig">— MISEai · Exec Chef</p>
     </div>
   </div>
 </section>
 
-<!-- ONBOARDING FORM -->
-<div class="onboard" id="start">
-  <div class="onboard-inner">
-    <div class="reveal">
-      <div class="kicker">Reserve your slot</div>
-      <h2>Claim your number.</h2>
-      <p>Fill in four fields. Your Restaurant ID is generated instantly. Welcome email hits your inbox in under 60 seconds. Upload that night. Read your first brief at 5 AM tomorrow.</p>
-      <div class="slot">NEXT AVAILABLE · MISE-<span id="nextSlot">0011</span></div>
-    </div>
-
-    <div>
-      <form id="onboardForm" onsubmit="return submitOnboard(event)">
-        <!-- Google Login First -->
-        <button type="button" class="g-login-btn" onclick="handleGoogleSignIn()">
-          <svg viewBox="0 0 18 18" fill="none">
-            <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
-            <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853"/>
-            <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
-            <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
-          </svg>
-          Continue with Google
-        </button>
-        <div class="divider-or">or fill in manually</div>
-
-        <div class="field">
-          <label>Restaurant Name</label>
-          <input type="text" name="business_name" required placeholder="Mario's Kitchen" autocomplete="organization">
-        </div>
-        <div class="field">
-          <label>Your Email</label>
-          <input type="email" name="email" required placeholder="chef@marioskitchen.com" autocomplete="email">
-        </div>
-        <div class="row2">
-          <div class="field">
-            <label>Zip Code</label>
-            <input type="text" name="zip" required placeholder="94105" maxlength="10">
-          </div>
-          <div class="field">
-            <label>Tier</label>
-            <select name="tier" required>
-              <option value="" disabled selected>Pick one</option>
-              <option value="free">Free · Mise en Place</option>
-              <option value="amuse">Amuse-Bouche · $50/mo</option>
-            </select>
-          </div>
-        </div>
-        <button type="submit" class="submit">Claim My Slot →</button>
-        <div class="fineprint">By submitting you agree to our terms. Stripe processes payment securely. Your Restaurant ID and welcome guide arrive within 60 seconds. Cancel anytime.</div>
-      </form>
-
-      <div class="thankyou" id="thankyou">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px;">Your Restaurant ID</div>
-        <div class="rid-out" id="ridOut">MISE-000</div>
-        <p style="color:var(--alum);font-size:14px;line-height:1.7;">Check your inbox — your welcome guide with upload instructions is on its way. You can upload your first files tonight and wake up to your first brief tomorrow at 5 AM.</p>
-      </div>
+<!-- WHAT IT DOES -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">The Work It Does</div>
+    <h2>While you're covering stations</h2>
+    <p class="lede">You're not watching screens — you're running a kitchen. So the system reads the numbers for you and speaks up only when something matters. <a href="engine.html" style="color:var(--hot)">How it all works, told plain →</a></p>
+    <div class="benes">
+      <div class="bene"><span class="tag">Every night</span>
+        <h3>Invoices, parsed line by line.</h3>
+        <p>Every case, every price, every night. When a vendor quietly bumps the chicken $4 a case, you hear about it before the rep calls.</p></div>
+      <div class="bene"><span class="tag">Every plate</span>
+        <h3>Recipes costed to the penny.</h3>
+        <p>Live prices flow into your plate costs. Yields change, prices change — your margins recalculate themselves. Beverages too, every size.</p></div>
+      <div class="bene"><span class="tag">Every shift</span>
+        <h3>Your crew on the same page.</h3>
+        <p>Prep lists and station recipes on the cook dashboard — in English or Spanish, their choice. One login for the house. No per-seat charges.</p></div>
+      <div class="bene"><span class="tag">Every question</span>
+        <h3>Real AI minutes, every day.</h3>
+        <p>Ask anything — "can I afford another prep cook?" — and get answers from an AI that already knows your numbers. It knows your food cost before you finish the question.</p></div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- FOOTER -->
+<!-- THE MENU -->
+<section id="menu" class="cream">
+  <div class="wrap">
+    <div class="eyebrow">The Menu</div>
+    <h2>Priced like a napkin sketch</h2>
+    <p class="menu-note">Half a coffee. A coffee. A soda. That's the whole pricing model. Billed on the 1st, first month prorated — you pay for the days you use.</p>
+    <div class="courses">
+      <div class="course">
+        <div class="cname">Amuse Bouche</div>
+        <div class="price">Free</div>
+        <div class="napkin">the taste</div>
+        <ul>
+          <li>Recipe calculator — cost, yield, margin</li>
+          <li>Holds 100 recipes</li>
+          <li>Lives on your machine, no cloud</li>
+          <li>Bring your own AI key and the chat lights up</li>
+        </ul>
+      </div>
+      <div class="course">
+        <div class="cname">First Course</div>
+        <div class="price">50¢ / day</div>
+        <div class="napkin">half a coffee</div>
+        <ul>
+          <li>Recipe book in the cloud, wired to your live prices</li>
+          <li>Cook dashboard — English / Spanish</li>
+          <li>15 AI minutes a day on your board</li>
+        </ul>
+      </div>
+      <div class="course star">
+        <div class="cname">Main Course</div>
+        <div class="price">$1 / day</div>
+        <div class="napkin">a coffee</div>
+        <ul>
+          <li>The Morning Brief, waiting when you wake up</li>
+          <li>Invoices parsed nightly, line by line</li>
+          <li>Kitchen P&amp;L — food &amp; labor, owner-readable</li>
+          <li>Yield tracking — what you actually got per portion</li>
+          <li>Beverage costing, every size</li>
+          <li>30 AI minutes a day</li>
+        </ul>
+      </div>
+      <div class="course">
+        <div class="cname">Chef's Table</div>
+        <div class="price">$2 / day</div>
+        <div class="napkin">a soda</div>
+        <ul>
+          <li>The full house — the board for everyone, plus the cook dashboard</li>
+          <li>The Bar book — your bar program, costed</li>
+          <li>Suggested prep sheets &amp; order sheets</li>
+          <li>Front-of-house integration</li>
+        </ul>
+      </div>
+    </div>
+    <div class="addons">
+      <b>Sides:</b> extra AI time — +15 min/day on any board, <b>$10/mo</b> ·
+      Extra board access for your people — <b>$5/mo each</b>
+    </div>
+  </div>
+</section>
+
+<!-- THE BOARDS -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">The Board · Live</div>
+    <h2>Go ahead — touch it</h2>
+    <p class="lede">No demo appointment. No sales call. No Brad. The actual board, sample house loaded — tap the tabs, poke the numbers, kick the tires right here. If software needs a tour guide, it's too complicated for a Tuesday night.</p>
+  </div>
+  <div style="max-width:1200px;margin:0 auto;padding:0 12px">
+    <div style="border:1px solid var(--walnut);box-shadow:0 30px 80px rgba(0,0,0,.55)">
+      <iframe src="board.html?v=13" title="Mise.AI live demo board" loading="lazy"
+        style="width:100%;height:min(84vh,900px);border:0;display:block;background:var(--bark)"></iframe>
+    </div>
+    <p style="font-family:var(--mono);font-size:12px;color:#9a8a72;text-align:center;margin-top:12px">
+      Sample data · a made-up house · your real board looks like this with YOUR numbers ·
+      <a href="board.html?v=13" target="_blank" style="color:var(--hot)">open it full screen →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ONBOARDING -->
+<section id="signup" class="cream">
+  <div class="wrap">
+    <div class="eyebrow">How It Works</div>
+    <h2>From handshake to first brief</h2>
+    <p class="lede">Onboarding is white-glove and free — a guide walks you in personally. Here's the whole trip.</p>
+    <div class="journey">
+      <div class="jstep">
+        <div class="jnum">1</div>
+        <h3>Claim your number.</h3>
+        <p>Sign in with your Gmail, pick your course, pay only for the days left this month. About two minutes. Your restaurant gets its own number — that number is your key to everything.</p>
+      </div>
+      <div class="jstep">
+        <div class="jnum">2</div>
+        <h3>Meet your guide.</h3>
+        <p>First login, your personal AI walks you in — a conversation, not a forms wizard. It asks about your restaurant like a consultant would. Recipes and invoices ready? You're live about as fast as a document loads.</p>
+      </div>
+      <div class="jstep">
+        <div class="jnum">3</div>
+        <h3>Or hand me the shoebox.</h3>
+        <p>Binder photos, invoice PDFs, the folder of who-knows-what — email it over and I'll build your book for you personally. Takes a little longer. Costs the same: nothing.</p>
+      </div>
+      <div class="jstep">
+        <div class="jnum">4</div>
+        <h3>Wake up to your first brief.</h3>
+        <p>From night one, the system works your overnight shift. Your first House Paper is waiting with your coffee — and every morning after.</p>
+      </div>
+    </div>
+    <div class="cta-row" style="margin-top:38px">
+      <button class="btn" id="gsignin" type="button">Sign in with Gmail — claim your number</button>
+      <a class="btn ghost" href="mailto:overyourmorningcupofcoffee@gmail.com?subject=Mise.AI%20—%20Shoebox">Email the shoebox</a>
+    </div>
+    <p class="cta-note" id="authstate" style="margin-top:14px"></p>
+  </div>
+</section>
+</section>
+
+<!-- PROMISE -->
+<section class="promise">
+  <div class="wrap" style="padding-bottom:34px">
+    <div class="eyebrow">Who's Behind The Pass</div>
+    <p style="font-size:18px;color:#d8cbb4;max-width:720px">Fifty combined years in this industry &mdash; forty at the management level. Mikey started in the dish pit at fifteen and worked up to executive chef, owning a food truck and a gastro-pub-style restaurant along the way &mdash; farm-to-table, built on early-morning market runs and every purveyor from Sysco to the Ferry Building. Jenn's side is the bar: fifteen years running programs from high-traffic rooms like the Oakland Arena to craft houses with a 31-tap list that changed weekly. We built Mise because the spreadsheets stopped working &mdash; prices move too fast now to eyeball, and when you're the one covering stations, the end of the day is the first moment you find out where you stand. We didn't spend millions on data research; we spent fifty years on the line. That's why every tier costs less than a small coffee, and why the price you sign at never goes up.</p>
+  </div>
+  <div class="wrap inner">
+    <blockquote>
+      "Questions? You'll usually get me on the first ring. Worst case, I call you back within 24 hours. I've closed the walk-in at 1 AM and opened it again at 7 — I know exactly when you need an answer."
+      <div class="who">— Chef Mikey &amp; Jenn · your proprietors, and the people who answer the phone</div>
+    </blockquote>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="final">
+  <div class="wrap">
+    <h2>Run the kitchen.<br><span style="color:var(--hot)">The numbers run themselves.</span></h2>
+    <p class="lede">Start with a free taste, or go straight to the coffee. Either way, your first brief is closer than you think.</p>
+    <a class="btn" href="#signup">Claim your number</a>
+  </div>
+</section>
+
 <footer>
-  <div class="footer-email-bar">
-    <a href="mailto:overyourmorningcupofcoffee@gmail.com">overyourmorningcupofcoffee@gmail.com</a>
-  </div>
-  <div class="foot-inner">
-    <div class="copy">© Mise.AI · Built in the Bay · By a chef, for chefs</div>
-    <div>
-      <a href="#tiers">Tiers</a>
-      <a href="#brigade">Brigade</a>
-      <a href="#start">Get Started</a>
-    </div>
-  </div>
+  <span>MISE.AI © 2026 · Built by a chef. For chefs. · <a href="engine.html" style="color:var(--warm)">The engine room →</a></span>
+  <a href="mailto:overyourmorningcupofcoffee@gmail.com">overyourmorningcupofcoffee@gmail.com</a>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  // Supabase client — publishable key, safe to ship in the page
-  const sb = window.supabase.createClient(
-    'https://awzybqmplfqitzijkvdw.supabase.co',
-    'sb_publishable_h0VYK8QqyGLqUS2Rg3MDTA_3B71wuxv'
-  );
 
-  // Scroll reveal
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-
-  // ── REAL VISIT COUNTER (Netlify Function + Blobs) ──────────────
-  (function() {
-    const el = document.getElementById('statVisits');
-    if (!el) return;
-    fetch('/.netlify/functions/track-visit', { method: 'POST' })
-      .then(res => res.json())
-      .then(data => {
-        if (typeof data.count === 'number') {
-          el.textContent = data.count.toLocaleString();
-        } else {
-          el.textContent = '—';
-        }
-      })
-      .catch(() => {
-        el.textContent = '—';
-      });
-  })();
-
-  // Tier pre-selection from tier buttons
-  function selectTier(tier) {
-    const sel = document.querySelector('select[name="tier"]');
-    if (sel) sel.value = tier;
-    document.getElementById('start').scrollIntoView({ behavior: 'smooth' });
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const supabase = createClient(
+  'https://awzybqmplfqitzijkvdw.supabase.co',
+  'sb_publishable_h0VYK8QqyGLqUS2Rg3MDTA_3B71wuxv'
+);
+const btn = document.getElementById('gsignin');
+const state = document.getElementById('authstate');
+btn?.addEventListener('click', async () => {
+  state.textContent = 'Opening Google sign-in…';
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + window.location.pathname }
+  });
+  if (error) state.textContent = 'Sign-in hit a snag: ' + error.message;
+});
+supabase.auth.getSession().then(({ data }) => {
+  const user = data?.session?.user;
+  if (user) {
+    btn.textContent = 'Signed in as ' + (user.email || 'chef') + ' ✓';
+    state.textContent = 'You\u2019re in. Course selection & checkout open soon — you\u2019ll be first through the door.';
   }
-
-  // Google Sign-In — Supabase OAuth (Google provider must be enabled in the Supabase dashboard)
-  async function handleGoogleSignIn() {
-    const { error } = await sb.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: window.location.origin + '/#start' },
-    });
-    if (error) {
-      alert('Google sign-in is not switched on yet — fill in the form below instead, or email overyourmorningcupofcoffee@gmail.com');
-    }
-  }
-
-  // Returning from Google? Prefill the email field so the form is one field shorter.
-  (async () => {
-    try {
-      const { data } = await sb.auth.getSession();
-      const email = data && data.session && data.session.user && data.session.user.email;
-      if (email) {
-        const inp = document.querySelector('input[name="email"]');
-        if (inp && !inp.value) inp.value = email;
-      }
-    } catch (_) { /* signed out — nothing to prefill */ }
-  })();
-
-  // Onboard form submit — hits /api/onboard in production
-  async function submitOnboard(e) {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const btn = e.target.querySelector('.submit');
-    btn.disabled = true;
-    btn.textContent = 'Creating your account…';
-
-    try {
-      const res = await fetch('/api/onboard', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          restaurantName: fd.get('business_name'),
-          ownerEmail:     fd.get('email'),
-          zipCode:        fd.get('zip'),
-          tier:           fd.get('tier'),
-        }),
-      });
-      const data = await res.json();
-
-      if (data.success) {
-        e.target.style.display = 'none';
-        document.getElementById('ridOut').textContent = data.restaurant_id;
-        document.getElementById('thankyou').classList.add('on');
-        // Update slot counter
-        const slot = document.getElementById('nextSlot');
-        if (slot) slot.textContent = String(parseInt(slot.textContent) + 1).padStart(3, '0');
-      } else if (data.waitlist) {
-        alert('All slots are currently full. You have been added to the waitlist.');
-        btn.disabled = false;
-        btn.textContent = 'Claim My Slot →';
-      } else {
-        throw new Error(data.error);
-      }
-    } catch (err) {
-      alert('Something went wrong. Email us at overyourmorningcupofcoffee@gmail.com');
-      btn.disabled = false;
-      btn.textContent = 'Claim My Slot →';
-    }
-    return false;
-  }
+});
 </script>
 </body>
 </html>
