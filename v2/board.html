@@ -1,0 +1,2169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MISE.ai · Owner Dashboard — Live Sample</title>
+<link href="https://fonts.googleapis.com/css2?family=Armata&family=JetBrains+Mono:wght@400;700&family=Fraunces:ital,wght@0,400;0,600;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  /* ── Mise Orange Family — official scale ── */
+  --or-char:   #3d1400;
+  --or-ember:  #6b2600;
+  --or-deep:   #8a3206;
+  --or-dark:   #a84208;
+  --or-brand:  #c8540a;
+  --or-bright: #e06020;
+  --or-hot:    #f07840;
+  --or-warm:   #f8a070;
+  --or-blush:  #fcd0b0;
+
+  --c1:#1c1410;--c2:#c8540a;--c3:#e8cf8c;--c4:#2f2318;
+  --accent:#c8540a;--accent-lt:#a84208;--accent-dk:#8a3206;
+  --bk:#1c1410;--bk2:#2f2318;--bk3:#3a2b1d;--bk4:#453425;
+  --ivory:#1c1410;--ivory2:#2f2318;--ivory3:#453425;--ivory4:#5c4936;
+  --green:#5ab870;--greenLt:#5ab870;--red:#f07840;--redLt:#f07840;--amber:#a84208;
+  --border:rgba(224,96,32,0.22);
+  --font-mono:'JetBrains Mono',monospace;
+  --font-display:'Armata',sans-serif;
+  --font-serif:'Fraunces',Georgia,serif;
+  --font-heading:'Armata',sans-serif;
+}
+body{font-family:var(--font-serif);min-height:100vh;color:var(--ivory);background:linear-gradient(160deg,#1c1410 0%,#0e0a07 55%,#0e0a07 100%);background-attachment:fixed;}
+input,select,textarea,button{font-family:inherit;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bk);}
+::-webkit-scrollbar-thumb{background:rgba(200,84,10,0.3);border-radius:3px;}
+
+/* HEADER */
+.header{background:linear-gradient(160deg,#2f2318 0%,#241a13 35%,#2f2318 55%,#241a13 80%,#2f2318 100%);border-top:3px solid var(--c1);border-bottom:3px solid var(--c2);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,0.5);}
+.metal-gold{color:var(--accent);}
+.brand-main{font-family:var(--font-display);font-size:28px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;line-height:1;text-shadow:0 0 20px rgba(200,84,10,0.35);}
+.brand-sub{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:.08em;margin-top:2px;opacity:.7;}
+
+/* RULE */
+.gold-rule{height:3px;background:linear-gradient(90deg,transparent 0%,var(--c4) 10%,var(--c2) 30%,var(--c1) 50%,var(--c2) 70%,var(--c4) 90%,transparent 100%);box-shadow:0 0 8px rgba(200,84,10,0.6),0 0 16px rgba(200,84,10,0.3),0 2px 0 rgba(0,0,0,0.6);}
+
+/* TABS */
+.tabs{display:flex;overflow-x:auto;background:linear-gradient(180deg,var(--bk) 0%,var(--bk2) 50%,#0e0a07 100%);border-bottom:4px solid var(--c4);box-shadow:0 4px 0 #0e0a07,0 12px 30px rgba(0,0,0,0.8),inset 0 1px 0 rgba(200,84,10,0.12);}
+.tabs::-webkit-scrollbar{height:3px;}
+.tab{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;padding:13px 20px;border:none;background:transparent;color:var(--ivory);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;flex:1;text-align:center;}
+.tab:hover{color:var(--accent);text-shadow:0 0 12px rgba(200,84,10,0.8);transform:translateY(-1px);}
+.tab.on{color:var(--accent);border-bottom:2px solid var(--c1);background:rgba(28,20,16,0.18);text-shadow:0 0 16px rgba(200,84,10,1),0 0 32px rgba(200,84,10,0.6);transform:translateY(-2px);box-shadow:0 3px 0 var(--c1),0 6px 16px rgba(200,84,10,0.3);}
+
+/* PAGES */
+.page{display:none;}
+.page.on{display:block;animation:pageReveal 0.4s cubic-bezier(0.34,1.2,0.64,1) forwards;}
+@keyframes pageReveal{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* FOOTER SEAL */
+.seal-foot{padding:20px 32px;margin-top:20px;text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--ivory3);text-transform:uppercase;border-top:1px solid rgba(200,84,10,0.15);}
+.seal-foot .chain{color:var(--accent);}
+
+/* ═════ FLOATING AI ═════ */
+#miseFab{position:fixed;bottom:22px;right:22px;width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#1c1410,#1c1410 60%);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:9999;box-shadow:0 0 0 3px rgba(200,84,10,0.15),0 6px 20px rgba(0,0,0,0.6),0 0 18px rgba(200,84,10,0.45);transition:transform .18s ease,box-shadow .18s ease;}
+#miseFab:hover{transform:scale(1.07);box-shadow:0 0 0 4px rgba(200,84,10,0.22),0 8px 24px rgba(0,0,0,0.7),0 0 26px rgba(200,84,10,0.65);}
+#miseFab:active{transform:scale(0.96);}
+#miseFab .fabM{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--accent);letter-spacing:.02em;text-shadow:0 0 10px rgba(200,84,10,0.7);}
+#miseFab .fabPulse{position:absolute;inset:-2px;border-radius:50%;border:2px solid var(--accent);opacity:0;animation:fabPulse 2.4s ease-out infinite;}
+@keyframes fabPulse{0%{opacity:.55;transform:scale(1);}100%{opacity:0;transform:scale(1.35);}}
+
+#miseChat{position:fixed;bottom:90px;right:22px;width:min(560px,calc(100vw - 32px));max-height:min(72vh,640px);background:linear-gradient(160deg,#1c1410 0%,#2f2318 100%);border:2px solid var(--c1);border-radius:10px;box-shadow:0 16px 48px rgba(0,0,0,0.75),0 0 0 1px rgba(200,84,10,0.25);z-index:9998;display:none;flex-direction:column;overflow:hidden;}
+#miseChat.open{display:flex;animation:pageReveal .28s cubic-bezier(0.34,1.2,0.64,1) forwards;}
+.mc-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(160deg,#1c1410,#1c1410);border-bottom:2px solid var(--accent);flex-shrink:0;}
+.mc-head-l{display:flex;align-items:center;gap:10px;}
+.mc-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px rgba(200,84,10,0.9);flex-shrink:0;}
+.mc-title{font-family:var(--font-display);font-size:14px;letter-spacing:.1em;color:var(--c3);text-transform:uppercase;}
+.mc-sub{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;opacity:.8;margin-top:1px;}
+.mc-close{font-family:var(--font-mono);font-size:16px;color:var(--c3);background:none;border:none;cursor:pointer;padding:2px 8px;line-height:1;opacity:.7;}
+.mc-close:hover{opacity:1;color:var(--accent);}
+.mc-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;min-height:120px;}
+.mc-msg{max-width:82%;padding:9px 13px;border-radius:8px;font-family:var(--font-serif);font-size:13.5px;line-height:1.5;}
+.mc-msg.bot{align-self:flex-start;background:#241a13;border:1px solid rgba(200,84,10,0.25);color:#f0e6d4;border-bottom-left-radius:2px;}
+.mc-msg.user{align-self:flex-end;background:linear-gradient(160deg,#1c1410,#1c1410);color:var(--c3);border-bottom-right-radius:2px;}
+.mc-inputrow{display:flex;align-items:center;gap:8px;padding:12px 14px;border-top:2px solid rgba(200,84,10,0.3);background:var(--bk2);flex-shrink:0;}
+.mc-inputrow input{flex:1;font-family:var(--font-serif);font-size:14px;padding:11px 14px;border:1px solid rgba(200,84,10,0.35);border-radius:22px;background:#241a13;color:#f0e6d4;outline:none;}
+.mc-inputrow input:focus{border-color:var(--accent);}
+.mc-send{width:40px;height:40px;flex-shrink:0;border-radius:50%;border:none;background:var(--accent);color:#f0e6d4;font-family:var(--font-mono);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.mc-send:hover{background:var(--accent-lt);}
+@media(max-width:480px){#miseChat{right:16px;bottom:86px;width:calc(100vw - 32px);}#miseFab{right:16px;bottom:16px;}}
+
+/* SHARED BUTTON */
+.sch-add{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:4px 7px;background:#2f2318;color:var(--accent);border:1px solid rgba(200,84,10,0.4);border-radius:3px;cursor:pointer;}
+.sch-add:hover{color:#f0e6d4;}
+
+/* ═════ WEEKLY ═════ */
+.wk-wrap{max-width:1100px;margin:0 auto;padding:24px 16px 80px;}
+.wk-masthead{background:var(--bk2);border-top:4px double var(--c1);border-bottom:4px double var(--c1);padding:26px 28px;text-align:center;box-shadow:0 2px 0 #0e0a07,0 8px 28px rgba(0,0,0,0.7);}
+.wk-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.3em;color:#a89272;text-transform:uppercase;margin-bottom:10px;}
+.wk-title{font-family:var(--font-serif);font-size:48px;font-weight:900;color:var(--ivory);line-height:1;letter-spacing:-.01em;text-transform:none;font-variant:small-caps;}
+.wk-title em{font-style:italic;color:var(--accent);font-variant:small-caps;}
+.wk-sub{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:#453425;margin-top:10px;text-transform:uppercase;}
+.wk-col{background:linear-gradient(180deg,var(--bk2) 0%,var(--bk) 100%);border-left:1px solid rgba(200,84,10,0.18);border-right:1px solid rgba(200,84,10,0.18);}
+.wk-lead{padding:28px 32px 8px;}
+.wk-lead-h{font-family:var(--font-heading);font-size:18px;font-weight:700;font-style:normal;color:#1c1410;line-height:1.3;margin-bottom:10px;letter-spacing:.04em;text-transform:uppercase;}
+.wk-lead-callout{margin:0 0 16px 0;padding:14px 18px;border-left:4px solid var(--accent);background:rgba(200,84,10,0.07);border-radius:0 3px 3px 0;}
+.wk-lead-callout-lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin-bottom:5px;}
+.wk-lead-callout-txt{font-family:var(--font-mono);font-size:13px;color:#1c1410;line-height:1.5;}
+.wk-lead-body{font-family:var(--font-serif);font-size:15px;font-style:italic;line-height:1.7;color:#1c1410;}
+.wk-lead-body p+p{margin-top:10px;}
+.wk-divider{margin:28px 32px;border:0;border-top:1px solid rgba(200,84,10,0.2);}
+.wk-numbers{padding:0 32px 24px;}
+.wk-num-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(max-width:640px){.wk-num-grid{grid-template-columns:repeat(1,1fr);}}
+.wk-num{background:linear-gradient(160deg,#2f2318 0%,#2f2318 100%);border:1px solid rgba(200,84,10,0.3);border-radius:3px;padding:14px;text-align:center;box-shadow:0 1px 0 rgba(200,84,10,0.2),0 3px 0 #0e0a07,0 8px 18px rgba(0,0,0,0.6);}
+.wk-num-wide{grid-column:span 2;padding:20px;}
+.wk-num-wide .wk-num-lbl{font-size:11px;}
+.wk-num-wide .wk-num-val{font-size:28px;}
+.wk-num-wide .wk-num-trend{font-size:11px;}
+@media(max-width:640px){.wk-num-wide{grid-column:span 2;}}
+.wk-num-lbl{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;}
+.wk-num-val{font-family:var(--font-display);font-size:28px;font-weight:700;color:#1c1410;line-height:1;}
+.wk-num-trend{font-family:var(--font-mono);font-size:11px;margin-top:4px;color:var(--ivory3);}
+.wk-num-trend.up{color:var(--greenLt);}
+.wk-num-trend.down{color:var(--redLt);}
+.wk-cols{display:grid;grid-template-columns:1fr 1fr;padding:0 32px 20px;gap:0;}
+@media(max-width:680px){.wk-cols{grid-template-columns:1fr;}}
+.wk-section{padding:4px 22px 20px 0;border-right:1px dashed rgba(200,84,10,0.18);}
+.wk-cols .wk-section:last-child{border-right:none;padding-right:0;padding-left:22px;}
+@media(max-width:680px){.wk-section{border-right:none;padding-right:0;padding-left:0;border-bottom:1px dashed rgba(200,84,10,0.18);margin-bottom:12px;}.wk-cols .wk-section:last-child{padding-left:0;}}
+.wk-sec-lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;color:var(--greenLt);text-transform:uppercase;margin-bottom:8px;}
+.wk-sec-h{font-family:var(--font-heading);font-size:14px;font-weight:700;font-style:normal;color:var(--ivory);margin-bottom:8px;line-height:1.3;text-transform:uppercase;letter-spacing:.04em;}
+.wk-sec-body{font-family:var(--font-serif);font-size:14px;line-height:1.6;color:var(--ivory2);}
+.wk-sec-body p+p{margin-top:8px;}
+.wk-quote{margin:0 32px 24px;padding:22px 24px;border-left:4px solid var(--c1);background:#1c1410;border-radius:0;}
+.wk-quote-t{font-family:var(--font-heading);font-style:italic;font-size:22px;color:var(--ivory);line-height:1.45;}
+.wk-quote-c{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-top:10px;}
+.wk-letter-h{font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;color:var(--greenLt);text-transform:uppercase;margin-bottom:12px;}
+.wk-letter-body{font-family:var(--font-serif);font-size:15px;line-height:1.7;color:#1c1410;}
+.wk-letter-body p+p{margin-top:12px;}
+.wk-actions{margin:0 32px 24px;}
+.wk-actions-h{font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;color:var(--greenLt);text-transform:uppercase;margin-bottom:14px;}
+.wk-action-item{display:flex;gap:16px;padding:16px 0;border-top:1px dashed rgba(200,84,10,0.18);}
+.wk-action-item:first-of-type{border-top:none;}
+.wk-action-num{font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--accent);line-height:1;min-width:32px;}
+.wk-action-body{flex:1;}
+.wk-action-title{font-family:var(--font-heading);font-size:14px;font-weight:700;color:#453425;margin-bottom:4px;line-height:1.3;}
+.wk-action-why{font-family:var(--font-serif);font-size:15px;line-height:1.6;color:#1c1410;}
+.wk-foot{background:linear-gradient(180deg,var(--bk2) 0%,#2f2318 100%);border-top:4px double var(--c1);padding:18px 28px;text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;color:var(--ivory3);text-transform:uppercase;box-shadow:0 -2px 0 #0e0a07;}
+.wk-foot .chain{color:var(--accent);}
+
+/* ═════ SCHEDULE ═════ */
+.sch-wrap{max-width:1100px;margin:0 auto;padding:24px 16px 80px;}
+.sch-toolbar{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;margin-bottom:14px;background:var(--bk2);border:1px solid var(--border);border-radius:4px;box-shadow:0 2px 0 #0e0a07;gap:10px;flex-wrap:wrap;}
+.sch-wknav{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:4px;}
+.sch-wknav .arr{color:var(--accent);padding:4px 10px;cursor:pointer;font-size:11px;user-select:none;background:rgba(200,84,10,0.08);border-radius:3px;transition:background 0.15s;}
+.sch-wknav .arr:hover{background:rgba(200,84,10,0.2);}
+.sch-grid{display:grid;grid-template-columns:120px repeat(7,1fr);gap:1px;background:var(--c4);border:1px solid var(--c4);border-radius:4px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,0.6);}
+@media(max-width:900px){
+  .sch-grid{grid-template-columns:80px repeat(7,1fr);}
+  .sch-shift{font-size:13px;}
+  .shift-who{font-size:13px;}
+}
+.sch-head{background:#241a13;padding:10px 8px;font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);text-align:center;}
+.sch-head .dnum{display:block;font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--ivory);margin-top:2px;}
+.sch-head.today{background:var(--c3);}
+.sch-head.today .dnum{color:var(--accent);}
+.sch-row-h{background:var(--bk2);padding:14px 10px;font-family:var(--font-mono);font-size:11px;color:var(--ivory3);letter-spacing:.1em;text-transform:uppercase;border-right:1px solid var(--c4);display:flex;align-items:center;}
+.sch-cell{background:var(--bk2);padding:8px 6px;min-height:80px;border-right:1px solid rgba(28,20,16,0.4);transition:background 0.15s;cursor:pointer;}
+.sch-cell:hover{background:var(--bk3);}
+.sch-cell.today{background:rgba(28,20,16,0.12);}
+.sch-shift{background:#2f2318;border:1px solid rgba(200,84,10,0.35);border-radius:2px;padding:6px 8px;margin-bottom:4px;font-family:var(--font-mono);font-size:11px;color:var(--ivory2);line-height:1.3;box-shadow:0 1px 0 rgba(200,84,10,0.2),0 2px 4px rgba(0,0,0,0.5);}
+.sch-shift.k{background:#453425;border-color:rgba(200,84,10,0.35);}
+.shift-who{font-family:var(--font-display);font-weight:700;color:var(--accent);font-size:11px;letter-spacing:.04em;display:block;margin-bottom:2px;}
+.sch-shift.k .shift-who{color:var(--greenLt);}
+.sch-legend{display:flex;gap:18px;margin-top:16px;padding:10px 14px;font-family:var(--font-mono);font-size:11px;color:var(--ivory3);letter-spacing:.1em;text-transform:uppercase;}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:middle;margin-right:6px;}
+.sw.k{background:#453425;border:1px solid rgba(200,84,10,0.4);}
+.sw.f{background:#2f2318;border:1px solid rgba(200,84,10,0.4);}
+
+/* Schedule — Import / Export panel (mirrors the Invoices threshold card) */
+.sch-io{margin-top:18px;padding:16px 18px;background:var(--bk2);border:1px solid var(--border);border-radius:4px;box-shadow:0 2px 0 #0e0a07;}
+.sch-io-lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin-bottom:12px;}
+.sch-io-row{display:flex;gap:10px;flex-wrap:wrap;}
+.sch-io-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:10px 16px;border-radius:4px;cursor:pointer;border:1px solid rgba(200,84,10,0.3);background:#2f2318;color:var(--accent);transition:all 0.15s;}
+.sch-io-btn:hover{background:rgba(200,84,10,0.12);}
+.sch-io-btn.xlsx{border-color:rgba(26,122,48,0.5);color:#1a7a30;}
+.sch-io-btn.xlsx:hover{background:rgba(26,122,48,0.15);}
+.sch-io-btn.scan{border-color:rgba(200,84,10,0.4);}
+.sch-io-icon{font-size:11px;line-height:1;}
+.sch-scan-preview{display:none;margin-top:14px;gap:14px;align-items:flex-start;flex-wrap:wrap;padding-top:14px;border-top:1px dashed rgba(200,84,10,0.2);}
+.sch-scan-preview img{width:120px;height:120px;object-fit:cover;border-radius:4px;border:1px solid rgba(200,84,10,0.3);}
+.sch-scan-status{flex:1;min-width:200px;font-family:var(--font-serif);font-size:14px;line-height:1.5;color:var(--ivory2);font-style:italic;}
+
+/* ═════ INVOICES ═════ */
+.inv-wrap{max-width:1100px;margin:0 auto;padding:24px 16px 80px;}
+.inv-toolbar{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;margin-bottom:14px;background:var(--bk2);border:1px solid var(--border);border-radius:4px;box-shadow:0 2px 0 #0e0a07;gap:10px;flex-wrap:wrap;}
+.inv-title{font-family:var(--font-heading);font-size:11px;font-weight:600;color:var(--ivory);font-style:italic;}
+.inv-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+@media(max-width:640px){.inv-stats{grid-template-columns:1fr;}}
+.inv-stat{background:#2f2318;border:1px solid rgba(200,84,10,0.3);border-radius:3px;padding:16px 14px;box-shadow:0 1px 0 rgba(200,84,10,0.2),0 3px 0 #0e0a07,0 6px 14px rgba(0,0,0,0.6);}
+/* lighter, calmer variant used on the Invoices tab: single strip, dividers instead of 3 boxed cards */
+.inv-stats.lite{background:var(--bk2);border:1px solid rgba(200,84,10,0.15);border-radius:4px;box-shadow:0 2px 0 #0e0a07;gap:0;overflow:hidden;}
+.inv-stats.lite .inv-stat{background:transparent;border:none;box-shadow:none;border-right:1px dashed rgba(200,84,10,0.15);border-radius:0;}
+.inv-stats.lite .inv-stat:last-child{border-right:none;}
+@media(max-width:640px){.inv-stats.lite .inv-stat{border-right:none;border-bottom:1px dashed rgba(200,84,10,0.15);}
+.inv-stats.lite .inv-stat:last-child{border-bottom:none;}}
+.inv-stat-lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px;white-space:nowrap;}
+.inv-stat-val{font-family:var(--font-display);font-size:28px;font-weight:400;color:#f0e6d4;line-height:1.1;letter-spacing:-.01em;}
+.inv-stat-val.red{color:var(--redLt);}
+.inv-stat-val.green{color:var(--greenLt);}
+.inv-stat-sub{font-family:var(--font-mono);font-size:11px;color:var(--ivory3);margin-top:4px;}
+.inv-filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.inv-filter{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;background:var(--bk2);color:var(--ivory3);border:1px solid rgba(200,84,10,0.25);border-radius:20px;cursor:pointer;transition:all 0.15s;}
+.inv-filter:hover{border-color:rgba(200,84,10,0.6);color:var(--ivory);}
+.inv-filter.on{background:var(--c1);color:var(--accent);border-color:var(--accent);}
+.inv-filter.on.red{color:var(--redLt);border-color:var(--redLt);}
+.inv-filter.on.amber{color:var(--amber);border-color:var(--amber);}
+.inv-table-wrap{background:var(--bk2);border:1px solid rgba(200,84,10,0.25);border-radius:6px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,0.5);margin-bottom:18px;}
+.inv-table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px;}
+.inv-table thead th{background:#241a13;color:var(--accent);text-align:left;padding:10px 12px;letter-spacing:.08em;text-transform:uppercase;font-size:11px;border-bottom:1px solid rgba(200,84,10,0.3);white-space:nowrap;}
+.inv-table tbody tr{border-bottom:1px solid rgba(200,84,10,0.08);transition:background 0.15s;}
+.inv-table tbody tr:hover{background:rgba(200,84,10,0.05);}
+.inv-table tbody tr.flagged{border-left:3px solid var(--redLt);}
+.inv-table tbody tr.flagged:hover{background:rgba(255,255,255,0.03);}
+.inv-table td{padding:10px 12px;color:var(--ivory2);vertical-align:middle;}
+.inv-td-name{color:var(--ivory);font-weight:400;}
+.inv-price-move{color:var(--ivory3);margin-right:6px;}
+.inv-td-pct{font-weight:400;}
+.inv-td-pct.up{color:var(--redLt);}
+.inv-td-pct.down{color:var(--greenLt);}
+.inv-td-pct.flat{color:var(--ivory3);}
+.inv-spark{display:inline-flex;align-items:center;gap:4px;}
+.inv-spark svg{display:block;}
+.inv-arrow{font-size:11px;}
+.inv-status{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:12px;cursor:pointer;border:1px solid transparent;white-space:nowrap;}
+.inv-status.accepted{background:rgba(26,122,48,0.12);color:var(--greenLt);border-color:rgba(26,122,48,0.3);}
+.inv-status.disputed{background:rgba(168,66,8,0.12);color:var(--redLt);border-color:rgba(168,66,8,0.3);}
+.inv-impact{font-family:var(--font-mono);font-size:11px;color:var(--redLt);margin-top:2px;opacity:.85;}
+.inv-impact.pos{color:var(--greenLt);}
+.inv-empty{padding:40px 20px;text-align:center;font-family:var(--font-serif);font-style:italic;color:var(--ivory3);font-size:14px;}
+
+/* Threshold slider */
+.inv-threshold{background:var(--bk2);border:1px solid rgba(200,84,10,0.25);border-radius:6px;padding:14px 18px;margin-bottom:16px;}
+.inv-threshold-lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin-bottom:8px;}
+.inv-threshold-row{display:flex;align-items:center;gap:14px;}
+.inv-threshold-row input[type=range]{flex:1;appearance:none;-webkit-appearance:none;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--greenLt),var(--amber) 50%,var(--redLt));outline:none;cursor:pointer;}
+.inv-threshold-row input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--accent-lt),var(--accent) 55%,var(--accent-dk));border:2px solid #0e0a07;box-shadow:0 2px 6px rgba(0,0,0,0.6);cursor:pointer;}
+.inv-threshold-row input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--accent-lt),var(--accent) 55%,var(--accent-dk));border:2px solid #0e0a07;box-shadow:0 2px 6px rgba(0,0,0,0.6);cursor:pointer;}
+.inv-threshold-val{font-family:var(--font-display);font-size:11px;color:var(--accent);min-width:48px;text-align:right;}
+.inv-threshold-sub{font-family:var(--font-mono);font-size:11px;color:var(--ivory3);margin-top:6px;}
+
+/* Mobile card list — shown instead of the table on narrow screens */
+.inv-cards{display:none;}
+.inv-card{background:#2f2318;border:1px solid rgba(200,84,10,0.3);border-radius:6px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 0 rgba(200,84,10,0.2),0 2px 0 #0e0a07,0 4px 10px rgba(0,0,0,0.5);}
+.inv-card.flagged{border-left:3px solid var(--redLt);}
+.inv-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;}
+.inv-card-name{font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--ivory);}
+.inv-card-pct{font-family:var(--font-display);font-size:22px;font-weight:400;white-space:nowrap;}
+.inv-card-pct.up{color:var(--redLt);}
+.inv-card-pct.down{color:var(--greenLt);}
+.inv-card-pct.flat{color:var(--ivory3);}
+.inv-card-prices{font-family:var(--font-mono);font-size:14px;color:var(--ivory3);margin-bottom:8px;}
+.inv-card-prices b{color:var(--ivory2);font-weight:400;}
+.inv-card-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap;}
+.inv-card-impact{font-family:var(--font-mono);font-size:14px;color:var(--redLt);flex:1;min-width:0;}
+.inv-card-impact.pos{color:var(--greenLt);}
+.inv-card-impact.flat,.inv-impact.flat{color:var(--ivory3);}
+.inv-card-trend{display:flex;align-items:center;gap:6px;}
+
+@media(max-width:760px){
+  .inv-table-wrap{display:none;}
+  .inv-cards{display:block;}
+  .inv-threshold-row{flex-wrap:wrap;}
+}
+
+/* ═════ END-OF-MONTH P&L ═════ */
+.pnl-wrap{max-width:1100px;margin:0 auto;padding:24px 16px 80px;}
+.pnl-masthead{background:var(--bk2);border-top:4px double var(--c1);border-bottom:4px double var(--c1);padding:22px 28px;text-align:center;box-shadow:0 2px 0 #0e0a07,0 8px 28px rgba(0,0,0,0.7);margin-bottom:18px;}
+.pnl-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.3em;color:#a89272;text-transform:uppercase;margin-bottom:8px;}
+.pnl-title{font-family:var(--font-heading);font-size:11px;font-weight:700;color:var(--ivory);line-height:1;letter-spacing:-.01em;}
+.pnl-title em{font-style:italic;color:var(--accent);}
+
+/* toggle: Chef Labor | Full Owner P&L */
+.pnl-view-toggle{display:flex;gap:6px;margin-bottom:18px;background:var(--bk2);padding:8px;border-radius:4px;border:1px solid rgba(200,84,10,0.15);}
+.pnl-view-btn{flex:1;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:12px 8px;border:1px solid transparent;border-radius:3px;background:transparent;color:var(--ivory3);cursor:pointer;text-align:center;transition:all .15s;}
+.pnl-view-btn:hover{color:var(--accent);border-color:rgba(200,84,10,0.2);}
+.pnl-view-btn.on{background:#2f2318;color:var(--accent);border-color:rgba(200,84,10,0.4);box-shadow:0 1px 0 rgba(200,84,10,0.3),0 3px 8px rgba(0,0,0,0.5);}
+
+/* period input row */
+.pnl-period-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
+.pnl-period-lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--ivory4);text-transform:uppercase;}
+.pnl-period-row select{background:var(--bk2);color:var(--ivory);border:1px solid rgba(200,84,10,0.3);border-radius:3px;padding:8px 12px;font-family:var(--font-mono);font-size:11px;}
+
+/* statement sections */
+.pnl-section{background:#241a13;border:1px solid rgba(200,84,10,0.3);border-radius:6px;margin-bottom:16px;position:relative;overflow:hidden;}
+.pnl-section::before{content:'';position:absolute;top:0;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,84,10,0.6),transparent);}
+.pnl-section-h{font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;padding:16px 20px 12px;display:flex;align-items:center;gap:10px;}
+.pnl-section-h::after{content:'';flex:1;height:1px;background:rgba(200,84,10,0.15);}
+
+.pnl-table{width:100%;border-collapse:collapse;}
+.pnl-table th{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ivory4);text-align:right;padding:8px 16px;border-bottom:1px solid rgba(200,84,10,0.2);}
+.pnl-table th:first-child{text-align:left;}
+.pnl-table td{padding:8px 16px;border-bottom:1px solid rgba(255,255,255,0.04);font-family:var(--font-serif);font-size:13px;color:var(--ivory2);}
+.pnl-table td:first-child{white-space:nowrap;}
+.pnl-table tr:last-child td{border-bottom:none;}
+.pnl-table input[type=number]{width:100%;min-width:80px;background:#2f2318;border:1px solid rgba(200,84,10,0.25);border-radius:3px;color:#f0e6d4;padding:6px 8px;font-family:var(--font-mono);font-size:13px;text-align:right;transition:border-color .15s;}
+.pnl-table input[type=number]:focus{outline:none;border-color:var(--accent);background:#3a2b1d;}
+.pnl-table td.num{text-align:right;}
+.pnl-table tr.pnl-total td{font-weight:700;color:var(--ivory);background:rgba(200,84,10,0.06);}
+.pnl-table tr.pnl-total td:first-child{color:var(--accent);}
+.pnl-var-pos{color:var(--greenLt);}
+.pnl-var-neg{color:var(--redLt);}
+.pnl-var-zero{color:var(--ivory4);}
+@media(max-width:640px){
+  .pnl-section{overflow-x:auto;}
+  .pnl-table{min-width:520px;}
+  .pnl-table input[type=number]{min-width:70px;font-size:13px;}
+}
+
+.pnl-notes{padding:16px 20px 20px;}
+.pnl-notes textarea{width:100%;min-height:100px;background:#2f2318;border:1px solid rgba(200,84,10,0.25);border-radius:4px;color:#f0e6d4;padding:12px 14px;font-family:var(--font-serif);font-size:14px;line-height:1.6;resize:vertical;}
+.pnl-notes textarea:focus{outline:none;border-color:var(--accent);background:#3a2b1d;}
+.pnl-notes textarea::placeholder{color:#a89272;}
+
+.pnl-ratio-target{font-family:var(--font-mono);font-size:11px;color:var(--ivory4);}
+
+/* ═════ BUDGET ═════ */
+.bgt-wrap{max-width:1100px;margin:0 auto;padding:24px 16px 80px;}
+
+
+/* Quarter tabs */
+.bgt-qtabs{display:flex;gap:6px;margin-bottom:20px;background:var(--bk2);padding:8px;border-radius:4px;border:1px solid rgba(200,84,10,0.15);}
+.bgt-qtab{flex:1;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:10px 8px;border:1px solid transparent;border-radius:3px;background:transparent;color:var(--ivory3);cursor:pointer;text-align:center;transition:all .15s;}
+.bgt-qtab:hover{color:var(--accent);border-color:rgba(200,84,10,0.2);}
+.bgt-qtab.on{background:#2f2318;color:var(--accent);border-color:rgba(200,84,10,0.4);box-shadow:0 1px 0 rgba(200,84,10,0.3),0 3px 8px rgba(0,0,0,0.5);}
+.bgt-qtab-months{display:block;font-size:11px;color:var(--ivory4);margin-top:2px;letter-spacing:.06em;}
+.bgt-qtab.on .bgt-qtab-months{color:var(--ivory3);}
+
+/* Budget input section */
+.bgt-section{background:#241a13;border:1px solid rgba(200,84,10,0.3);border-radius:6px;padding:22px 24px;margin-bottom:18px;position:relative;}
+.bgt-section::before{content:'';position:absolute;top:0;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,84,10,0.6),transparent);}
+.bgt-section-title{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.bgt-section-title::after{content:'';flex:1;height:1px;background:rgba(200,84,10,0.15);}
+.bgt-input-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:700px){.bgt-input-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:440px){.bgt-input-grid{grid-template-columns:1fr;}}
+.bgt-field{display:flex;flex-direction:column;gap:5px;}
+.bgt-field label{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--ivory4);text-transform:uppercase;}
+.bgt-field input,.bgt-field select{background:rgba(255,255,255,0.04);border:1px solid rgba(200,84,10,0.25);border-radius:3px;color:var(--ivory);padding:9px 12px;font-family:var(--font-mono);font-size:14px;width:100%;transition:border-color .15s;}
+.bgt-field input:focus,.bgt-field select:focus{outline:none;border-color:var(--accent);background:rgba(255,255,255,0.07);}
+.bgt-field .prefix{position:relative;}
+.bgt-field .prefix::before{content:'$';position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--accent);font-family:var(--font-mono);font-size:11px;pointer-events:none;}
+.bgt-field .prefix input{padding-left:22px;}
+.bgt-field .suffix{position:relative;}
+.bgt-field .suffix::after{content:'%';position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--accent);font-family:var(--font-mono);font-size:11px;pointer-events:none;}
+.bgt-field .suffix input{padding-right:28px;}
+
+/* Calculated outputs grid */
+.bgt-calc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
+@media(max-width:700px){.bgt-calc-grid{grid-template-columns:repeat(2,1fr);}}
+.bgt-calc-card{background:#2f2318;border:1px solid rgba(200,84,10,0.2);border-radius:4px;padding:14px 16px;text-align:center;}
+.bgt-calc-lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--ivory4);text-transform:uppercase;margin-bottom:6px;}
+.bgt-calc-period{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
+.bgt-calc-item{flex:1;min-width:60px;}
+.bgt-calc-item-lbl{font-family:var(--font-mono);font-size:11px;color:var(--ivory4);letter-spacing:.08em;margin-bottom:3px;}
+.bgt-calc-item-val{font-family:var(--font-display);font-size:13px;font-weight:400;color:var(--ivory);line-height:1;}
+.bgt-calc-item-val.accent{color:var(--accent);}
+.bgt-calc-item-val.green{color:var(--greenLt);}
+.bgt-calc-item-val.red{color:var(--redLt);}
+
+/* Break-even panel */
+.bgt-breakeven{background:transparent;border:none;border-radius:0;padding:10px 6px 22px;margin-bottom:8px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:stretch;text-align:center;}
+.bgt-be-box{background:#dccca0;border-radius:4px;padding:16px 12px;width:100%;height:100%;box-sizing:border-box;}
+.bgt-breakeven .bgt-be-divider{display:none;}
+@media(max-width:680px){.bgt-breakeven{grid-template-columns:repeat(2,1fr);gap:24px 16px;}}
+.bgt-be-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:4px;opacity:.85;}
+.bgt-be-val{font-family:var(--font-display);font-size:22px;font-weight:400;line-height:1;color:var(--accent);filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));}
+.bgt-be-val.accent{color:var(--accent);}
+.bgt-be-sub{font-family:var(--font-mono);font-size:11px;color:var(--ivory3);margin-top:3px;opacity:.75;}
+.bgt-be-divider{display:none;}
+@keyframes beFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+
+/* Charts */
+
+/* Monthly summary table */
+.bgt-table-wrap{overflow-x:auto;margin-bottom:18px;}
+.bgt-table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px;}
+.bgt-table th{background:#241a13;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;padding:10px 14px;text-align:right;font-weight:400;border-bottom:2px solid rgba(200,84,10,0.3);}
+.bgt-table th:first-child{text-align:left;}
+.bgt-table td{padding:9px 14px;text-align:right;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--ivory2);}
+.bgt-table td:first-child{text-align:left;color:var(--ivory);font-weight:700;letter-spacing:.06em;}
+.bgt-table tr:hover td{background:rgba(255,255,255,0.03);}
+.bgt-table .total-row td{border-top:2px solid rgba(200,84,10,0.3);color:var(--accent);font-size:13px;padding-top:12px;}
+.bgt-table .total-row td:first-child{color:var(--accent);}
+
+/* Save/calculate button */
+.bgt-actions{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.bgt-btn-calc{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 11px;background:#2f2318;color:#c8540a;border:1px solid rgba(200,84,10,0.25);border-left:4px solid #c8540a;border-radius:3px;cursor:pointer;transition:all .15s;text-shadow:0 0 12px rgba(200,84,10,0.5);box-shadow:inset 0 1px 0 rgba(200,84,10,0.08),0 2px 8px rgba(0,0,0,0.6);}
+.bgt-btn-calc:hover{background:#8a3206;color:#c8540a;border-left-color:#c8540a;text-shadow:0 0 18px rgba(200,84,10,0.7);box-shadow:inset 0 1px 0 rgba(200,84,10,0.12),0 0 16px rgba(200,84,10,0.2);}
+.bgt-btn-reset{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 11px;background:transparent;color:var(--ivory4);border:1px solid rgba(200,84,10,0.2);border-radius:3px;cursor:pointer;}
+.bgt-btn-reset:hover{color:var(--redLt);border-color:rgba(168,66,8,0.3);}
+
+/* ═════ MODALS ═════ */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:600;align-items:center;justify-content:center;padding:16px;}
+.modal-ov.open{display:flex;}
+.modal{background:var(--bk2);border:1px solid rgba(200,84,10,0.4);border-radius:6px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,0.8);}
+.modal-hdr{padding:16px 20px;border-bottom:1px solid rgba(200,84,10,0.25);display:flex;justify-content:space-between;align-items:center;background:#2f2318;}
+.modal-ttl{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;}
+.modal-close{background:transparent;border:none;color:var(--ivory3);font-size:11px;cursor:pointer;line-height:1;padding:0 4px;}
+.modal-close:hover{color:var(--redLt);}
+.modal-body{padding:20px;}
+.field{margin-bottom:14px;}
+.field label{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;margin-bottom:4px;}
+.field input,.field select,.field textarea{width:100%;padding:10px 12px;background:#2f2318;border:1px solid rgba(200,84,10,0.3);border-radius:3px;color:#f0e6d4;font-family:var(--font-serif);font-size:14px;}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent);background:#3a2b1d;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;padding:14px 20px;border-top:1px solid rgba(200,84,10,0.2);background:rgba(0,0,0,0.3);}
+.modal-actions button{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:10px 18px;border-radius:3px;cursor:pointer;border:1px solid rgba(200,84,10,0.4);}
+.btn-primary{background:#2f2318;color:var(--accent);}
+.btn-cancel{background:transparent;color:var(--ivory3);}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);padding:12px 20px;background:var(--bk2);border:1px solid var(--c1);border-radius:4px;color:var(--accent);font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;z-index:700;opacity:0;transition:all 0.3s ease;pointer-events:none;box-shadow:0 8px 20px rgba(0,0,0,0.6);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.err{border-color:var(--red);color:var(--redLt);}
+.toast.ok{border-color:var(--greenLt);color:var(--greenLt);}
+
+/* ═════ MOBILE ═════ */
+@media(max-width:480px){
+  .wk-wrap,.sch-wrap,.inv-wrap,.pnl-wrap,.bgt-wrap{padding:12px 10px 80px;}
+  .wk-masthead{padding:16px 14px;}
+  .wk-title{font-size:32px;}
+  .wk-eyebrow{font-size:11px;}
+  .wk-lead{padding:16px 14px 6px;}
+  .wk-lead-h{font-size:13px;}
+  .wk-lead-callout{padding:10px 12px;margin-bottom:12px;}
+  .wk-lead-callout-txt{font-size:11px;}
+  .wk-lead-body{font-size:11px;}
+  .wk-divider{margin:16px 14px;}
+  .wk-numbers{padding:0 14px 16px;}
+  .wk-num{padding:10px;}
+  .wk-num-val{font-size:20px;}
+  .wk-num-lbl{font-size:11px;}
+  .wk-quote{margin:0 14px 16px;padding:14px 14px;}
+  .wk-letter-body{font-size:13px;}
+  .wk-actions{margin:0 14px 16px;}
+  .wk-action-num{font-size:20px;min-width:24px;}
+  .wk-action-title{font-size:13px;}
+  .wk-action-why{font-size:13px;}
+  .wk-cols{padding:0 14px 14px;}
+  .wk-sec-h{font-size:13px;}
+  .wk-sec-body{font-size:13px;}
+  .wk-foot{padding:12px 14px;}
+
+  .tab{font-size:11px;padding:10px 8px;letter-spacing:.06em;}
+
+  .inv-stat-val{font-size:20px;}
+  .inv-stat-lbl{font-size:11px;}
+  .inv-table thead th{font-size:11px;padding:8px 8px;}
+  .inv-table td{padding:8px 8px;font-size:11px;}
+  .inv-toolbar{padding:8px 10px;}
+
+  .sch-grid{grid-template-columns:60px repeat(7,1fr);}
+  .sch-head{padding:6px 4px;font-size:11px;}
+  .sch-head .dnum{font-size:16px;}
+  .sch-row-h{font-size:11px;padding:10px 6px;}
+  .sch-shift{font-size:11px;padding:4px 5px;}
+  .shift-who{font-size:11px;}
+
+  .pnl-masthead{padding:14px 14px;}
+  .pnl-section-h{font-size:11px;padding:12px 14px 8px;}
+  .pnl-table th{font-size:11px;padding:6px 8px;}
+  .pnl-table td{font-size:11px;padding:6px 8px;}
+  .pnl-table input[type=number]{font-size:11px;padding:5px 6px;min-width:60px;}
+  .pnl-notes textarea{font-size:13px;}
+
+}
+
+/* ═════ THE PUB PASS ═════
+   The room is dark bark. The Daily letter is the one piece of paper in it.
+   Numbers glow warm — readable at a glance from the line. */
+
+/* The house paper — parchment, dark ink, like a newspaper on the bar */
+.wk-masthead{background:#e8dabb;border-top:4px double #8a3206;border-bottom:4px double #8a3206;}
+.wk-eyebrow{color:#8a3206;}
+.wk-title{color:#1c1410;}
+.wk-sub{color:#5c4936;}
+.wk-col{background:linear-gradient(180deg,#e8dabb 0%,#e2d2ac 100%);border-left:1px solid rgba(138,50,6,0.25);border-right:1px solid rgba(138,50,6,0.25);}
+.wk-lead-h{color:#2f2318;}
+.wk-lead-callout{background:rgba(200,84,10,0.08);border-left:4px solid #c8540a;}
+.wk-lead-callout-lbl{color:#a84208;}
+.wk-lead-callout-txt{color:#2f2318;}
+.wk-lead-body{color:#1c1410;}
+.wk-lead-body p{color:#1c1410;}
+.wk-sec-lbl{color:#a84208;}
+.wk-sec-h{color:#1c1410;}
+.wk-sec-body{color:#2f2318;}
+.wk-cols .wk-sec-body p{color:#2f2318 !important;}
+.wk-divider{border-top:1px solid rgba(138,50,6,0.25);margin:28px 32px;}
+.wk-quote{background:#e2d2ac;border-left:4px solid #8a3206;}
+.wk-quote-t{color:#1c1410;}
+.wk-quote-c{color:#a84208;}
+.wk-letter-h{color:#a84208;}
+.wk-letter-body{color:#1c1410;}
+.wk-letter-body p{color:#1c1410;}
+.wk-actions-h{color:#a84208;}
+.wk-action-item{border-top:1px dashed rgba(138,50,6,0.25);}
+.wk-action-num{color:#c8540a;}
+.wk-action-title{color:#1c1410;}
+.wk-action-why{color:#2f2318;}
+.wk-num{background:#e2d2ac;border:1px solid rgba(138,50,6,0.3);box-shadow:0 3px 0 #cab883,0 8px 18px rgba(0,0,0,0.4);}
+.wk-num-lbl{color:#a84208;}
+.wk-num-val{color:#1c1410;font-weight:700;}
+.wk-num-trend{color:#5c4936;}
+.wk-num-trend.up{color:#1a7a30;}
+.wk-num-trend.down{color:#a84208;}
+.wk-foot{background:#e2d2ac;border-top:4px double #8a3206;color:#5c4936;box-shadow:none;}
+.wk-foot .chain{color:#a84208;}
+
+/* Numbers on fire — glanceable from the line */
+.inv-stat-val{color:#f8a070;font-weight:700;}
+.inv-stat-val.red{color:#f07840;}
+.inv-stat-val.green{color:#5ab870;}
+.bgt-be-val,.bgt-calc-item-val.accent{color:#f8a070;}
+.sch-head .dnum{color:#f8a070;}
+.brand-main{color:#f0e6d4;}
+.brand-main .metal-gold{color:#e06020;}
+.tab{color:#cab883;}
+.tab.on{color:#f07840;}
+.gold-rule{background:linear-gradient(90deg,transparent 0%,#6b2600 10%,#c8540a 30%,#e06020 50%,#c8540a 70%,#6b2600 90%,transparent 100%);}
+.pnl-table input[type=number]{background:#241a13;color:#f0e6d4;border:1px solid rgba(224,96,32,0.3);}
+.pnl-table input[type=number]:focus{background:#2f2318;border-color:#e06020;}
+.pnl-notes textarea{background:#241a13;color:#f0e6d4;border:1px solid rgba(224,96,32,0.3);}
+.pnl-notes textarea:focus{background:#2f2318;border-color:#e06020;}
+.pnl-notes textarea::placeholder{color:#8a7458;}
+.field input,.field select,.field textarea{background:#241a13;color:#f0e6d4;border:1px solid rgba(224,96,32,0.35);}
+.field input:focus,.field select:focus,.field textarea:focus{background:#2f2318;border-color:#e06020;}
+.mc-msg.bot{background:#2f2318;color:#f0e6d4;border:1px solid rgba(224,96,32,0.3);}
+.mc-msg.user{background:#453425;color:#f0e6d4;}
+.mc-inputrow input{background:#241a13;color:#f0e6d4;border:1px solid rgba(224,96,32,0.35);}
+.sch-shift{background:#2f2318;border:1px solid rgba(224,96,32,0.35);color:#e8dabb;}
+.sch-shift.k{background:#453425;border-color:rgba(248,160,112,0.35);}
+.shift-who{color:#f8a070;}
+.sch-shift.k .shift-who{color:#f8a070;}
+</style>
+</head>
+<body>
+
+<!-- ═════ FLOATING AI (persists across all pages/tabs) ═════ -->
+<div id="miseFab" onclick="miseToggle()">
+  <div class="fabPulse"></div>
+  <div class="fabM">M</div>
+</div>
+
+<div id="miseChat">
+  <div class="mc-head">
+    <div class="mc-head-l">
+      <div class="mc-dot"></div>
+      <div>
+        <div class="mc-title">MISEai</div>
+        <div class="mc-sub">Live Assistant</div>
+      </div>
+    </div>
+    <button class="mc-close" onclick="miseToggle()">✕</button>
+  </div>
+  <div class="mc-body" id="miseBody">
+    <div class="mc-msg bot">Hey — I'm watching your Daily, Schedule, Invoices, Budget and P&amp;L numbers. Ask me anything.</div>
+  </div>
+  <div class="mc-inputrow">
+    <input type="text" id="miseInput" placeholder="Ask MISEai…" onkeydown="if(event.key==='Enter') miseSend();">
+    <button class="mc-send" onclick="miseSend()">➤</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="brand-main">Mise<span class="metal-gold">.AI</span></div>
+    <div class="brand-sub" id="headerDate">—</div>
+  </div>
+  <div>
+    <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(200,84,10,0.45);padding:6px 14px;border-radius:3px;background:rgba(200,84,10,0.07);">Sample Restaurant · Try Everything</span>
+  </div>
+</div>
+<div class="gold-rule"></div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab on" id="tab-weekly"  onclick="showTab('weekly')">Daily</button>
+  <button class="tab"    id="tab-sched"   onclick="showTab('sched')">Schedule</button>
+  <button class="tab"    id="tab-inv"     onclick="showTab('inv')">Invoices</button>
+  <button class="tab"    id="tab-budget"  onclick="showTab('budget')">Budget</button>
+  <button class="tab"    id="tab-pnl"     onclick="showTab('pnl')">P&amp;L</button>
+</div>
+
+<!-- ══════ WEEKLY ══════ -->
+<div class="page on" id="page-weekly">
+  <div class="wk-wrap">
+    <div class="wk-masthead">
+      <div class="wk-eyebrow">MISEai · The House Paper</div>
+      <div class="wk-title">The <em class="metal-gold">Daily</em></div>
+      <div class="wk-sub" id="wkSubDate">—</div>
+    </div>
+    <div class="wk-col">
+      <div class="wk-lead">
+        <div class="wk-lead-h" id="wkHeadline">A Hot Saturday That Earned Its Keep</div>
+        <div class="wk-lead-callout">
+          <div class="wk-lead-callout-lbl">At a glance</div>
+          <div class="wk-lead-callout-txt" id="wkGlance">Yesterday: 112 covers · $4,890 sales · kitchen labor 29.4% · Today: 88° again, salmon price still hot</div>
+        </div>
+        <div class="wk-lead-body" id="wkLeadBody">
+          <p>Good morning, Chef. Yesterday ran 112 covers on $4,890 — about 14% over your Saturday average, and the heat did most of the pushing. The room filled late and stayed late; your last hour did nearly double its usual sales.</p>
+          <p>Labor landed at 29.4% of the day — under your 30% target even with the extra volume, because the closing crew you scheduled matched the late push almost exactly.</p>
+          <p>Food cost is the watch item: the salmon price jump from Thursday's invoice is now live in every salmon plate you sell. At yesterday's pace that's roughly $83 a week off the bottom line until the price comes back or the feature changes.</p>
+        </div>
+      </div>
+      <hr class="wk-divider">
+      <div class="wk-numbers">
+        <div class="wk-num-grid">
+          <div class="wk-num"><div class="wk-num-lbl">Labor vs Sales</div><div class="wk-num-val">—</div><div class="wk-num-trend">No data</div></div>
+          <div class="wk-num"><div class="wk-num-lbl">Inventory vs Actual</div><div class="wk-num-val">—</div><div class="wk-num-trend">No data</div></div>
+          <div class="wk-num"><div class="wk-num-lbl">Prime Cost <span style="opacity:.6;font-weight:400;">(Food + Labor)</span></div><div class="wk-num-val">—</div><div class="wk-num-trend">No data</div></div>
+        </div>
+      </div>
+      <hr class="wk-divider">
+      <div class="wk-cols">
+        <div class="wk-section"><div class="wk-sec-lbl">Number of the Day</div><div class="wk-sec-h" id="wkNumTitle">Salmon, +18%</div><div class="wk-sec-body" id="wkNumBody"><p>$9.20 to $10.85 a pound on Thursday's delivery — the sharpest move on any invoice line, sitting under your best-selling plate.</p></div></div>
+        <div class="wk-section"><div class="wk-sec-lbl">Today's Weather</div><div class="wk-sec-h" id="wkWxTitle">88° And Holding Late</div><div class="wk-sec-body" id="wkWxBody"><p>Same heat as yesterday, holding past sunset. On days like this your covers run about 14% over average and the rush lands an hour late — plan prep and the pass for a 7:30 wave.</p></div></div>
+      </div>
+      <hr class="wk-divider">
+      <div class="wk-quote">
+        <div class="wk-letter-h">Last Night</div>
+        <div class="wk-letter-body" id="wkLastNight">
+          <p>112 covers on $4,890 — your strongest Saturday this month, and about 14% over your Saturday average. The average check held at $43.66, right on your usual number, so the extra dollars were pure volume.</p>
+          <p>The pan-seared salmon led the board again — 31 plates — which is exactly the wrong dish to be leading while its fillet cost is up 18%. Every one of those plates earned about $1.90 less than it did last week.</p>
+          <p>Kitchen labor came in at $1,437 against the night — 29.4% of sales, under your 30% target even at the higher volume. The crew you scheduled was the right size for the night you got.</p>
+        </div>
+        <div class="wk-quote-c">— MISEai · Exec Chef</div>
+      </div>
+      <hr class="wk-divider">
+      <div class="wk-actions">
+        <div class="wk-actions-h">3 Actions For Today</div><div id="wkActions">
+        <div class="wk-action-item">
+          <div class="wk-action-num">1</div>
+          <div class="wk-action-body">
+            <div class="wk-action-title">Call the seafood vendor about the salmon price</div>
+            <div class="wk-action-why">$9.20 to $10.85 a pound is an 18% jump, and salmon is your best seller. Ask if it's a spot spike or the new normal — if it holds, either the menu price moves or the feature does. Doing nothing costs about $83 a week.</div>
+          </div>
+        </div>
+        <div class="wk-action-item">
+          <div class="wk-action-num">2</div>
+          <div class="wk-action-body">
+            <div class="wk-action-title">Prep heavier for tonight — the heat repeats</div>
+            <div class="wk-action-why">88° again today, and yesterday's forecast at this temp brought 14% extra covers with a late surge. Set the line up for that push instead of chasing it at 7:30.</div>
+          </div>
+        </div>
+        <div class="wk-action-item">
+          <div class="wk-action-num">3</div>
+          <div class="wk-action-body">
+            <div class="wk-action-title">One word with the crew about the walk-in door</div>
+            <div class="wk-action-why">Forty minutes propped open during a delivery, on a compressor that was just serviced. A door stop and a habit is cheaper than the next repair bill.</div>
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="wk-cols">
+        <div class="wk-section"><div class="wk-sec-lbl">Watch Today</div><div class="wk-sec-h" id="wkWatchTitle">Heirloom Tomatoes Creeping</div><div class="wk-sec-body" style="color:#453425;" id="wkWatchBody"><p>Up 12% across the last three deliveries — not a spike, a trend. Worth pricing a second grower before it becomes the next salmon.</p></div></div>
+        <div class="wk-section"><div class="wk-sec-lbl">Stick With You</div><div class="wk-sec-h" id="wkStickTitle">Heat Buys Covers, Late</div><div class="wk-sec-body" style="color:#453425;" id="wkStickBody"><p>Your last four hot days all ran the same shape: quiet early, surge late, strong close. That's not luck — that's a staffing pattern you can schedule to.</p></div></div>
+      </div>
+    </div>
+    <div class="wk-foot"><span class="chain">Sealed weekly · Audit continuous · Your restaurant defends itself.</span></div>
+  </div>
+</div>
+
+<!-- ══════ SCHEDULE ══════ -->
+<div class="page" id="page-sched">
+  <div class="sch-wrap">
+    <div class="sch-toolbar">
+      <div class="sch-wknav">
+        <span class="arr" onclick="schedPrev()">◀</span>
+        <span id="schLabel">—</span>
+        <span class="arr" onclick="schedNext()">▶</span>
+      </div>
+      <button class="sch-add" onclick="openAddShift()">+ Add Shift</button>
+    </div>
+
+    <!-- BIG THREE -->
+    <div class="inv-stats">
+      <div class="inv-stat">
+        <div class="inv-stat-lbl">Today's Labor</div>
+        <div class="inv-stat-val" id="schedTodayLabor">$0</div>
+        <div class="inv-stat-sub" id="schedTodayLaborSub">Scheduled wages today</div>
+      </div>
+      <div class="inv-stat">
+        <div class="inv-stat-lbl">Payroll Burden</div>
+        <div class="inv-stat-val" id="schedBurden">$0</div>
+        <div class="inv-stat-sub" id="schedBurdenSub">Taxes + benefits, week</div>
+      </div>
+      <div class="inv-stat">
+        <div class="inv-stat-lbl">Total Hours</div>
+        <div class="inv-stat-val" id="schedTotalHours">0</div>
+        <div class="inv-stat-sub">Scheduled this week</div>
+      </div>
+    </div>
+
+    <!-- BURDEN RATE SLIDER -->
+    <div class="inv-threshold">
+      <div class="inv-threshold-lbl">Burden Rate</div>
+      <div class="inv-threshold-row">
+        <input type="range" id="schedBurdenPct" min="10" max="35" step="1" value="20" oninput="onSchedBurdenChange()">
+        <div class="inv-threshold-val" id="schedBurdenPctVal">20%</div>
+      </div>
+      <div class="inv-threshold-sub">Payroll tax + benefits load on top of base wages</div>
+    </div>
+
+    <div class="sch-grid" id="schedGrid"></div>
+    <div class="sch-legend">
+      <div><span class="sw k"></span>Kitchen (BOH)</div>
+      <!-- FOH temporarily disabled — schedule is BOH-only for now. Re-enable when ready:
+      <div><span class="sw f"></span>Front of House</div>
+      -->
+    </div>
+
+    <!-- IMPORT / EXPORT -->
+    <div class="sch-io">
+      <div class="sch-io-lbl">Import / Export</div>
+      <div class="sch-io-row">
+        <label class="sch-io-btn scan" for="schedScanInput">
+          <span class="sch-io-icon">📷</span> Scan Schedule
+        </label>
+        <input type="file" id="schedScanInput" accept="image/*" capture="environment" onchange="handleScheduleScan(event)" style="display:none">
+        <button class="sch-io-btn csv" onclick="exportScheduleCSV()"><span class="sch-io-icon">▤</span> Export CSV</button>
+        <button class="sch-io-btn xlsx" onclick="exportScheduleXLSX()"><span class="sch-io-icon">▦</span> Export Excel</button>
+      </div>
+      <div class="sch-scan-preview" id="schedScanPreview">
+        <img id="schedScanImg" alt="Scanned schedule photo">
+        <div class="sch-scan-status" id="schedScanStatus"></div>
+      </div>
+    </div>
+
+    <div class="seal-foot"><span class="chain">Schedule sealed with the night's audit · Hours tracked to the minute</span></div>
+  </div>
+</div>
+
+<!-- ══════ INVOICES ══════ -->
+<div class="page" id="page-inv">
+  <div class="inv-wrap">
+    <div class="inv-toolbar" style="justify-content:flex-end;">
+      <button class="sch-add" onclick="openAddInvoice()">+ Add Invoice Line</button>
+    </div>
+
+    <!-- BIG THREE -->
+    <div class="inv-stats lite">
+      <div class="inv-stat">
+        <div class="inv-stat-lbl">Invoices Today</div>
+        <div class="inv-stat-val" id="invCount">0</div>
+      </div>
+      <div class="inv-stat">
+        <div class="inv-stat-lbl">Net Spend Shift</div>
+        <div class="inv-stat-val" id="invSpendShift">—</div>
+      </div>
+      <div class="inv-stat">
+        <div class="inv-stat-lbl">Top Red Flag</div>
+        <div class="inv-stat-val red" id="invTopFlag">—</div>
+      </div>
+    </div>
+
+    <!-- FILTERS + RED-FLAG THRESHOLD (merged) -->
+    <div class="inv-threshold">
+      <div class="inv-filters" style="margin-bottom:12px;">
+        <button class="inv-filter on" id="invf-all" onclick="setInvFilter('all')">All</button>
+        <button class="inv-filter red" id="invf-flagged" onclick="setInvFilter('flagged')">Flagged (Red)</button>
+        <button class="inv-filter amber" id="invf-review" onclick="setInvFilter('review')">Needs Review</button>
+      </div>
+      <div class="inv-threshold-lbl">Red-Flag Threshold</div>
+      <div class="inv-threshold-row">
+        <input type="range" id="invThreshold" min="2" max="30" step="1" value="8" oninput="onInvThresholdChange()">
+        <div class="inv-threshold-val" id="invThresholdVal">+8%</div>
+      </div>
+      <div class="inv-threshold-sub">Items jumping this % or more are marked red</div>
+    </div>
+
+    <!-- TABLE (desktop/tablet) -->
+    <div class="inv-table-wrap">
+      <table class="inv-table">
+        <thead>
+          <tr>
+            <th>Ingredient</th>
+            <th>Price Move</th>
+            <th>Trend</th>
+            <th>Budget Impact</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="invTableBody"></tbody>
+      </table>
+      <div class="inv-empty" id="invEmpty" style="display:none">No invoice lines yet — add one to start tracking price moves.</div>
+    </div>
+
+    <!-- CARDS (mobile) -->
+    <div class="inv-cards" id="invCards"></div>
+    <div class="inv-empty" id="invEmptyMobile" style="display:none">No invoice lines yet — add one to start tracking price moves.</div>
+
+    <div class="seal-foot"><span class="chain">Every price hike logged · Trends don't lie · Know before the vendor tells you.</span></div>
+  </div>
+</div>
+
+<!-- ══════ BUDGET ══════ -->
+<div class="page" id="page-budget">
+  <div class="bgt-wrap">
+
+    <!-- BUDGET HEADER -->
+    <div class="sch-toolbar" style="justify-content:flex-end;align-items:flex-start;">
+      <div style="position:relative;">
+        <button onclick="document.getElementById('bgtHelp').style.display=document.getElementById('bgtHelp').style.display==='block'?'none':'block'" style="font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;background:#2f2318;color:var(--accent);border:1px solid rgba(200,84,10,0.4);border-radius:3px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+          How to use ▾
+        </button>
+        <div id="bgtHelp" style="display:none;position:absolute;right:0;top:36px;width:280px;background:#0e0a07;border:1px solid rgba(200,84,10,0.3);border-radius:4px;padding:16px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,0.8);">
+          <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;margin-bottom:10px;">Budget Automator</div>
+          <div style="font-family:var(--font-serif);font-size:14px;line-height:1.6;color:#e8dabb;">
+            <p style="margin-bottom:8px;">① Pick your quarter — Q1 is Jan–Mar, Q2 is Apr–Jun, and so on.</p>
+            <p style="margin-bottom:8px;">② This is the <strong style="color:var(--accent)">Kitchen Budget</strong> — food cost and labor only. No owner overhead, no rent. Just your two levers as a chef.</p>
+            <p style="margin-bottom:8px;">③ Start with last year's numbers for the same quarter — you know your market better than any formula does. A Sonoma restaurant in January is not the same as an Alaska restaurant in January.</p>
+            <p style="margin-bottom:8px;">④ Enter covers, avg check, days open, food %, and labor % — then hit Calculate.</p>
+            <p>Toggle the months to see each one individually. Actual columns fill in automatically as the month closes.</p>
+          </div>
+          <button onclick="document.getElementById('bgtHelp').style.display='none'" style="margin-top:12px;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;background:transparent;color:var(--ivory3);border:1px solid rgba(200,84,10,0.2);border-radius:3px;cursor:pointer;width:100%;">Got it ✕</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUARTER TABS -->
+    <div class="bgt-qtabs">
+      <button class="bgt-qtab on" id="bqt-q1" onclick="showQuarter(1)">Q1<span class="bgt-qtab-months">Jan · Feb · Mar</span></button>
+      <button class="bgt-qtab"    id="bqt-q2" onclick="showQuarter(2)">Q2<span class="bgt-qtab-months">Apr · May · Jun</span></button>
+      <button class="bgt-qtab"    id="bqt-q3" onclick="showQuarter(3)">Q3<span class="bgt-qtab-months">Jul · Aug · Sep</span></button>
+      <button class="bgt-qtab"    id="bqt-q4" onclick="showQuarter(4)">Q4<span class="bgt-qtab-months">Oct · Nov · Dec</span></button>
+    </div>
+
+    <!-- MONTH TOGGLE -->
+    <div class="bgt-mtabs" id="bgtMonthTabs" style="display:flex;gap:6px;margin-bottom:16px;padding:0 2px;">
+    </div>
+
+    <!-- BUDGET INPUTS -->
+    <div class="bgt-section">
+      <div class="bgt-section-title" id="bgtQLabel">Q1 Budget — Jan · Feb · Mar</div>
+
+      <!-- KITCHEN BUDGET LABEL -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;padding:7px 14px;background:#2f2318;border:1px solid rgba(200,84,10,0.4);border-radius:3px;">🍳 Kitchen Budget</span>
+        <span style="font-family:var(--font-serif);font-size:14px;color:var(--ivory4);font-style:italic;">Food Cost + Labor — your two levers.</span>
+      </div>
+
+      <div class="bgt-input-grid">
+        <div class="bgt-field">
+          <label>Avg Daily Covers</label>
+          <input type="number" id="bgtCovers" placeholder="e.g. 85">
+        </div>
+        <div class="bgt-field">
+          <label>Avg Check ($)</label>
+          <div class="prefix"><input type="number" id="bgtAvgCheck" placeholder="e.g. 42"></div>
+        </div>
+        <div class="bgt-field">
+          <label>Days Open / Week</label>
+          <input type="number" id="bgtDaysOpen" placeholder="6" value="6" min="1" max="7">
+        </div>
+        <div class="bgt-field">
+          <label>Food Cost Target (%)</label>
+          <div class="suffix"><input type="number" id="bgtFoodPct" placeholder="your target" min="1" max="99"></div>
+        </div>
+        <div class="bgt-field">
+          <label>Labor Cost Target (%)</label>
+          <div class="suffix"><input type="number" id="bgtLaborPct" placeholder="your target" min="1" max="99"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="bgt-actions">
+      <button class="bgt-btn-calc" onclick="calcBudget()">▶ Calculate Budget</button>
+      <button class="bgt-btn-reset" onclick="resetBudget()">Reset</button>
+    </div>
+
+    <!-- QUARTERLY SUMMARY TABLE -->
+    <div class="bgt-table-wrap" id="bgtTable" style="display:none">
+      <table class="bgt-table">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Revenue</th>
+            <th>Food Budget</th>
+            <th>Food Actual</th>
+            <th>Labor Budget</th>
+            <th>Labor Actual</th>
+            <th>Prime Cost%</th>
+            <th>Kitchen Net</th>
+          </tr>
+        </thead>
+        <tbody id="bgtTableBody"></tbody>
+      </table>
+    </div>
+
+    <!-- GEMINI READ -->
+    <div id="bgtGeminiRead" style="display:none;margin:20px 0;padding:20px 24px;background:#2f2318;border:1px solid rgba(200,84,10,0.2);border-radius:6px;">
+      <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:12px;">Mise AI · Budget Read</div>
+      <div id="bgtGeminiText" style="font-family:var(--font-serif);font-size:15px;line-height:1.7;color:#e8dabb;font-style:italic;">—</div>
+    </div>
+
+    <div class="seal-foot"><span class="chain">Budget sealed quarterly · Numbers defend your kitchen · Know your costs cold.</span></div>
+  </div>
+</div>
+
+<!-- MODALS -->
+
+<!-- ══════ P&L ══════ -->
+<div class="page" id="page-pnl">
+  <div class="pnl-wrap">
+
+    <!-- TITLE BOX -->
+    <div class="inv-toolbar">
+    </div>
+
+    <!-- VIEW TOGGLE -->
+    <div class="pnl-view-toggle">
+      <button class="pnl-view-btn on" id="pnlv-chef" onclick="pnlSetView('chef')">🔧 Chef Labor</button>
+      <button class="pnl-view-btn" id="pnlv-owner" onclick="pnlSetView('owner')">🏢 Full Owner P&amp;L</button>
+    </div>
+
+    <!-- PERIOD -->
+    <div class="pnl-period-row">
+      <span class="pnl-period-lbl">Period</span>
+      <select id="pnlMonth" onchange="renderPnl()">
+        <option value="0">January</option><option value="1">February</option><option value="2">March</option>
+        <option value="3">April</option><option value="4">May</option><option value="5">June</option>
+        <option value="6">July</option><option value="7">August</option><option value="8">September</option>
+        <option value="9">October</option><option value="10">November</option><option value="11">December</option>
+      </select>
+      <select id="pnlYear" onchange="renderPnl()">
+        <!-- populated by JS -->
+      </select>
+    </div>
+
+    <!-- ══ CHEF LABOR VIEW ══ -->
+    <div id="pnlChefView">
+      <div class="pnl-section">
+        <div class="pnl-section-h">Labor Only</div>
+        <table class="pnl-table">
+          <thead><tr><th>Line Item</th><th>Budget</th><th>Actual</th><th>Variance</th></tr></thead>
+          <tbody id="pnlChefLaborBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pnl-section">
+        <div class="pnl-section-h">Labor Metrics</div>
+        <table class="pnl-table">
+          <thead><tr><th>Metric</th><th>Target</th><th>Actual</th></tr></thead>
+          <tbody id="pnlChefMetricsBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pnl-section">
+        <div class="pnl-section-h">Chef Notes</div>
+        <div class="pnl-notes"><textarea id="pnlChefNotes" placeholder="Notes on labor, staffing, overtime causes…" oninput="pnlUpdateChefNotes(this.value)"></textarea></div>
+      </div>
+    </div>
+
+    <!-- ══ FULL OWNER VIEW ══ -->
+    <div id="pnlOwnerView" style="display:none;">
+      <div class="pnl-section">
+        <div class="pnl-section-h">Revenue</div>
+        <table class="pnl-table">
+          <thead><tr><th>Line Item</th><th>Budget</th><th>Actual</th><th>Variance</th></tr></thead>
+          <tbody id="pnlRevBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pnl-section">
+        <div class="pnl-section-h">Cost of Goods Sold</div>
+        <table class="pnl-table">
+          <thead><tr><th>Line Item</th><th>Budget</th><th>Actual</th><th>Variance</th></tr></thead>
+          <tbody id="pnlCogsBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pnl-section">
+        <div class="pnl-section-h">Gross Profit</div>
+        <table class="pnl-table">
+          <thead><tr><th></th><th>Budget</th><th>Actual</th><th>Variance</th></tr></thead>
+          <tbody id="pnlGpBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pnl-section">
+        <div class="pnl-section-h">Operating Expenses</div>
+        <table class="pnl-table">
+          <thead><tr><th>Line Item</th><th>Budget</th><th>Actual</th><th>Variance</th></tr></thead>
+          <tbody id="pnlOpexBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pnl-section">
+        <div class="pnl-section-h">Net Operating Income</div>
+        <table class="pnl-table">
+          <thead><tr><th></th><th>Budget</th><th>Actual</th><th>Variance</th></tr></thead>
+          <tbody id="pnlNoiBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pnl-section">
+        <div class="pnl-section-h">Other Income / Expense</div>
+        <table class="pnl-table">
+          <thead><tr><th>Line Item</th><th>Budget</th><th>Actual</th><th>Variance</th></tr></thead>
+          <tbody id="pnlOtherBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pnl-section">
+        <div class="pnl-section-h">Bottom Line</div>
+        <table class="pnl-table">
+          <thead><tr><th></th><th>Budget</th><th>Actual</th><th>Variance</th></tr></thead>
+          <tbody id="pnlBottomBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pnl-section">
+        <div class="pnl-section-h">Owner Notes</div>
+        <div class="pnl-notes"><textarea id="pnlOwnerNotes" placeholder="Notes for the month — context behind the variances, decisions made, plans for next month…" oninput="pnlUpdateOwnerNotes(this.value)"></textarea></div>
+      </div>
+
+      <div class="pnl-section">
+        <div class="pnl-section-h">Key Ratios <span style="font-size:11px;color:var(--ivory4);text-transform:none;letter-spacing:0;margin-left:8px;">auto-calculated</span></div>
+        <table class="pnl-table">
+          <thead><tr><th>Ratio</th><th>Target</th><th>Actual</th></tr></thead>
+          <tbody id="pnlRatiosBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- AI READ -->
+    <div id="pnlGeminiRead" style="display:none;padding:20px 24px;background:#2f2318;border:1px solid rgba(200,84,10,0.2);border-radius:6px;margin-top:4px;margin-bottom:20px;">
+      <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:12px;">Mise AI · P&amp;L Read</div>
+      <div id="pnlGeminiText" style="font-family:var(--font-serif);font-size:15px;line-height:1.7;color:#e8dabb;font-style:italic;">—</div>
+    </div>
+
+    <div class="seal-foot"><span class="chain">Every dollar accounted for · Truth before strategy · Know what you kept.</span></div>
+  </div>
+</div>
+<div class="modal-ov" id="modalAddInvoice" onclick="if(event.target===this)closeModal('modalAddInvoice')">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-ttl">Add Invoice Line</div><button class="modal-close" onclick="closeModal('modalAddInvoice')">×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Ingredient</label><input type="text" id="invName" placeholder="e.g., Salmon, fillet"></div>
+      <div class="field-row">
+        <div class="field"><label>Old Price ($/unit)</label><input type="number" step="0.01" id="invOldPrice" placeholder="0.00"></div>
+        <div class="field"><label>New Price ($/unit)</label><input type="number" step="0.01" id="invNewPrice" placeholder="0.00"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Weekly Order Qty</label><input type="number" id="invQty" placeholder="e.g., 50"></div>
+        <div class="field"><label>Unit</label><input type="text" id="invUnit" placeholder="lb, case, each..."></div>
+      </div>
+    </div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAddInvoice')">Cancel</button><button class="btn-primary" onclick="addInvoiceLine()">Add Line</button></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modalAddShift" onclick="if(event.target===this)closeModal('modalAddShift')">
+  <div class="modal">
+    <div class="modal-hdr"><div class="modal-ttl">Add Shift</div><button class="modal-close" onclick="closeModal('modalAddShift')">×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Cook Name</label><input type="text" id="shiftName" placeholder="e.g., Carlos"></div>
+      <div class="field"><label>Position</label><select id="shiftPos"><option value="k">Kitchen (BOH)</option><option value="f" disabled hidden>Front of House</option></select></div>
+      <div class="field"><label>Day</label><select id="shiftDay"><option value="0">Monday</option><option value="1">Tuesday</option><option value="2">Wednesday</option><option value="3">Thursday</option><option value="4">Friday</option><option value="5">Saturday</option><option value="6">Sunday</option></select></div>
+      <div class="field-row">
+        <div class="field"><label>Start Time</label><input type="text" id="shiftStart" placeholder="9a, 4p"></div>
+        <div class="field"><label>End Time</label><input type="text" id="shiftEnd" placeholder="3p, close"></div>
+      </div>
+      <div class="field"><label>Hourly Rate ($)</label><input type="number" step="0.25" id="shiftRate" placeholder="e.g., 22.00"></div>
+    </div>
+    <div class="modal-actions"><button class="btn-cancel" onclick="closeModal('modalAddShift')">Cancel</button><button class="btn-primary" onclick="addShift()">Add Shift</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const TODAY = new Date();
+
+// ═══ DEMO BUILD ═══ Landing-page sample. Fully interactive, completely
+// offline: no Supabase, no Cloud Run, no network calls. Nothing persists —
+// every visitor gets a fresh sample restaurant.
+const DEMO_MODE = true;
+
+let activeQuarter = 1;
+let schedShifts = {0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
+let schedWeekStart = getMonday(new Date());
+let schedBurdenPct = 20; // payroll burden % (taxes/benefits) added on top of base wages
+
+
+
+// Budget state per quarter
+const budgetData = {1:{},2:{},3:{},4:{}};
+const QUARTER_MONTHS = {
+  1:['January','February','March'],
+  2:['April','May','June'],
+  3:['July','August','September'],
+  4:['October','November','December']
+};
+
+// Real calendar days per month — Feb uses 28 (non-leap); close enough for budgeting
+const MONTH_DAYS = {
+  'January':31,'February':28,'March':31,
+  'April':30,'May':31,'June':30,
+  'July':31,'August':31,'September':30,
+  'October':31,'November':30,'December':31
+};
+
+// How many days you're actually open in a given month based on days/week setting
+function daysOpenInMonth(monthName, daysPerWeek){
+  const calDays = MONTH_DAYS[monthName] || 30;
+  return Math.round((calDays / 7) * daysPerWeek);
+}
+const QUARTER_LABELS = {
+  1:'Q1 Budget — Jan · Feb · Mar',
+  2:'Q2 Budget — Apr · May · Jun',
+  3:'Q3 Budget — Jul · Aug · Sep',
+  4:'Q4 Budget — Oct · Nov · Dec'
+};
+
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const DAYS_FULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+// ═══════════════════════════════════════
+// PERSISTENCE — saves to localStorage so data sticks across reloads
+// ═══════════════════════════════════════
+const STORAGE_KEY = 'chefApp_v1';
+
+function saveAppState(){ /* demo: nothing persists */ }
+
+function loadAppState(){ return false; } // demo: always start fresh
+
+// One-time migration: the Chef Labor tab used to save under keys 'foh'/'boh',
+// separate from the Owner P&L Opex table's 'laborFoh'/'laborBoh'. They're now
+// unified under laborFoh/laborBoh. If a saved period has old-style values and
+// the new keys are still empty, carry the old numbers over so nothing is lost.
+function migratePnlLaborKeys(){
+  Object.keys(pnlData).forEach(period=>{
+    const d = pnlData[period];
+    if(!d || !d.lines) return;
+    ['boh'].forEach((oldKey)=>{
+      const newKey = 'laborBoh';
+      const oldLine = d.lines[oldKey];
+      if(!oldLine) return;
+      if(!d.lines[newKey]) d.lines[newKey] = {b:'',a:''};
+      if(!d.lines[newKey].b && oldLine.b) d.lines[newKey].b = oldLine.b;
+      if(!d.lines[newKey].a && oldLine.a) d.lines[newKey].a = oldLine.a;
+      delete d.lines[oldKey];
+    });
+  });
+}
+
+function getMonday(d){
+  const date = new Date(d);
+  const day = date.getDay();
+  const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+  date.setDate(diff); date.setHours(0,0,0,0); return date;
+}
+
+function fmtDate(d){
+  return DAYS_FULL[(d.getDay()+6)%7] + ' · ' + MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+}
+
+function fmt$(n){ return '$'+Math.round(n).toLocaleString(); }
+function fmtPct(n){ return n.toFixed(1)+'%'; }
+
+function showToast(msg, type){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type ? ' '+type : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function showTab(id){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  document.getElementById('page-'+id).classList.add('on');
+  document.getElementById('tab-'+id).classList.add('on');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ═══════════════════════════════════════
+// MISEai — floating assistant, persists across all pages/tabs
+// ═══════════════════════════════════════
+function miseToggle(){
+  const panel = document.getElementById('miseChat');
+  panel.classList.toggle('open');
+  if(panel.classList.contains('open')){
+    setTimeout(()=>document.getElementById('miseInput').focus(), 50);
+  }
+}
+
+function miseCurrentTabLabel(){
+  const on = document.querySelector('.tab.on');
+  return on ? on.textContent.trim() : 'Dashboard';
+}
+
+function miseAppend(text, who){
+  const body = document.getElementById('miseBody');
+  const div = document.createElement('div');
+  div.className = 'mc-msg ' + who;
+  div.textContent = text;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+// Real chat — calls the same Cloud Run backend the Tier 1 recipe book uses.
+// The key lives server-side only; this page never touches Anthropic directly.
+// A compact snapshot of the dashboard's current numbers goes along with each
+// message so the model can answer about what's actually on screen.
+
+function demoDashAnswer(q){
+  q=q.toLowerCase();
+  const st=computeScheduleStats();
+  const bd=budgetData[activeQuarter]||{};
+  if(/labor|schedule|hour|staff|payroll|burden/.test(q)){
+    return `This week you have ${st.weekHours.toFixed(1)} scheduled hours — $${Math.round(st.weekLabor).toLocaleString()} in base wages, about $${Math.round(st.burden).toLocaleString()} more in payroll burden at ${schedBurdenPct}%. Today alone is $${Math.round(st.todayLabor).toLocaleString()}. In the full version I watch this against your sales as the day runs.`;
+  }
+  if(/invoice|price|vendor|salmon|food cost|ingredient/.test(q)){
+    if(invLines.length){
+      const worst=invLines.slice().sort((a,b)=>invPctChange(b)-invPctChange(a))[0];
+      const wp=invPctChange(worst);
+      return `Biggest price move on the book: ${worst.name} ${wp>0?'up':'down'} ${Math.abs(wp).toFixed(1)}% — $${worst.oldPrice.toFixed(2)} to $${worst.newPrice.toFixed(2)}/${worst.unit}. At ${worst.qty} ${worst.unit}/week that's about $${Math.abs(invDiff(worst)).toFixed(0)}/week ${invDiff(worst)>0?'out of':'back into'} your budget. Call the vendor before the next order lands.`;
+    }
+  }
+  if(/budget|revenue|prime|cover|check/.test(q) && bd.calculated){
+    return `Your ${QUARTER_LABELS[activeQuarter].split(' — ')[0]} kitchen budget runs on ${bd.covers} covers a day at a $${bd.check} average check — $${Math.round(bd.revDay).toLocaleString()}/day when you're open. Food at ${bd.foodPct}% plus labor at ${bd.laborPct}% is a ${(bd.foodPct+bd.laborPct).toFixed(1)}% prime cost. The full version tracks actuals against this automatically.`;
+  }
+  return `I'm watching this sample restaurant's Schedule, Invoices, Budget and P&L. Try "how's my labor this week," "what price jumped," or "walk me through my budget." In the paid version I'm live Haiku AI reading your real numbers in BigQuery.`;
+}
+async function miseSend(){
+  const input = document.getElementById('miseInput');
+  const val = input.value.trim();
+  if(!val) return;
+  miseAppend(val, 'user');
+  input.value = '';
+  const body=document.getElementById('miseBody');
+  const thinking=document.createElement('div');
+  thinking.className='mc-msg bot'; thinking.style.opacity='.55'; thinking.style.fontStyle='italic';
+  thinking.textContent='Thinking…'; body.appendChild(thinking); body.scrollTop=body.scrollHeight;
+  setTimeout(()=>{
+    thinking.style.opacity=''; thinking.style.fontStyle='';
+    thinking.textContent=demoDashAnswer(val);
+    body.scrollTop=body.scrollHeight;
+  },450);
+}
+
+function openModal(id){ document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+function openAddShift(){ openModal('modalAddShift'); setTimeout(() => document.getElementById('shiftName').focus(), 100); }
+
+// ═══════════════════════════════════════
+// BUDGET
+// ═══════════════════════════════════════
+function showQuarter(q){
+  activeQuarter = q;
+  activeMonth = 0;
+  document.querySelectorAll('.bgt-qtab').forEach(b => b.classList.remove('on'));
+  document.getElementById('bqt-q'+q).classList.add('on');
+  document.getElementById('bgtQLabel').textContent = QUARTER_LABELS[q];
+  const d = budgetData[q];
+  if(d.covers)   document.getElementById('bgtCovers').value   = d.covers;
+  if(d.check)    document.getElementById('bgtAvgCheck').value  = d.check;
+  if(d.days)     document.getElementById('bgtDaysOpen').value  = d.days;
+  if(d.foodPct)  document.getElementById('bgtFoodPct').value   = d.foodPct;
+  if(d.laborPct) document.getElementById('bgtLaborPct').value  = d.laborPct;
+  renderMonthToggle(); // always show month toggle for current quarter
+  if(d.calculated){ renderBudget(d); } else { hideBudgetOutputs(); }
+}
+
+function hideBudgetOutputs(){
+  ['bgtTable','bgtGeminiRead'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.style.display='none';
+  });
+  document.getElementById('bgtMonthTabs').style.display='none';
+}
+
+function calcBudget(){
+  const covers   = parseFloat(document.getElementById('bgtCovers').value) || 0;
+  const check    = parseFloat(document.getElementById('bgtAvgCheck').value) || 0;
+  const days     = parseFloat(document.getElementById('bgtDaysOpen').value) || 6;
+  const foodPct  = parseFloat(document.getElementById('bgtFoodPct').value) || 0;
+  const laborPct = parseFloat(document.getElementById('bgtLaborPct').value) || 0;
+
+  if(!covers || !check){ showToast('Enter covers and avg check to calculate','err'); return; }
+  if(!foodPct || !laborPct){ showToast('Enter your food and labor cost targets','err'); return; }
+
+  const revDay  = covers * check;   // daily revenue when open
+  const primePct = foodPct + laborPct;
+
+  const result = {
+    calculated:true, covers, check, days, foodPct, laborPct, burden:0,
+    revDay, primePct, burdenAmt:0
+  };
+
+  budgetData[activeQuarter] = result;
+  renderMonthToggle();
+  renderBudget(result);
+  showToast('Kitchen budget calculated', 'ok');
+  saveAppState();
+}
+
+let activeMonth = 0; // index within quarter (0,1,2)
+
+function renderMonthToggle(){
+  const months = QUARTER_MONTHS[activeQuarter];
+  const container = document.getElementById('bgtMonthTabs');
+  container.innerHTML = '';
+  months.forEach((m, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'bgt-qtab' + (i === activeMonth ? ' on' : '');
+    btn.style.flex = '1';
+    btn.textContent = m;
+    btn.onclick = () => { activeMonth = i; renderMonthToggle(); renderBudget(budgetData[activeQuarter]); };
+    container.appendChild(btn);
+  });
+  container.style.display = 'flex';
+}
+
+function renderBudget(r){
+  if(!r || !r.calculated) return;
+  const months   = QUARTER_MONTHS[activeQuarter];
+  const mName    = months[activeMonth];
+  const openDays = daysOpenInMonth(mName, r.days);   // real days open this month
+  const rev      = r.revDay * openDays;
+  const food     = rev * r.foodPct/100;
+  const labor    = rev * r.laborPct/100;
+  const net      = rev - food - labor;
+  const primePct = r.foodPct + r.laborPct;
+
+  // Table — only the active month
+  document.getElementById('bgtTable').style.display='block';
+  const tbody = document.getElementById('bgtTableBody');
+  tbody.innerHTML = '';
+  const netStyle = net>=0?'color:var(--greenLt)':'color:var(--redLt)';
+  tbody.innerHTML = `<tr>
+    <td>${mName}<div style="font-size:11px;color:var(--ivory4);margin-top:2px;font-family:var(--font-mono);">${openDays} days open</div></td>
+    <td>${fmt$(rev)}</td>
+    <td>${fmt$(food)}</td>
+    <td style="color:var(--ivory3)">—</td>
+    <td>${fmt$(labor)}</td>
+    <td style="color:var(--ivory3)">—</td>
+    <td>${fmtPct(primePct)}</td>
+    <td style="${netStyle}">${fmt$(net)}</td>
+  </tr>`;
+
+  // Labor budget line
+  const laborLine = document.getElementById('bgtLaborLine');
+  if(laborLine){
+    laborLine.style.display='flex';
+    document.getElementById('bgtLaborMonth').textContent = mName;
+    document.getElementById('bgtLaborAmt').textContent = fmt$(labor);
+    document.getElementById('bgtLaborCalc').textContent = fmtPct(r.laborPct) + ' of ' + fmt$(rev) + ' revenue';
+  }
+
+  // AI read
+  document.getElementById('bgtGeminiRead').style.display='block';
+  document.getElementById('bgtGeminiText').textContent = `${mName} has ${openDays} days open (${r.days} days/week). Kitchen budget: ${fmt$(food)} food (${fmtPct(r.foodPct)}) + ${fmt$(labor)} labor (${fmtPct(r.laborPct)}) = ${fmtPct(primePct)} prime cost on ${fmt$(rev)} revenue. That leaves ${fmt$(net)} before any overhead.`;
+}
+
+function resetBudget(){
+  budgetData[activeQuarter] = {};
+  hideBudgetOutputs();
+  showToast('Budget cleared', 'ok');
+  saveAppState();
+}
+
+// ═══════════════════════════════════════
+// SCHEDULE
+// ═══════════════════════════════════════
+
+// Parses a single time token like "9a", "3:30p", "close" into a 24hr decimal hour.
+// "close" is treated as 11pm — adjust here if your kitchen closes at a different time.
+function parseHourToken(tok){
+  tok = (tok||'').trim().toLowerCase();
+  if(tok === 'close') return 23;
+  const m = tok.match(/^(\d{1,2})(?::(\d{2}))?(a|p)?$/);
+  if(!m) return null;
+  let h = parseInt(m[1],10);
+  const min = m[2] ? parseInt(m[2],10) : 0;
+  const ap = m[3];
+  if(ap === 'p' && h !== 12) h += 12;
+  if(ap === 'a' && h === 12) h = 0;
+  return h + min/60;
+}
+
+// Turns a "9a-5p" style shift string into a decimal hour count (handles overnight shifts).
+function parseShiftHours(timeStr){
+  const parts = (timeStr||'').split('-');
+  if(parts.length !== 2) return 0;
+  const start = parseHourToken(parts[0]);
+  let end = parseHourToken(parts[1]);
+  if(start===null || end===null) return 0;
+  if(end <= start) end += 24;
+  return +(end-start).toFixed(2);
+}
+
+// Rolls up today's labor $, this week's burden $, and total scheduled hours.
+function computeScheduleStats(){
+  const todayIdx = (TODAY.getDay()+6)%7; // Mon=0..Sun=6, matches schedShifts keys
+  let todayLabor = 0, weekLabor = 0, weekHours = 0;
+  Object.keys(schedShifts).forEach(dayIdx=>{
+    (schedShifts[dayIdx]||[]).forEach(s=>{
+      const hrs = parseShiftHours(s.time);
+      const cost = hrs * (s.rate||0);
+      weekHours += hrs;
+      weekLabor += cost;
+      if(parseInt(dayIdx,10) === todayIdx) todayLabor += cost;
+    });
+  });
+  return { todayLabor, weekLabor, weekHours, burden: weekLabor * (schedBurdenPct/100) };
+}
+
+function onSchedBurdenChange(){
+  schedBurdenPct = parseFloat(document.getElementById('schedBurdenPct').value);
+  document.getElementById('schedBurdenPctVal').textContent = schedBurdenPct + '%';
+  updateScheduleStats();
+}
+
+function updateScheduleStats(){
+  const s = computeScheduleStats();
+  document.getElementById('schedTodayLabor').textContent = fmt$(s.todayLabor);
+  document.getElementById('schedBurden').textContent = fmt$(s.burden);
+  document.getElementById('schedTotalHours').textContent = s.weekHours.toFixed(1);
+}
+
+function renderSchedule(){
+  const grid = document.getElementById('schedGrid');
+  const weekEnd = new Date(schedWeekStart);
+  weekEnd.setDate(weekEnd.getDate()+6);
+  const dates = Array.from({length:7},(_,i)=>{ const d=new Date(schedWeekStart); d.setDate(d.getDate()+i); return d; });
+  document.getElementById('schLabel').textContent =
+    'Week of '+MONTHS[schedWeekStart.getMonth()].slice(0,3)+' '+schedWeekStart.getDate()+
+    ' – '+MONTHS[weekEnd.getMonth()].slice(0,3)+' '+weekEnd.getDate();
+  const todayKey = TODAY.toDateString();
+  let html = '<div class="sch-head"></div>';
+  dates.forEach((d,i)=>{ const it=d.toDateString()===todayKey; html+=`<div class="sch-head ${it?'today':''}">${DAYS[i]}<span class="dnum">${d.getDate()}</span></div>`; });
+  // Bucket each shift exactly once by its parsed start hour — before 3pm is
+  // the AM/Open row, 3pm onward is Dinner. (The old string-prefix filters put
+  // a "9p-close" shift in BOTH rows and dropped a "12p" shift entirely.)
+  const shiftStartHr = s => { const st = parseHourToken((s.time||'').split('-')[0]); return st===null ? 0 : st; };
+  html+='<div class="sch-row-h">AM · Open</div>';
+  dates.forEach((d,i)=>{ const it=d.toDateString()===todayKey; const sh=(schedShifts[i]||[]).filter(s=>shiftStartHr(s)<15); html+=`<div class="sch-cell ${it?'today':''}">${sh.map(s=>`<div class="sch-shift ${s.pos}"><span class="shift-who">${s.name}</span>${s.time}</div>`).join('')}</div>`; });
+  html+='<div class="sch-row-h">Dinner</div>';
+  dates.forEach((d,i)=>{ const it=d.toDateString()===todayKey; const sh=(schedShifts[i]||[]).filter(s=>shiftStartHr(s)>=15); html+=`<div class="sch-cell ${it?'today':''}">${sh.map(s=>`<div class="sch-shift ${s.pos}"><span class="shift-who">${s.name}</span>${s.time}</div>`).join('')}</div>`; });
+  grid.innerHTML = html;
+  updateScheduleStats();
+}
+
+function schedPrev(){ schedWeekStart=new Date(schedWeekStart); schedWeekStart.setDate(schedWeekStart.getDate()-7); renderSchedule(); }
+function schedNext(){ schedWeekStart=new Date(schedWeekStart); schedWeekStart.setDate(schedWeekStart.getDate()+7); renderSchedule(); }
+
+function addShift(){
+  const name=document.getElementById('shiftName').value.trim();
+  if(!name){ showToast('Enter a name','err'); return; }
+  const pos=document.getElementById('shiftPos').value;
+  const dayIdx=parseInt(document.getElementById('shiftDay').value);
+  const start=document.getElementById('shiftStart').value.trim();
+  const end=document.getElementById('shiftEnd').value.trim();
+  if(!start||!end){ showToast('Enter start + end','err'); return; }
+  const rate=parseFloat(document.getElementById('shiftRate').value)||0;
+  if(!schedShifts[dayIdx]) schedShifts[dayIdx]=[];
+  schedShifts[dayIdx].push({name,pos,time:start+'-'+end,rate});
+  ['shiftName','shiftStart','shiftEnd','shiftRate'].forEach(id=>document.getElementById(id).value='');
+  renderSchedule(); closeModal('modalAddShift'); showToast(name+' added','ok'); saveAppState();
+}
+
+// ── Export helpers ──
+function csvEscape(val){
+  const s = String(val ?? '');
+  return /[",\n]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s;
+}
+function downloadBlob(content, filename, mime){
+  const blob = new Blob([content], {type:mime});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+function fmtFileDate(d){
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function scheduleRows(){
+  const posLabel = {k:'Kitchen (BOH)', f:'Front of House'};
+  const rows = [['Day','Name','Position','Time','Hours','Rate ($/hr)','Cost ($)']];
+  DAYS_FULL.forEach((dayName,i)=>{
+    (schedShifts[i]||[]).forEach(s=>{
+      const hrs = parseShiftHours(s.time);
+      const rate = s.rate||0;
+      rows.push([dayName, s.name, posLabel[s.pos]||s.pos, s.time, hrs, rate, +(hrs*rate).toFixed(2)]);
+    });
+  });
+  return rows;
+}
+
+// Opens as a normal CSV — double-click, or File > Import in Google Sheets / Excel.
+function exportScheduleCSV(){
+  const rows = scheduleRows();
+  const csv = rows.map(r=>r.map(csvEscape).join(',')).join('\r\n');
+  downloadBlob(csv, 'schedule_'+fmtFileDate(schedWeekStart)+'.csv', 'text/csv;charset=utf-8;');
+  showToast('Schedule exported as CSV','ok');
+}
+
+// Native .xlsx via SheetJS (loaded from CDN at the top of the page).
+function exportScheduleXLSX(){
+  if(typeof XLSX === 'undefined'){ showToast('Excel export library failed to load','err'); return; }
+  const rows = scheduleRows();
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{wch:11},{wch:14},{wch:16},{wch:10},{wch:8},{wch:12},{wch:10}];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Schedule');
+  XLSX.writeFile(wb, 'schedule_'+fmtFileDate(schedWeekStart)+'.xlsx');
+  showToast('Schedule exported as Excel','ok');
+}
+
+// ── Scanner ──
+// Opens the phone camera (or file picker on desktop). Right now this just
+// captures and previews the photo — it does NOT call any AI model, since a
+// browser-only page has nowhere safe to hold an API key.
+//
+// HOOK: to make this real, send `file` to your own backend (a Supabase Edge
+// Function or Netlify Function that holds the Gemini key server-side), have
+// it return parsed shifts, then call applyScannedShifts(...) with the result:
+//
+//   const fd = new FormData(); fd.append('image', file);
+//   fetch('https://YOUR-PROJECT.functions.supabase.co/scan-schedule', { method:'POST', body:fd })
+//     .then(r => r.json())
+//     .then(data => applyScannedShifts(data.shifts));
+//
+// Expected shape for data.shifts:
+//   [{ day:0, name:'Marcus', pos:'k', time:'9a-5p', rate:24 }, ...]  (day: 0=Mon..6=Sun)
+function handleScheduleScan(e){
+  const file = e.target.files && e.target.files[0];
+  if(!file) return;
+  const url = URL.createObjectURL(file);
+  document.getElementById('schedScanImg').src = url;
+  document.getElementById('schedScanPreview').style.display = 'flex';
+  document.getElementById('schedScanStatus').textContent =
+    'Photo captured. Connect a Gemini backend (Supabase/Netlify function) to auto-read shifts from this image — see handleScheduleScan() in the code.';
+}
+
+// Call this once your backend returns parsed shifts (see hook above).
+function applyScannedShifts(parsedShifts){
+  if(!Array.isArray(parsedShifts) || !parsedShifts.length) return;
+  parsedShifts.forEach(s=>{
+    if(!schedShifts[s.day]) schedShifts[s.day]=[];
+    schedShifts[s.day].push({name:s.name, pos:s.pos||'k', time:s.time, rate:s.rate||0});
+  });
+  renderSchedule(); saveAppState();
+  showToast(parsedShifts.length+' shift(s) added from scan','ok');
+}
+
+// ═══════════════════════════════════════
+// INVOICES
+// ═══════════════════════════════════════
+let invLines = [];
+let invNextId = 1;
+let invFilter = 'all';
+
+
+
+function invPctChange(l){ return ((l.newPrice - l.oldPrice) / l.oldPrice) * 100; }
+function invDiff(l){ return (l.newPrice - l.oldPrice) * l.qty; }
+function invWeeklyImpact(l){ return invDiff(l); } // qty already framed as weekly order qty
+
+function invTrendDirection(l){
+  const h = l.history && l.history.length ? l.history : [l.oldPrice, l.newPrice];
+  if(h.length < 2) return 'flat';
+  const first = h[0], last = h[h.length-1];
+  if(last > first * 1.01) return 'up';
+  if(last < first * 0.99) return 'down';
+  return 'flat';
+}
+
+function invSparklineSVG(history){
+  const h = history && history.length ? history : [0,0];
+  const w = 54, ht = 18, pad = 2;
+  const min = Math.min(...h), max = Math.max(...h);
+  const range = (max - min) || 1;
+  const xOf = i => pad + (i/(h.length-1||1)) * (w-pad*2);
+  const yOf = v => ht - pad - ((v-min)/range) * (ht-pad*2);
+  const pts = h.map((v,i)=>`${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`).join(' ');
+  const dir = invTrendDirection({history:h});
+  const stroke = dir==='up' ? 'var(--redLt)' : dir==='down' ? 'var(--greenLt)' : 'var(--ivory3)';
+  const lastX = xOf(h.length-1), lastY = yOf(h[h.length-1]);
+  return `<svg width="${w}" height="${ht}" viewBox="0 0 ${w} ${ht}"><polyline points="${pts}" fill="none" stroke="${stroke}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${lastX.toFixed(1)}" cy="${lastY.toFixed(1)}" r="1.8" fill="${stroke}"/></svg>`;
+}
+
+function setInvFilter(f){
+  invFilter = f;
+  ['all','flagged','review'].forEach(k=>document.getElementById('invf-'+k).classList.toggle('on', k===f));
+  renderInvoices();
+}
+
+function toggleInvStatus(id){
+  const l = invLines.find(x=>x.id===id);
+  if(!l) return;
+  l.status = l.status==='accepted' ? 'disputed' : 'accepted';
+  renderInvoices();
+  saveAppState();
+}
+
+let invThresholdPct = 8; // % change that counts as "flagged" — controlled by the slider
+
+function onInvThresholdChange(){
+  invThresholdPct = parseFloat(document.getElementById('invThreshold').value);
+  document.getElementById('invThresholdVal').textContent = '+' + invThresholdPct + '%';
+  renderInvoices();
+}
+
+function renderInvoices(){
+  const tbody = document.getElementById('invTableBody');
+  const empty = document.getElementById('invEmpty');
+  const cardsWrap = document.getElementById('invCards');
+  const emptyMobile = document.getElementById('invEmptyMobile');
+
+  const RED_FLAG_PCT = invThresholdPct;
+
+  let rows = invLines.slice();
+  if(invFilter==='flagged') rows = rows.filter(l => invPctChange(l) >= RED_FLAG_PCT);
+  if(invFilter==='review')  rows = rows.filter(l => l.status==='review' || l.status==='disputed');
+
+  if(!invLines.length){
+    tbody.innerHTML = ''; cardsWrap.innerHTML = '';
+    empty.style.display = 'block'; emptyMobile.style.display = 'block';
+    empty.textContent = 'No invoice lines yet — add one to start tracking price moves.';
+    emptyMobile.textContent = 'No invoice lines yet — add one to start tracking price moves.';
+  } else if(!rows.length){
+    tbody.innerHTML = ''; cardsWrap.innerHTML = '';
+    empty.style.display = 'block'; emptyMobile.style.display = 'block';
+    empty.textContent = 'Nothing matches this filter.';
+    emptyMobile.textContent = 'Nothing matches this filter.';
+  } else {
+    empty.style.display = 'none'; emptyMobile.style.display = 'none';
+
+    const rowData = rows.map(l=>{
+      const pct = invPctChange(l);
+      const diff = invDiff(l);
+      const flagged = pct >= RED_FLAG_PCT;
+      const pctClass = pct > 0.5 ? 'up' : pct < -0.5 ? 'down' : 'flat';
+      const dir = invTrendDirection(l);
+      const arrow = dir==='up' ? '⬆️' : dir==='down' ? '⬇️' : '➡️';
+      const impact = invWeeklyImpact(l);
+      const impactClass = impact > 0 ? '' : impact < 0 ? 'pos' : 'flat';
+      const impactLabel = impact > 0
+        ? `Cost Impact: -${fmt$(Math.abs(impact))}/week from Budget`
+        : impact < 0
+          ? `Savings: +${fmt$(Math.abs(impact))}/week back to Budget`
+          : 'No budget impact';
+      const statusLabel = l.status==='accepted' ? 'Accepted' : l.status==='disputed' ? 'Disputed' : 'Review';
+      const statusClass = l.status==='accepted' ? 'accepted' : 'disputed';
+      return {l, pct, diff, flagged, pctClass, arrow, impact, impactClass, impactLabel, statusLabel, statusClass};
+    });
+
+    tbody.innerHTML = rowData.map(({l,pct,diff,flagged,pctClass,arrow,impactLabel,statusLabel,statusClass})=>
+      `<tr class="${flagged?'flagged':''}">
+        <td class="inv-td-name">${l.name}</td>
+        <td><span class="inv-price-move">$${l.oldPrice.toFixed(2)} → $${l.newPrice.toFixed(2)}/${l.unit}</span> <span class="inv-td-pct ${pctClass}">${pct>0?'+':''}${pct.toFixed(1)}%</span></td>
+        <td><span class="inv-spark">${invSparklineSVG(l.history)}<span class="inv-arrow">${arrow}</span></span></td>
+        <td><div>${impactLabel}</div></td>
+        <td><button class="inv-status ${statusClass}" onclick="toggleInvStatus(${l.id})">${statusLabel}</button></td>
+      </tr>`
+    ).join('');
+
+    cardsWrap.innerHTML = rowData.map(({l,pct,diff,flagged,pctClass,arrow,impactClass,impactLabel,statusLabel,statusClass})=>
+      `<div class="inv-card ${flagged?'flagged':''}">
+        <div class="inv-card-top">
+          <div class="inv-card-name">${l.name}</div>
+          <div class="inv-card-pct ${pctClass}">${pct>0?'+':''}${pct.toFixed(1)}%</div>
+        </div>
+        <div class="inv-card-prices"><b>$${l.oldPrice.toFixed(2)}</b> → <b>$${l.newPrice.toFixed(2)}</b> /${l.unit}</div>
+        <div class="inv-card-row">
+          <div class="inv-card-impact ${impactClass}">${impactLabel}</div>
+          <div class="inv-card-trend">${invSparklineSVG(l.history)}<span class="inv-arrow">${arrow}</span></div>
+        </div>
+        <div class="inv-card-row">
+          <button class="inv-status ${statusClass}" onclick="toggleInvStatus(${l.id})">${statusLabel}</button>
+        </div>
+      </div>`
+    ).join('');
+  }
+
+  // ── BIG THREE STATS ──
+  const total = invLines.length;
+  document.getElementById('invCount').textContent = total;
+
+  // Net spend shift: today's total diff vs a simulated 7-day average baseline
+  const todaySpend = invLines.reduce((sum,l)=> sum + l.newPrice*l.qty, 0);
+  const avgSpend7d  = invLines.reduce((sum,l)=> sum + ((l.history&&l.history.length>1) ? (l.history.reduce((a,b)=>a+b,0)/l.history.length) : l.oldPrice) * l.qty, 0);
+  const shift = todaySpend - avgSpend7d;
+  const shiftEl = document.getElementById('invSpendShift');
+  if(total){
+    shiftEl.textContent = (shift>=0?'+':'-') + '$' + Math.abs(shift).toFixed(2);
+    shiftEl.className = 'inv-stat-val ' + (shift>0?'red':shift<0?'green':'');
+  } else {
+    shiftEl.textContent = '—'; shiftEl.className = 'inv-stat-val';
+  }
+
+  // Top red flag: biggest % jump
+  const topFlagEl = document.getElementById('invTopFlag');
+  if(total){
+    const worst = invLines.slice().sort((a,b)=>invPctChange(b)-invPctChange(a))[0];
+    const wPct = invPctChange(worst);
+    if(wPct > 0){
+      topFlagEl.textContent = worst.name.split(',')[0] + ': +' + wPct.toFixed(0) + '%';
+    } else {
+      topFlagEl.textContent = 'None';
+    }
+  } else {
+    topFlagEl.textContent = '—';
+  }
+}
+
+function openAddInvoice(){ openModal('modalAddInvoice'); setTimeout(() => document.getElementById('invName').focus(), 100); }
+
+function addInvoiceLine(){
+  const name = document.getElementById('invName').value.trim();
+  const oldPrice = parseFloat(document.getElementById('invOldPrice').value);
+  const newPrice = parseFloat(document.getElementById('invNewPrice').value);
+  const qty = parseFloat(document.getElementById('invQty').value) || 1;
+  const unit = document.getElementById('invUnit').value.trim() || 'each';
+  if(!name){ showToast('Enter an ingredient name','err'); return; }
+  if(isNaN(oldPrice) || isNaN(newPrice)){ showToast('Enter both old and new price','err'); return; }
+  invLines.push({
+    id: invNextId++, name, oldPrice, newPrice, qty, unit,
+    history: [oldPrice, oldPrice, oldPrice, newPrice],
+    status: (Math.abs((newPrice-oldPrice)/oldPrice) >= 0.08) ? 'review' : 'accepted',
+    addedAt: Date.now()
+  });
+  ['invName','invOldPrice','invNewPrice','invQty','invUnit'].forEach(id=>document.getElementById(id).value='');
+  renderInvoices(); closeModal('modalAddInvoice'); showToast('Invoice line added','ok'); saveAppState();
+}
+
+// ═══════════════════════════════════════
+// END-OF-MONTH P&L  (Chef Labor / Full Owner)
+// ═══════════════════════════════════════
+
+// Line-item keys per view. Each key gets a {b:budget, a:actual} pair in pnlData[period].
+const PNL_REV_LINES   = [['foodSales','Food Sales'],['bevSales','Beverage Sales (Non-Alcoholic)'],['otherRev','Other Revenue']];
+const PNL_COGS_LINES  = [['foodCost','Food Cost'],['bevCost','Beverage Cost (Non-Alcoholic)']];
+const PNL_OPEX_LINES  = [
+  // FOH labor arrives with Tier 3 FOH integration — this tier is kitchen-only.
+  ['laborBoh','Labor — Kitchen (BOH)'],
+  ['payrollTax','Payroll Taxes & Benefits'],['rent','Rent / Lease'],['utils','Utilities'],
+  ['mkt','Marketing'],['repairs','Repairs & Maintenance'],['supplies','Supplies & Smallwares'],
+  ['ins','Insurance'],['permits','Licenses & Permits'],['prof','Professional Services'],
+  ['ccFees','Credit Card Fees'],['otherOpex','Other Operating Expenses']
+];
+const PNL_OTHER_LINES = [['intInc','Interest Income'],['intExp','Interest Expense (enter as positive)'],['deprec','Depreciation (enter as positive)'],['otherIE','Other']];
+// NOTE: these keys are intentionally the SAME as laborFoh/laborBoh in PNL_OPEX_LINES above.
+// Chef Labor tab and Owner P&L Opex table both read/write the same underlying numbers,
+// so labor entered in one view shows up correctly in the other (Opex total, ratios, etc).
+const PNL_CHEF_LINES  = [['laborBoh','Kitchen Labor (BOH)']];
+
+const pnlData = {};    // keyed by 'YYYY-M' -> { lines: {key:{b,a}}, chefNotes, ownerNotes, laborPctTarget:{b,a}, coversPerHr:{b,a}, otHours:{a} }
+let pnlActiveView = 'chef';
+
+function pnlPeriodKey(){
+  const m = document.getElementById('pnlMonth').value;
+  const y = document.getElementById('pnlYear').value;
+  return y+'-'+m;
+}
+
+function pnlEnsurePeriod(key){
+  if(!pnlData[key]) pnlData[key] = { lines:{}, chefNotes:'', ownerNotes:'' };
+  return pnlData[key];
+}
+
+function pnlNum(v){ const n = parseFloat(v); return isNaN(n) ? 0 : n; }
+
+function pnlSetView(view){
+  pnlActiveView = view;
+  document.getElementById('pnlv-chef').classList.toggle('on', view==='chef');
+  document.getElementById('pnlv-owner').classList.toggle('on', view==='owner');
+  document.getElementById('pnlChefView').style.display  = view==='chef' ? '' : 'none';
+  document.getElementById('pnlOwnerView').style.display = view==='owner' ? '' : 'none';
+  renderPnl();
+}
+
+// Builds one Budget/Actual/Variance row with live-editable inputs bound to pnlData.
+// opts.cost flips the variance color: for expense lines, running OVER budget
+// (positive variance) is bad and shows red; for revenue lines it stays green.
+function pnlRow(period, key, label, opts={}){
+  const d = pnlEnsurePeriod(period);
+  if(!d.lines[key]) d.lines[key] = {b:'', a:''};
+  const bVal = d.lines[key].b;
+  const aVal = d.lines[key].a;
+  const b = pnlNum(bVal), a = pnlNum(aVal);
+  const variance = a - b;
+  const good = opts.cost ? variance<0 : variance>0;
+  const varClass = variance===0 ? 'pnl-var-zero' : (good ? 'pnl-var-pos' : 'pnl-var-neg');
+  const varSign = variance>0 ? '+' : '';
+  const rowCls = opts.total ? ' class="pnl-total"' : '';
+  return `<tr${rowCls}>
+    <td>${label}</td>
+    <td><input type="number" value="${bVal}" placeholder="0" oninput="pnlUpdate('${key}','b',this.value)"></td>
+    <td><input type="number" value="${aVal}" placeholder="0" oninput="pnlUpdate('${key}','a',this.value)"></td>
+    <td class="num ${varClass}">${varSign}${fmt$(variance)}</td>
+  </tr>`;
+}
+
+// Read-only computed row (totals, %, ratios) — no inputs. opts.cost as above.
+function pnlCalcRow(label, b, a, opts={}){
+  const variance = a - b;
+  const good = opts.cost ? variance<0 : variance>0;
+  const varClass = variance===0 ? 'pnl-var-zero' : (good ? 'pnl-var-pos' : 'pnl-var-neg');
+  const varSign = variance>0 ? '+' : '';
+  const isPct = opts.pct;
+  const fmt = v => isPct ? v.toFixed(1)+'%' : fmt$(v);
+  const rowCls = opts.total ? ' class="pnl-total"' : '';
+  return `<tr${rowCls}>
+    <td>${label}</td>
+    <td class="num">${fmt(b)}</td>
+    <td class="num">${fmt(a)}</td>
+    <td class="num ${varClass}">${varSign}${fmt(variance)}</td>
+  </tr>`;
+}
+
+function pnlUpdate(key, field, value){
+  const period = pnlPeriodKey();
+  const d = pnlEnsurePeriod(period);
+  if(!d.lines[key]) d.lines[key] = {b:'',a:''};
+  d.lines[key][field] = value;
+  saveAppState();
+  renderPnl();
+}
+
+function pnlSum(d, keys, field){
+  return keys.reduce((s,[k]) => s + pnlNum(d.lines[k] && d.lines[k][field]), 0);
+}
+
+function pnlPopulateYears(){
+  const sel = document.getElementById('pnlYear');
+  if(sel.options.length) return;
+  const curYear = TODAY.getFullYear();
+  for(let y = curYear-1; y <= curYear+1; y++){
+    const opt = document.createElement('option');
+    opt.value = y; opt.textContent = y;
+    if(y===curYear) opt.selected = true;
+    sel.appendChild(opt);
+  }
+}
+
+function renderPnl(){
+  // Preserve focus + cursor position + selection across the innerHTML rebuild below,
+  // since every keystroke in a P&L input triggers a full table re-render (for live variance calc).
+  const active = document.activeElement;
+  let restoreInfo = null;
+  if(active && active.tagName === 'INPUT' && active.closest('.pnl-table')){
+    const tbody = active.closest('tbody');
+    if(tbody && tbody.id){
+      restoreInfo = {
+        tbodyId: tbody.id,
+        rowIndex: Array.prototype.indexOf.call(tbody.children, active.closest('tr')),
+        cellIndex: Array.prototype.indexOf.call(active.closest('tr').children, active.closest('td')),
+        selStart: active.selectionStart,
+        selEnd: active.selectionEnd
+      };
+    }
+  }
+
+  pnlPopulateYears();
+  const period = pnlPeriodKey();
+  const d = pnlEnsurePeriod(period);
+
+  // ── CHEF LABOR VIEW ──
+  let laborHtml = '';
+  PNL_CHEF_LINES.forEach(([k,label]) => laborHtml += pnlRow(period, k, label, {cost:true}));
+  const bohB = pnlNum(d.lines.laborBoh && d.lines.laborBoh.b), bohA = pnlNum(d.lines.laborBoh && d.lines.laborBoh.a);
+  const totLaborB = bohB, totLaborA = bohA;
+  laborHtml += pnlCalcRow('Total Labor', totLaborB, totLaborA, {total:true, cost:true});
+  document.getElementById('pnlChefLaborBody').innerHTML = laborHtml;
+
+  if(!d.metrics) d.metrics = {salesB:'',salesA:'',coversPerHrB:'',coversPerHrA:'',otA:''};
+  let metricsHtml = '';
+  const laborPctB = pnlNum(d.metrics.salesB) > 0 ? (totLaborB/pnlNum(d.metrics.salesB)*100) : 0;
+  const laborPctA = pnlNum(d.metrics.salesA) > 0 ? (totLaborA/pnlNum(d.metrics.salesA)*100) : 0;
+  metricsHtml += `<tr>
+    <td>Labor % of Sales <span style="font-size:11px;color:var(--ivory4);">(needs Sales below)</span></td>
+    <td class="num">${laborPctB.toFixed(1)}%</td>
+    <td class="num">${laborPctA.toFixed(1)}%</td>
+  </tr>`;
+  metricsHtml += `<tr>
+    <td>Sales (Budget / Actual)</td>
+    <td><input type="number" value="${d.metrics.salesB}" placeholder="0" oninput="pnlUpdateMetric('salesB',this.value)"></td>
+    <td><input type="number" value="${d.metrics.salesA}" placeholder="0" oninput="pnlUpdateMetric('salesA',this.value)"></td>
+  </tr>`;
+  metricsHtml += `<tr>
+    <td>Covers per Labor Hour</td>
+    <td><input type="number" value="${d.metrics.coversPerHrB}" placeholder="0" oninput="pnlUpdateMetric('coversPerHrB',this.value)"></td>
+    <td><input type="number" value="${d.metrics.coversPerHrA}" placeholder="0" oninput="pnlUpdateMetric('coversPerHrA',this.value)"></td>
+  </tr>`;
+  metricsHtml += `<tr>
+    <td>Overtime Hours</td>
+    <td class="num">—</td>
+    <td><input type="number" value="${d.metrics.otA}" placeholder="0" oninput="pnlUpdateMetric('otA',this.value)"></td>
+  </tr>`;
+  document.getElementById('pnlChefMetricsBody').innerHTML = metricsHtml;
+  document.getElementById('pnlChefNotes').value = d.chefNotes || '';
+
+  // ── FULL OWNER VIEW ──
+  let revHtml = '';
+  PNL_REV_LINES.forEach(([k,label]) => revHtml += pnlRow(period, k, label));
+  const totRevB = pnlSum(d, PNL_REV_LINES, 'b'), totRevA = pnlSum(d, PNL_REV_LINES, 'a');
+  revHtml += pnlCalcRow('Total Revenue', totRevB, totRevA, {total:true});
+  document.getElementById('pnlRevBody').innerHTML = revHtml;
+
+  let cogsHtml = '';
+  PNL_COGS_LINES.forEach(([k,label]) => cogsHtml += pnlRow(period, k, label, {cost:true}));
+  const totCogsB = pnlSum(d, PNL_COGS_LINES, 'b'), totCogsA = pnlSum(d, PNL_COGS_LINES, 'a');
+  cogsHtml += pnlCalcRow('Total COGS', totCogsB, totCogsA, {total:true, cost:true});
+  document.getElementById('pnlCogsBody').innerHTML = cogsHtml;
+
+  const gpB = totRevB - totCogsB, gpA = totRevA - totCogsA;
+  const gpPctB = totRevB > 0 ? gpB/totRevB*100 : 0, gpPctA = totRevA > 0 ? gpA/totRevA*100 : 0;
+  let gpHtml = pnlCalcRow('Gross Profit', gpB, gpA, {total:true});
+  gpHtml += pnlCalcRow('Gross Profit %', gpPctB, gpPctA, {pct:true});
+  document.getElementById('pnlGpBody').innerHTML = gpHtml;
+
+  let opexHtml = '';
+  PNL_OPEX_LINES.forEach(([k,label]) => opexHtml += pnlRow(period, k, label, {cost:true}));
+  const totOpexB = pnlSum(d, PNL_OPEX_LINES, 'b'), totOpexA = pnlSum(d, PNL_OPEX_LINES, 'a');
+  opexHtml += pnlCalcRow('Total Operating Expenses', totOpexB, totOpexA, {total:true, cost:true});
+  document.getElementById('pnlOpexBody').innerHTML = opexHtml;
+
+  const noiB = gpB - totOpexB, noiA = gpA - totOpexA;
+  const noiPctB = totRevB > 0 ? noiB/totRevB*100 : 0, noiPctA = totRevA > 0 ? noiA/totRevA*100 : 0;
+  let noiHtml = pnlCalcRow('Net Operating Income', noiB, noiA, {total:true});
+  noiHtml += pnlCalcRow('Net Operating Income %', noiPctB, noiPctA, {pct:true});
+  document.getElementById('pnlNoiBody').innerHTML = noiHtml;
+
+  let otherHtml = '';
+  PNL_OTHER_LINES.forEach(([k,label]) => otherHtml += pnlRow(period, k, label));
+  document.getElementById('pnlOtherBody').innerHTML = otherHtml;
+  const otherNetB = pnlNum(d.lines.intInc&&d.lines.intInc.b) - pnlNum(d.lines.intExp&&d.lines.intExp.b) - pnlNum(d.lines.deprec&&d.lines.deprec.b) + pnlNum(d.lines.otherIE&&d.lines.otherIE.b);
+  const otherNetA = pnlNum(d.lines.intInc&&d.lines.intInc.a) - pnlNum(d.lines.intExp&&d.lines.intExp.a) - pnlNum(d.lines.deprec&&d.lines.deprec.a) + pnlNum(d.lines.otherIE&&d.lines.otherIE.a);
+
+  const netB = noiB + otherNetB, netA = noiA + otherNetA;
+  const netPctB = totRevB > 0 ? netB/totRevB*100 : 0, netPctA = totRevA > 0 ? netA/totRevA*100 : 0;
+  let bottomHtml = pnlCalcRow('Net Income (Before Tax)', netB, netA, {total:true});
+  bottomHtml += pnlCalcRow('Net Income %', netPctB, netPctA, {pct:true});
+  document.getElementById('pnlBottomBody').innerHTML = bottomHtml;
+
+  document.getElementById('pnlOwnerNotes').value = d.ownerNotes || '';
+
+  // Key ratios
+  const laborTotalB = pnlNum(d.lines.laborBoh&&d.lines.laborBoh.b);
+  const laborTotalA = pnlNum(d.lines.laborBoh&&d.lines.laborBoh.a);
+  const primeCostPctA = totRevA > 0 ? ((totCogsA+laborTotalA)/totRevA*100) : 0;
+  const foodCostPctA  = totRevA > 0 ? (pnlNum(d.lines.foodCost&&d.lines.foodCost.a)/totRevA*100) : 0;
+  const laborCostPctA = totRevA > 0 ? (laborTotalA/totRevA*100) : 0;
+  const cmPctA = totRevA > 0 ? (gpA-laborTotalA)/totRevA : 0; // contribution margin for breakeven
+  // Fixed/semi-fixed costs for break-even: everything in Opex except the two
+  // labor lines (labor scales with hours worked, not treated as fixed here).
+  const fixedCostKeys = PNL_OPEX_LINES.filter(([k]) => k!=='laborBoh');
+  const fixedCostsA = pnlSum(d, fixedCostKeys, 'a');
+  const breakevenA = cmPctA > 0 ? fixedCostsA / cmPctA : 0;
+
+  let ratiosHtml = '';
+  ratiosHtml += `<tr><td>Prime Cost % (COGS + Labor)</td><td class="pnl-ratio-target">60–65%</td><td class="num">${primeCostPctA.toFixed(1)}%</td></tr>`;
+  ratiosHtml += `<tr><td>Food Cost %</td><td class="pnl-ratio-target">28–32%</td><td class="num">${foodCostPctA.toFixed(1)}%</td></tr>`;
+  ratiosHtml += `<tr><td>Kitchen Labor %</td><td class="pnl-ratio-target">≤32%</td><td class="num">${laborCostPctA.toFixed(1)}%</td></tr>`;
+  ratiosHtml += `<tr><td>Break-even Sales</td><td class="pnl-ratio-target">—</td><td class="num">${breakevenA>0?fmt$(breakevenA):'—'}</td></tr>`;
+  document.getElementById('pnlRatiosBody').innerHTML = ratiosHtml;
+
+  // AI read
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const mName = MONTHS[parseInt(document.getElementById('pnlMonth').value)||0];
+  const aiEl = document.getElementById('pnlGeminiRead');
+  const aiText = document.getElementById('pnlGeminiText');
+  if(totRevA || totRevB){
+    aiEl.style.display = 'block';
+    if(pnlActiveView==='chef'){
+      aiText.textContent = `${mName}: labor actual ran ${fmt$(totLaborA)} vs a ${fmt$(totLaborB)} budget (${totLaborA-totLaborB>=0?'+':''}${fmt$(totLaborA-totLaborB)}). Labor came in at ${laborPctA.toFixed(1)}% of sales.`;
+    } else {
+      aiText.textContent = `${mName}: actual revenue ${fmt$(totRevA)} vs ${fmt$(totRevB)} budgeted (${totRevA-totRevB>=0?'+':''}${fmt$(totRevA-totRevB)}). Net income ${fmt$(netA)} (${netPctA.toFixed(1)}%), prime cost ${primeCostPctA.toFixed(1)}%.`;
+    }
+  } else {
+    aiEl.style.display = 'none';
+  }
+
+  // Restore focus/cursor if we captured it before the rebuild
+  if(restoreInfo){
+    const tbody = document.getElementById(restoreInfo.tbodyId);
+    const row = tbody && tbody.children[restoreInfo.rowIndex];
+    const cell = row && row.children[restoreInfo.cellIndex];
+    const input = cell && cell.querySelector('input');
+    if(input){
+      input.focus();
+      // setSelectionRange isn't supported on type=number inputs in most browsers — guard with try/catch
+      if(typeof restoreInfo.selStart === 'number'){
+        try{ input.setSelectionRange(restoreInfo.selStart, restoreInfo.selEnd); }catch(e){}
+      }
+    }
+  }
+}
+
+function pnlUpdateMetric(field, value){
+  const period = pnlPeriodKey();
+  const d = pnlEnsurePeriod(period);
+  if(!d.metrics) d.metrics = {salesB:'',salesA:'',coversPerHrB:'',coversPerHrA:'',otA:''};
+  d.metrics[field] = value;
+  saveAppState();
+  renderPnl();
+}
+
+function pnlUpdateChefNotes(val){
+  const period = pnlPeriodKey();
+  pnlEnsurePeriod(period).chefNotes = val;
+  saveAppState();
+}
+function pnlUpdateOwnerNotes(val){
+  const period = pnlPeriodKey();
+  pnlEnsurePeriod(period).ownerNotes = val;
+  saveAppState();
+}
+
+
+// ═══ DEMO SAMPLE DATA — a believable small independent restaurant ═══
+function seedDemoData(){
+  // Schedule — a real BOH week
+  schedShifts = {
+    0:[{name:'Marcus',pos:'k',time:'9a-3p',rate:24},{name:'Rosa',pos:'k',time:'3p-close',rate:22}],
+    1:[{name:'Carlos',pos:'k',time:'9a-3p',rate:21},{name:'Rosa',pos:'k',time:'3p-close',rate:22}],
+    2:[{name:'Marcus',pos:'k',time:'9a-3p',rate:24},{name:'Miguel',pos:'k',time:'3p-close',rate:20}],
+    3:[{name:'Carlos',pos:'k',time:'9a-3p',rate:21},{name:'Rosa',pos:'k',time:'3p-close',rate:22},{name:'Dani',pos:'k',time:'4p-10p',rate:19}],
+    4:[{name:'Marcus',pos:'k',time:'9a-3p',rate:24},{name:'Miguel',pos:'k',time:'3p-close',rate:20},{name:'Dani',pos:'k',time:'4p-close',rate:19}],
+    5:[{name:'Marcus',pos:'k',time:'10a-4p',rate:24},{name:'Rosa',pos:'k',time:'3p-close',rate:22},{name:'Carlos',pos:'k',time:'4p-close',rate:21}],
+    6:[{name:'Miguel',pos:'k',time:'10a-4p',rate:20},{name:'Dani',pos:'k',time:'3p-9p',rate:19}]
+  };
+  // Invoices — the price moves that actually happen
+  invLines = [
+    {id:1,name:'Salmon, fillet',oldPrice:9.20,newPrice:10.85,qty:50,unit:'lb',history:[9.20,9.20,9.45,10.85],status:'review',addedAt:Date.now()},
+    {id:2,name:'Heirloom tomatoes',oldPrice:3.40,newPrice:3.80,qty:60,unit:'lb',history:[3.25,3.40,3.55,3.80],status:'review',addedAt:Date.now()},
+    {id:3,name:'Chicken, whole',oldPrice:2.10,newPrice:2.16,qty:80,unit:'lb',history:[2.10,2.10,2.12,2.16],status:'accepted',addedAt:Date.now()},
+    {id:4,name:'Butter, unsalted',oldPrice:4.60,newPrice:4.42,qty:36,unit:'lb',history:[4.75,4.60,4.50,4.42],status:'accepted',addedAt:Date.now()},
+    {id:5,name:'Flour, AP',oldPrice:0.62,newPrice:0.62,qty:100,unit:'lb',history:[0.62,0.62,0.62,0.62],status:'accepted',addedAt:Date.now()}
+  ];
+  invNextId = 6;
+  // Budget — Q3 pre-calculated so the tab lands alive
+  activeQuarter = 3;
+  budgetData[3] = {calculated:true,covers:85,check:42,days:6,foodPct:29,laborPct:30,burden:0,revDay:85*42,primePct:59,burdenAmt:0};
+  // P&L — this month, filled in like a real close
+  const pk = TODAY.getFullYear()+'-'+TODAY.getMonth();
+  pnlData[pk] = {
+    lines:{
+      foodSales:{b:'82000',a:'86400'}, bevSales:{b:'24000',a:'25100'}, otherRev:{b:'1500',a:'1180'},
+      foodCost:{b:'23800',a:'25900'}, bevCost:{b:'6200',a:'6050'},
+      laborBoh:{b:'17800',a:'18400'},
+      payrollTax:{b:'6400',a:'6600'}, rent:{b:'9500',a:'9500'}, utils:{b:'2400',a:'2610'},
+      mkt:{b:'800',a:'640'}, repairs:{b:'900',a:'1420'}, supplies:{b:'1100',a:'1050'},
+      ins:{b:'1350',a:'1350'}, permits:{b:'220',a:'220'}, prof:{b:'600',a:'600'},
+      ccFees:{b:'2650',a:'2790'}, otherOpex:{b:'500',a:'380'},
+      intInc:{b:'0',a:'0'}, intExp:{b:'450',a:'450'}, deprec:{b:'1200',a:'1200'}, otherIE:{b:'0',a:'0'}
+    },
+    metrics:{salesB:'106000',salesA:'111500',coversPerHrB:'3.2',coversPerHrA:'3.4',otA:'11'},
+    chefNotes:'Salmon jump hit food cost hard mid-month — switched two features to chicken and shoulder cuts for the back half. Rosa covered three of Miguel\'s closes; OT is hers. (Kitchen labor only — FOH tracking comes with the next tier.)',
+    ownerNotes:'Strong month on the top line. Food cost ran a point hot on the salmon spike; already re-featured. Repairs line is the walk-in compressor — one-time.'
+  };
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('headerDate').textContent = fmtDate(TODAY);
+  const wkEnd = new Date(getMonday(TODAY)); wkEnd.setDate(wkEnd.getDate()+6);
+  const wkSub = document.getElementById('wkSubDate');
+  if(wkSub) wkSub.textContent='Over Your Morning Cup Of Coffee';
+
+  // Set P&L month to current month
+  const pnlMonthEl = document.getElementById('pnlMonth');
+  if(pnlMonthEl) pnlMonthEl.value = TODAY.getMonth();
+
+  // Demo build: seed a full sample restaurant on every load.
+  seedDemoData();
+
+  renderSchedule();
+  renderInvoices();
+  renderPnl();
+  loadDailyBrief();
+
+  // Auto-calculate the current quarter's budget if it has saved inputs but
+  // hasn't been calculated yet (e.g. first run with default form values).
+  const curQ = QUARTER_MONTHS[activeQuarter] ? activeQuarter : 1;
+  document.querySelectorAll('.bgt-qtab').forEach(x=>x.classList.remove('on'));
+  const qbtn=document.getElementById('bqt-q'+curQ); if(qbtn) qbtn.classList.add('on');
+  document.getElementById('bgtQLabel').textContent = QUARTER_LABELS[curQ];
+  const qd=budgetData[curQ]||{};
+  if(qd.covers)   document.getElementById('bgtCovers').value   = qd.covers;
+  if(qd.check)    document.getElementById('bgtAvgCheck').value  = qd.check;
+  if(qd.days)     document.getElementById('bgtDaysOpen').value  = qd.days;
+  if(qd.foodPct)  document.getElementById('bgtFoodPct').value   = qd.foodPct;
+  if(qd.laborPct) document.getElementById('bgtLaborPct').value  = qd.laborPct;
+  renderMonthToggle();
+  if(qd.calculated){
+    renderBudget(qd);
+  } else {
+    hideBudgetOutputs();
+  }
+  updateWeeklyTiles();
+});
+
+// ── DAILY BRIEF ──
+// Pulls the real morning brief (mise-writer pipeline) from the Cloud Run
+// backend. If it isn't reachable or the endpoint isn't live yet, the page
+// keeps its placeholder copy — the Daily never breaks, it just isn't live.
+// Expected response shape (all fields optional):
+//   { headline, glance, lead_paragraphs:[...], last_night_paragraphs:[...],
+//     number_of_day:{title,body}, weather:{title,body},
+//     watch:{title,body}, stick:{title,body}, actions:[{title,why}] (max 3) }
+function escT(t){ return String(t??''); } // textContent used below — no HTML injection possible
+async function loadDailyBrief(){ /* demo: sample brief is baked into the page */ }
+
+// Populate the Weekly page's number tiles (Prime Cost, Labor vs Sales,
+// Inventory vs Actual) from the current quarter's calculated budget + invoice data.
+function updateWeeklyTiles(){
+  const tiles = document.querySelectorAll('.wk-num-grid .wk-num');
+  if(!tiles.length) return;
+  const r = budgetData[activeQuarter];
+  if(r && r.calculated){
+    const revWeek   = r.revDay * r.days;
+    const primeWeek = revWeek * r.primePct/100;
+
+    // Prime Cost tile
+    const primeVal = tiles[2].querySelector('.wk-num-val');
+    const primeTrend = tiles[2].querySelector('.wk-num-trend');
+    if(primeVal){ primeVal.textContent = r.primePct.toFixed(1) + '%'; }
+    if(primeTrend){ primeTrend.textContent = fmt$(primeWeek) + ' / week'; primeTrend.className='wk-num-trend'; }
+
+    // Labor vs Sales tile
+    const laborVal = tiles[0].querySelector('.wk-num-val');
+    const laborTrend = tiles[0].querySelector('.wk-num-trend');
+    if(laborVal){ laborVal.textContent = r.laborPct.toFixed(1) + '%'; }
+    if(laborTrend){
+      const under = r.laborPct <= 32;
+      laborTrend.textContent = (under?'▼ ':'▲ ') + 'Target 32%';
+      laborTrend.className = 'wk-num-trend ' + (under?'up':'down');
+    }
+  }
+
+  // Inventory vs Actual tile — driven by invoice price variance data
+  if(invLines.length){
+    const totalOld = invLines.reduce((s,l)=>s + l.oldPrice*l.qty, 0);
+    const totalNew = invLines.reduce((s,l)=>s + l.newPrice*l.qty, 0);
+    const diffPct = totalOld ? ((totalNew-totalOld)/totalOld)*100 : 0;
+    const invVal = tiles[1].querySelector('.wk-num-val');
+    const invTrend = tiles[1].querySelector('.wk-num-trend');
+    if(invVal){ invVal.textContent = (diffPct>=0?'+':'') + diffPct.toFixed(1) + '%'; }
+    if(invTrend){
+      invTrend.textContent = (diffPct>0?'▲ Over expected':diffPct<0?'▼ Under expected':'On target');
+      invTrend.className = 'wk-num-trend ' + (diffPct>0?'down':diffPct<0?'up':'');
+    }
+  }
+}
+</script>
+</body>
+</html>
