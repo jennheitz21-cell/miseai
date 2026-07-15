@@ -587,6 +587,35 @@ input,select,textarea,button{font-family:inherit;}
 /* tab strip stays dark; active tab glows */
 .tab{color:#a89272;}
 .on,.tab.on{background:#2f2318 !important;color:#f07840 !important;}
+
+/* ===== SKIN v3 — full light (Mikey's inversion) =====
+   Page: white-cream. Boxes: light bark tan. Fonts: dark bark.
+   Important numbers: orange side-border + orange inside. */
+body{background:#faf3e3 !important;color:#241a13 !important;}
+/* header + tab strip go light */
+header,.hdr,.topbar,.brand{background:#f0e6d4 !important;color:#241a13 !important;border-color:rgba(138,50,6,.3) !important;}
+.brand-main{color:#c8540a !important;}
+.tabs{background:#ece0c8 !important;border-bottom:2px solid rgba(138,50,6,.35) !important;}
+.tab{color:#5c4936 !important;background:transparent !important;text-shadow:none !important;}
+.on,.tab.on{background:#faf3e3 !important;color:#c8540a !important;border-color:#c8540a !important;box-shadow:none !important;text-shadow:none !important;}
+/* boxes: light bark tan, dark ink */
+.k,.inv-stat,.sch-shift,.today,.wk-num,.wk-quote,.wk-lead-callout,.pnl-section,.pnl-masthead,.wk-masthead,.wk-foot,.sch-toolbar,.sch-io,.modal,.mc-head{background:#e8dabb !important;border:1px solid rgba(138,50,6,.28) !important;box-shadow:0 2px 6px rgba(60,40,20,.12) !important;color:#241a13 !important;}
+.wk-col{background:#f0e6d4 !important;border-left:1px solid rgba(138,50,6,.25) !important;border-right:1px solid rgba(138,50,6,.25) !important;}
+.k *,.inv-stat *,.sch-shift *,.today *,.pnl-section *,.pnl-masthead *{color:#241a13 !important;}
+/* schedule grid + tables light */
+.sch-grid,.sch-head,.sch-cell,.sch-row-h{background:#f0e6d4 !important;border-color:rgba(138,50,6,.2) !important;color:#241a13 !important;}
+.sch-head *,.sch-cell *,.sch-row-h *{color:#241a13 !important;}
+table,tbody,thead,tr,th,td{background:transparent !important;color:#241a13 !important;border-color:rgba(138,50,6,.18) !important;}
+th{color:#5c4936 !important;}
+/* inputs light */
+input,select,textarea{background:#fffdf6 !important;color:#241a13 !important;border:1px solid rgba(138,50,6,.35) !important;}
+/* IMPORTANT NUMBERS: orange side border + orange inside */
+.k,.inv-stat,.today{border-left:4px solid #c8540a !important;}
+.inv-stat-val,.k .shift-who,.today .dnum,.wk-num-val,.wk-action-num{color:#c8540a !important;font-weight:700 !important;}
+/* keep good/bad signals legible on light */
+.good{color:#1a7a30 !important;}
+/* buttons */
+button,.btn,.sch-io-btn,.sch-add,.pnl-view-btn{background:#f0e6d4 !important;color:#8a3206 !important;border:1px solid rgba(138,50,6,.4) !important;text-shadow:none !important;}
 </style>
 </head>
 <body>
