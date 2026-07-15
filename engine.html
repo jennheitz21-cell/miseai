@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mise.AI — The Engine Room: how it works & what you'll bring</title>
+<meta name="description" content="How Mise.AI actually works, told plain — the overnight brigade, the invoice sniffer, the pars that adjust themselves, and the short list of what you bring on day one." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --midnight:#0e0906; --bark:#1c1410; --espresso:#241a13; --walnut:#332319;
+    --deep:#8a3206; --brand:#c8540a; --bright:#e06020; --hot:#f07840; --warm:#f8a070;
+    --parchment:#f2e8d5; --cream:#faf3e3; --ink:#231508;
+    --disp:'Anton',sans-serif; --body:'Fraunces',Georgia,serif; --mono:'JetBrains Mono',monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--midnight);
+    background-image:radial-gradient(ellipse 80% 50% at 50% -5%, rgba(240,120,64,.14), transparent 60%),
+    linear-gradient(var(--midnight), var(--bark) 50%, var(--midnight));
+    color:var(--parchment);font-family:var(--body);font-size:18px;line-height:1.7}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(14,9,6,.92);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--walnut);display:flex;justify-content:space-between;align-items:center;
+    padding:14px 22px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+  .flame{color:var(--hot);font-weight:700}
+  .topbar a{color:var(--cream);text-decoration:none;border:1px solid var(--brand);padding:12px 20px;font-size:13px}
+  .topbar a:hover{background:var(--brand)}
+  .wrap{max-width:820px;margin:0 auto;padding:0 22px}
+  .head{padding:68px 0 20px;text-align:center}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--warm);margin-bottom:14px}
+  h1{font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(36px,6.5vw,62px);line-height:1;color:var(--cream)}
+  h1 .fire{color:var(--hot);text-shadow:0 0 30px rgba(240,120,64,.35)}
+  .lede{color:#cdbfa8;max-width:620px;margin:20px auto 0;font-size:19px}
+  section{padding:56px 0}
+  h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;font-size:clamp(26px,4.5vw,40px);color:var(--cream);margin-bottom:18px;line-height:1.05}
+  h2 .o{color:var(--hot)}
+  p{margin-bottom:18px;color:#d8cbb4}
+  strong{color:var(--warm)}
+  em{font-style:italic}
+
+  /* bring list — cream card */
+  .bring{background:var(--cream);color:var(--ink);padding:34px 32px;
+    box-shadow:0 24px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(138,50,6,.2)}
+  .bring h3{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--deep);border-bottom:2px solid var(--deep);padding-bottom:10px;margin-bottom:18px}
+  .bring ol{list-style:none;counter-reset:b}
+  .bring li{counter-increment:b;padding:14px 0 14px 52px;position:relative;border-bottom:1px dotted #d8c8a8;font-size:17px;color:#3d2d1a}
+  .bring li:last-child{border-bottom:none}
+  .bring li::before{content:counter(b);position:absolute;left:0;top:10px;
+    font-family:var(--disp);font-size:30px;color:var(--brand)}
+  .bring li b{color:var(--deep)}
+  .bring .why{font-size:14.5px;color:#7a6142;display:block;margin-top:4px}
+
+  /* brigade cards */
+  .crew{display:grid;gap:18px;margin-top:8px}
+  .member{background:var(--espresso);border:1px solid var(--walnut);border-left:4px solid var(--brand);padding:24px 26px}
+  .member .role{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--hot);margin-bottom:8px}
+  .member h3{font-weight:900;font-size:21px;color:var(--warm);margin-bottom:8px;font-family:var(--body)}
+  .member p{font-size:16px;margin-bottom:0;color:#cdbfa8}
+  .pull{border-left:3px solid var(--brand);padding:8px 0 8px 22px;margin:30px 0;
+    font-style:italic;font-size:20px;color:var(--warm)}
+  .backrow{text-align:center;padding:20px 0 90px}
+  .btn{display:inline-block;font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:.1em;
+    text-transform:uppercase;text-decoration:none;padding:18px 34px;border:2px solid var(--bright);
+    color:var(--cream);background:linear-gradient(180deg,var(--bright),var(--brand))}
+  .btn:hover{filter:brightness(1.12)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="flame">MISE.AI</span>
+  <a href="./">← Back to the menu</a>
+</div>
+
+<div class="head wrap">
+  <div class="eyebrow">The Engine Room</div>
+  <h1>How it works, <span class="fire">told plain</span></h1>
+  <p class="lede">No tech lecture. Just what you bring on day one, and what the crew in the back does with it — chef to chef.</p>
+</div>
+
+<!-- THE TRADE -->
+<section>
+  <div class="wrap">
+    <h2>The <span class="o">trade</span></h2>
+    <p>Simple as a purveyor order: here's what you send us, and here's what comes back. No manual entry, ever — that's the house rule.</p>
+
+    <div class="bring">
+      <h3>What You Send</h3>
+      <ol>
+        <li><b>Your recipes — current menu only</b>, with current pricing. Pars included if you keep them.
+          <span class="why">Don't keep pars? Send us three months of product mix instead and we'll build your pars for you.</span></li>
+        <li><b>Your menu as it runs today</b>, with pricing.</li>
+        <li><b>Your schedule</b> — first name and a last initial, plus the hourly rate. That's all.
+          <span class="why">No tax paperwork, no socials, no life stories. We know the California labor tax law — and every other state's — so we simply add the right burden percentage to the total. Your true labor cost, nearly exact, without handing anyone's private information to a company you just met. We wouldn't do it with our people either.</span></li>
+        <li><b>Your prep lists.</b></li>
+        <li><b>Your order sheets</b> — with accurate pricing.</li>
+        <li><b>A current inventory list</b> — what you're actually running, not last year's.</li>
+        <li><b>Your purveyor list</b> — could be Sysco, could be Costco. No judgment, it all counts the same.</li>
+        <li><b>What kind of house you run</b> — sandwich shop, food truck, coffee shop, juice bar, full bar with no food. It all lives under one umbrella here.
+          <span class="why">Yes, even a coffee shop — the system tracks cost down to the to-go cup and builds your recipes-of-record for you. Prepacked goods are fine too.</span></li>
+      </ol>
+    </div>
+
+    <div class="bring" style="margin-top:26px">
+      <h3>What Comes Back</h3>
+      <ol>
+        <li><b>Your recipe book, costed to the penny</b> — every plate, every pour, wired to your live prices so the costs move when your invoices move.</li>
+        <li><b>Your pars, built and breathing</b> — set from your real usage, adjusting with your seasons automatically.</li>
+        <li><b>Your invoices, read every night</b> — every line, every cent flagged, purveyors compared against each other.</li>
+        <li><b>Your boards, populated before dawn</b> — cook, chef, manager, owner, each seeing their own station.</li>
+        <li><b>The Morning Brief</b> — one honest page about yesterday, waiting when you wake up.</li>
+        <li><b>Your true labor cost</b> — burden included, no paperwork collected.</li>
+      </ol>
+    </div>
+
+    <p style="margin-top:30px"><strong>Who this house serves:</strong> independents under $1 million a year in sales. Solo bars. Food trucks. The solo chef who just wants to know where the month landed. The small café with a beer menu. The gastro pub with a dozen kegs on the list. The full bar with no kitchen at all. If you're the one wearing the hats, this was built for you.</p>
+  </div>
+</section>
+
+<!-- PARS -->
+<section>
+  <div class="wrap">
+    <h2>Pars that <span class="o">move with you</span></h2>
+    <p>Here's what the product mix buys you. Your numbers run through <strong>BigQuery</strong> — Google's data engine, the same machinery the big corporate groups run their whole operations on. The last couple of years it's gotten dramatically better and cheaper, and that's a real part of why our menu is priced in cents.</p>
+    <p>What it does for your kitchen: it builds <strong>pars for the chef</strong>. If you already keep your own pars, great — you know the value. The difference is these pars <em>change over time</em>. Run the same menu year-round and the system learns your peaks and your slow seasons, and quietly adjusts your par levels based on what you actually use. No more prepping for July in January.</p>
+  </div>
+</section>
+
+<!-- SNIFFER -->
+<section>
+  <div class="wrap">
+    <h2>The invoice <span class="o">sniffer</span></h2>
+    <p>His whole job is your invoices. Every invoice sent to the house goes through him <em>first</em> — he cleans it, organizes it, gets it ready for the books, because the engine only takes clean data, no mess. By the time you're awake, the prep work's done.</p>
+    <p><strong>He flags everything — even a cent over.</strong> And you'll know about it in the morning. Running multiple purveyors like we did — Sysco and US Foods both, say? He compares them automatically and flags when the same product is cheaper across the street.</p>
+    <p class="pull">And he's smart enough to know a prime steak isn't a commodity steak, and an organic tomato isn't the one that rode up from Mexico. We're not comparing apples and oranges — that's the whole point.</p>
+  </div>
+</section>
+
+<!-- THE BRIGADE -->
+<section>
+  <div class="wrap">
+    <h2>The overnight <span class="o">brigade</span></h2>
+    <p>Why does the heavy work happen in the middle of the night? Because that's when AI is <strong>cheapest to run</strong> — everybody's asleep, the batch lanes are wide open, and the daily free allowances on the fast models go a long way. It makes a huge difference in the big picture, and it's a big piece of why every tier costs less than a small coffee. The AI lives <em>inside</em> the data engine, right next to your numbers — your data never gets shipped out somewhere to be read; the questions come to it. That keeps it fast, private, and cheap.</p>
+    <div class="crew">
+      <div class="member">
+        <div class="role">The fast one · works all night</div>
+        <h3>The Prep Cook</h3>
+        <p>Cheapest and fastest on the line. He parses every invoice that came in that day — every line, every price — cleans it and stages it for the books. He helps with inventory deduction and the prep lists, and he's the one behind the Spanish toggle on the cook dashboard: the translations are stored ready to go, so when a cook hits the switch it flips in a fraction of a second.</p>
+      </div>
+      <div class="member">
+        <div class="role">The sharp one · closes the night</div>
+        <h3>The Sous</h3>
+        <p>Smarter, still quick. He checks the Prep Cook's work before anything counts, and when the Prep Cook's day is done, the Sous finishes the shift. Then he goes to the books and pulls everything needed to populate every board you'll see in the morning — leaving only one job undone: the story.</p>
+      </div>
+      <div class="member">
+        <div class="role">The one who writes · before dawn</div>
+        <h3>The Exec</h3>
+        <p>The most capable of the crew. He reads the clean, finished numbers — and before he writes a word, he does his own homework: fact-checks, digs, verifies. Then he writes your Morning Brief. That's why the House Paper reads true.</p>
+      </div>
+      <div class="member" style="border-left-color:var(--hot)">
+        <div class="role">Your assistant · 15 minutes a day · chef's board</div>
+        <h3>The Chef's Assistant</h3>
+        <p>A different breed — this one's yours, live, during the day. One AI running all day is expensive, so we did it on purpose: <strong>treat the AI like an employee.</strong> Come in ready. "Today we're costing." He reads a month of your books before he even clocks in — walks in knowing more than the chef, the owner, and the accountant combined. Read him your recipes and he builds every recipe card with the cost attached — work that used to eat a chef's whole afternoon. Menu change? Done with your eyes closed. Or push him: "What needs to move off my menu, and build me a special at 24% food cost" — and you're reading ten options in seconds.</p>
+      </div>
+    </div>
+    <p style="margin-top:26px">That's the brigade. Nobody on it takes a salary, nobody calls in sick, and the whole crew costs you less than a soda a day — because we run the most current AI the smart way instead of the expensive way, and Google's pricing on this machinery genuinely works in the little guy's favor. We pass that straight through.</p>
+  </div>
+</section>
+
+
+<!-- WHERE IT SITS -->
+<section>
+  <div class="wrap">
+    <h2>Where your data sits &mdash; <span class="o">and how it's locked</span></h2>
+    <p>Fair question before you hand anyone your books: where does it all actually live, and who can see it? Here's the whole thing, start to finish, no hand-waving.</p>
+
+    <div class="crew">
+      <div class="member">
+        <div class="role">The front door · where your restaurant lives</div>
+        <h3>Your house has one address.</h3>
+        <p>When you claim your number, your restaurant gets its own home in the front-door database — recipes, prep lists, boards, all of it filed under your number and no one else's. Every screen your crew touches reads from here.</p>
+      </div>
+      <div class="member">
+        <div class="role">The lock · row-level security</div>
+        <h3>Locked at the row, not the door.</h3>
+        <p>The database itself enforces the rule: <strong>every single row of data carries your restaurant's key, and the system physically cannot serve your rows to anyone else.</strong> It's not a policy we promise to follow — it's built into the machinery, the same row-level security the banks' software leans on. Your cook's tablet can see your prep lists and nothing more; your neighbor's restaurant on the same system might as well be on another planet.</p>
+      </div>
+      <div class="member">
+        <div class="role">The keys · one login per house</div>
+        <h3>One login. Your password is the kill switch.</h3>
+        <p>No per-seat accounts, no per-cook charges, no HR paperwork. The house shares one login; the owner holds the password. Someone leaves on bad terms? Change the password once and the whole house is re-keyed. Simple as changing the locks.</p>
+      </div>
+      <div class="member">
+        <div class="role">The vault · where the math happens</div>
+        <h3>The engine is a separate room.</h3>
+        <p>Every night, your day's numbers travel over a secured line to the analytics vault — the corporate-grade engine where costs, pars, and trends get solved. The AI is registered <em>inside</em> that vault, right next to the numbers: <strong>your data is never shipped out to some chatbot on the open internet.</strong> The questions come to your data; your data doesn't go looking for answers.</p>
+      </div>
+      <div class="member">
+        <div class="role">The paper trail · what comes back out</div>
+        <h3>Only the finished story leaves.</h3>
+        <p>What travels back to you is the output — your boards and your Morning Brief, delivered to your inbox and your screens. And some things never travel at all: your cooks' station notes stay local on their tablet, by design. Not everything needs to be in a cloud.</p>
+      </div>
+      <div class="member" style="border-left-color:var(--hot)">
+        <div class="role">The promise · in writing</div>
+        <h3>Your numbers are yours. Full stop.</h3>
+        <p>We don't sell your data. We don't share it with your purveyors, your landlord, or anybody's marketing department. We don't even collect your employees' personal information — first name and an initial is all we'll take. We built this the way we'd want it built if it were our walk-in: <strong>one key, our name on it, nobody else inside.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="backrow">
+  <a class="btn" href="./#menu">See the menu</a>
+</div>
+
+</body>
+</html>
