@@ -243,6 +243,116 @@
   </div>
 </div>
 
+
+<!-- THE WEB -->
+<section id="web">
+  <div class="wrap">
+    <div class="eyebrow">The System, Drawn</div>
+    <h2>Everything connects</h2>
+    <p class="lede">This is the map we drew before we built anything &mdash; fifty years of shifts turned into a web. Your paper goes in at the top; your morning decision comes out at the bottom. Every line on it is explained below.</p>
+
+    <div style="overflow-x:auto">
+    <svg viewBox="0 0 720 980" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:0 auto" font-family="'JetBrains Mono',monospace">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#c8540a"/>
+        </marker>
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+
+      <!-- connection lines -->
+      <g stroke="#8a3206" stroke-width="2" fill="none" marker-end="url(#arr)">
+        <path d="M120,88 L120,150 Q120,170 160,178 L300,208"/>
+        <path d="M360,88 L360,190"/>
+        <path d="M600,88 L600,150 Q600,170 560,178 L420,208"/>
+        <path d="M360,268 L360,330"/>
+        <path d="M360,430 L360,492"/>
+        <path d="M300,560 Q180,600 180,660"/>
+        <path d="M420,560 Q540,600 540,660"/>
+        <path d="M180,740 Q180,790 300,812"/>
+        <path d="M540,740 Q540,790 420,812"/>
+        <path d="M360,872 L360,912"/>
+      </g>
+      <!-- feedback loop: decision back to top -->
+      <path d="M472,940 Q690,940 690,500 Q690,60 640,50" stroke="#f07840" stroke-width="1.5" stroke-dasharray="5,6" fill="none" marker-end="url(#arr)"/>
+      <text x="702" y="500" fill="#f8a070" font-size="11" letter-spacing="1" transform="rotate(90 702 500)" text-anchor="middle">YOUR TWEAKS FEED BACK IN</text>
+
+      <!-- LAYER 1: what you send -->
+      <g>
+        <rect x="40" y="40" width="160" height="48" rx="6" fill="#241a13" stroke="#332319"/>
+        <text x="120" y="60" text-anchor="middle" fill="#f8a070" font-size="12" font-weight="bold">INVOICES</text>
+        <text x="120" y="76" text-anchor="middle" fill="#9a8a72" font-size="10">every one, every day</text>
+
+        <rect x="280" y="40" width="160" height="48" rx="6" fill="#241a13" stroke="#332319"/>
+        <text x="360" y="60" text-anchor="middle" fill="#f8a070" font-size="12" font-weight="bold">SALES</text>
+        <text x="360" y="76" text-anchor="middle" fill="#9a8a72" font-size="10">yesterday's numbers</text>
+
+        <rect x="520" y="40" width="160" height="48" rx="6" fill="#241a13" stroke="#332319"/>
+        <text x="600" y="60" text-anchor="middle" fill="#f8a070" font-size="12" font-weight="bold">RECIPES &amp; SCHEDULE</text>
+        <text x="600" y="76" text-anchor="middle" fill="#9a8a72" font-size="10">menu, pars, hourly</text>
+      </g>
+
+      <!-- LAYER 2: sniffer -->
+      <rect x="250" y="208" width="220" height="60" rx="6" fill="#1c1410" stroke="#c8540a" stroke-width="2" filter="url(#glow)"/>
+      <text x="360" y="233" text-anchor="middle" fill="#f07840" font-size="14" font-weight="bold">THE SNIFFER</text>
+      <text x="360" y="252" text-anchor="middle" fill="#bfae94" font-size="10.5">cleans every line · flags every cent</text>
+
+      <!-- LAYER 3: engine -->
+      <rect x="230" y="330" width="260" height="100" rx="6" fill="#1c1410" stroke="#e06020" stroke-width="2.5" filter="url(#glow)"/>
+      <text x="360" y="362" text-anchor="middle" fill="#f07840" font-size="15" font-weight="bold">THE ENGINE</text>
+      <text x="360" y="382" text-anchor="middle" fill="#bfae94" font-size="10.5">corporate-grade data machinery</text>
+      <text x="360" y="398" text-anchor="middle" fill="#bfae94" font-size="10.5">costs · pars · P&amp;L · labor · trends</text>
+      <text x="360" y="414" text-anchor="middle" fill="#9a8a72" font-size="10">the AI lives in here, next to your numbers</text>
+
+      <!-- LAYER 4: brigade -->
+      <rect x="250" y="492" width="220" height="68" rx="6" fill="#1c1410" stroke="#c8540a" stroke-width="2"/>
+      <text x="360" y="518" text-anchor="middle" fill="#f07840" font-size="14" font-weight="bold">THE NIGHT BRIGADE</text>
+      <text x="360" y="537" text-anchor="middle" fill="#bfae94" font-size="10.5">prep cook → sous → exec</text>
+      <text x="360" y="551" text-anchor="middle" fill="#9a8a72" font-size="10">works while you sleep, when AI runs cheapest</text>
+
+      <!-- LAYER 5: outputs -->
+      <rect x="90" y="660" width="180" height="80" rx="6" fill="#241a13" stroke="#332319"/>
+      <text x="180" y="688" text-anchor="middle" fill="#f8a070" font-size="12" font-weight="bold">THE BOARDS</text>
+      <text x="180" y="706" text-anchor="middle" fill="#9a8a72" font-size="10">cook · chef · manager · owner</text>
+      <text x="180" y="721" text-anchor="middle" fill="#9a8a72" font-size="10">each sees their station</text>
+
+      <rect x="450" y="660" width="180" height="80" rx="6" fill="#f2e8d5" stroke="#8a3206"/>
+      <text x="540" y="688" text-anchor="middle" fill="#8a3206" font-size="12" font-weight="bold">THE MORNING BRIEF</text>
+      <text x="540" y="706" text-anchor="middle" fill="#5a4630" font-size="10">one honest page</text>
+      <text x="540" y="721" text-anchor="middle" fill="#5a4630" font-size="10">waiting when you wake up</text>
+
+      <!-- LAYER 6: you -->
+      <rect x="248" y="812" width="224" height="60" rx="30" fill="#c8540a"/>
+      <text x="360" y="837" text-anchor="middle" fill="#faf3e3" font-size="14" font-weight="bold">YOU, OVER COFFEE</text>
+      <text x="360" y="856" text-anchor="middle" fill="#f2e8d5" font-size="10.5">30 seconds · one decision</text>
+
+      <text x="360" y="945" text-anchor="middle" fill="#f8a070" font-size="13" font-style="italic" font-family="Fraunces,serif">"Your call, Chef."</text>
+    </svg>
+    </div>
+
+    <div class="benes" style="margin-top:44px">
+      <div class="bene"><span class="tag">Line 1 · paper in</span>
+        <h3>Your house feeds the top.</h3>
+        <p>Invoices, sales, recipes, schedule — sent once, then it flows. You never key in a number; that's the house rule.</p></div>
+      <div class="bene"><span class="tag">Line 2 · the gate</span>
+        <h3>Nothing gets past the Sniffer.</h3>
+        <p>Every invoice is cleaned and checked before the books ever see it. The engine only takes clean data — a cent over gets flagged, purveyor against purveyor, prime never confused with commodity.</p></div>
+      <div class="bene"><span class="tag">Line 3 · the math</span>
+        <h3>The Engine solves everything once.</h3>
+        <p>Costs, pars, labor, P&amp;L — all computed in one place, next to your data. The AI never guesses at numbers; it reads answers the engine already proved.</p></div>
+      <div class="bene"><span class="tag">Line 4 · the night shift</span>
+        <h3>The Brigade turns math into words.</h3>
+        <p>Prep cook parses, sous verifies and loads your boards, exec fact-checks and writes the story — overnight, in the cheap hours. That's the pricing secret hiding in plain sight.</p></div>
+      <div class="bene"><span class="tag">Line 5 · the payoff</span>
+        <h3>Two things come out.</h3>
+        <p>Boards for every station, and one parchment page for you. Thirty seconds with your coffee, one decision made with time to act on it — on the drive to the market, not after close.</p></div>
+      <div class="bene"><span class="tag">Line 6 · the loop</span>
+        <h3>Your decision feeds back in.</h3>
+        <p>Tweak the menu, swap the purveyor, change a par — the web feels it and every number downstream moves. That dotted line back to the top is the whole reason this works.</p></div>
+    </div>
+  </div>
+</section>
+
 <!-- THE PAPER -->
 <section class="paper-scene">
   <div class="wrap">
