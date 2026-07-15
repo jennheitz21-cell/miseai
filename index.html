@@ -419,6 +419,7 @@
           <li>Cook dashboard — English / Spanish</li>
           <li>15 AI minutes a day on your board</li>
         </ul>
+        <button class="btn" style="margin-top:18px;width:100%" onclick="startCheckout('first_course')">Start — First Course</button>
       </div>
       <div class="course star">
         <div class="cname">Main Course</div>
@@ -432,6 +433,7 @@
           <li>Beverage costing, every size</li>
           <li>30 AI minutes a day</li>
         </ul>
+        <button class="btn" style="margin-top:18px;width:100%" onclick="startCheckout('main_course')">Start — Main Course</button>
       </div>
       <div class="course">
         <div class="cname">Chef's Table</div>
@@ -443,6 +445,7 @@
           <li>Suggested prep sheets &amp; order sheets</li>
           <li>Front-of-house integration</li>
         </ul>
+        <button class="btn" style="margin-top:18px;width:100%" onclick="startCheckout('chefs_table')">Start — Chef's Table</button>
       </div>
     </div>
     <div class="addons">
@@ -560,6 +563,28 @@ supabase.auth.getSession().then(({ data }) => {
     state.textContent = 'You\u2019re in. Course selection & checkout open soon — you\u2019ll be first through the door.';
   }
 });
+</script>
+
+<script>
+async function startCheckout(tier){
+  try{
+    const r = await fetch('https://awzybqmplfqitzijkvdw.supabase.co/functions/v1/stripe-register',{
+      method:'POST',headers:{'content-type':'application/json'},
+      body:JSON.stringify({tier})
+    });
+    const d = await r.json();
+    if(d.url){ window.location = d.url; } else { alert(d.error||'Something hiccuped — email us and we\'ll set you up personally.'); }
+  }catch(e){ alert('Checkout is warming up — try again in a minute or email us.'); }
+}
+// welcome back from successful checkout
+if(new URLSearchParams(location.search).get('welcome')){
+  document.addEventListener('DOMContentLoaded',()=>{
+    const b=document.createElement('div');
+    b.style.cssText='position:fixed;top:0;left:0;right:0;z-index:999;background:#c8540a;color:#faf3e3;font-family:JetBrains Mono,monospace;font-size:14px;letter-spacing:.06em;text-align:center;padding:14px';
+    b.textContent='✓ WELCOME TO THE HOUSE — your restaurant number is being minted. Check your email, Chef.';
+    document.body.prepend(b);
+  });
+}
 </script>
 </body>
 </html>
