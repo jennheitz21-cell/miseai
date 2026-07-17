@@ -208,6 +208,20 @@
   .tab-pill .count.amber { background: var(--yellow-bg); color: var(--yellow); border: 1px solid var(--yellow); }
   .tab-pill.active .count.amber { background: var(--yellow); color: var(--ink); border-color: var(--yellow); }
 
+  /* ===== Add Item Card ===== */
+  .add-item-card { padding: 12px 24px; border-bottom: 1px solid var(--line-soft); background: var(--paper); }
+  .add-item-toggle {
+    font-size: 13px; font-weight: 600; color: var(--ink-soft); background: none; border: none;
+    cursor: pointer; padding: 6px 0; display: flex; align-items: center; gap: 6px;
+  }
+  .add-item-toggle:hover { color: var(--ink); }
+  .add-item-form { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .add-item-form input, .add-item-form select {
+    padding: 8px 10px; font-size: 13px; border: 1px solid var(--line-soft); border-radius: 6px;
+    background: var(--white); color: var(--ink);
+  }
+  .add-item-form input[type=text]:first-child { flex: 1; min-width: 160px; }
+
   /* ===== Table ===== */
   .table-wrap { overflow-x: auto; }
   table {
@@ -811,6 +825,18 @@ function renderPrep(c) {
       const active = cat === state.activeTab;
       return `<button class="tab-pill ${active?'active':''}" data-tab="${esc(cat)}">${esc(cat)}${alerts>0?`<span class="count amber">${alerts}</span>`:''}</button>`;
     }).join('')}</div>
+    <div class="add-item-card">
+      <button class="add-item-toggle" id="add-item-toggle" type="button">${ICONS.plus ?? '+'} Add an item the AI missed</button>
+      <div class="add-item-form" id="add-item-form" style="display:none">
+        <input type="text" id="new-item-name" placeholder="Item name" />
+        <select id="new-item-station">
+          ${CATEGORIES.map(cat => `<option value="${esc(cat)}">${esc(cat)}</option>`).join('')}
+        </select>
+        <input type="number" id="new-item-par" placeholder="Par" min="0" style="width:80px" />
+        <input type="text" id="new-item-unit" placeholder="Unit (each, bin, qt...)" style="width:140px" />
+        <button class="btn-primary" id="new-item-save" type="button">Add</button>
+      </div>
+    </div>
     ${c.filtered.length===0?`<div class="empty-state">${ICONS.empty}<p>No active items in ${esc(state.activeTab)}.</p></div>`:''}
     ${c.filtered.length>0?renderTable(c):''}
     ${c.filtered.length>0?renderMobileCards(c):''}
@@ -956,6 +982,48 @@ function attachListeners() {
       if(it){ it.assignee=e.target.value; render(); }
     });
   });
+
+  const addToggle = document.getElementById('add-item-toggle');
+  const addForm = document.getElementById('add-item-form');
+  if (addToggle && addForm) {
+    addToggle.addEventListener('click', () => {
+      addForm.style.display = addForm.style.display === 'none' ? 'flex' : 'none';
+    });
+  }
+  const newItemSave = document.getElementById('new-item-save');
+  if (newItemSave) {
+    newItemSave.addEventListener('click', async () => {
+      const name = document.getElementById('new-item-name').value.trim();
+      const station = document.getElementById('new-item-station').value;
+      const par = document.getElementById('new-item-par').value;
+      const unit = document.getElementById('new-item-unit').value.trim() || 'each';
+      if (!name) { showToast('Enter an item name first'); return; }
+
+      newItemSave.disabled = true;
+      showToast('Saving…');
+      try {
+        const body = { item: name, station, par: par || 0, on_hand: 0, unit };
+        if (DEMO_MODE || !RESTAURANT_ID) { body.restaurant_id = DEMO_RESTAURANT_ID; body.token = DEMO_TOKEN; }
+        else { body.restaurant_id = RESTAURANT_ID; body.token = RESTAURANT_TOKEN; }
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/prep-tasks`, {
+          method: 'POST',
+          headers: { apikey: PUBLISHABLE_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Could not add item');
+        showToast(`✓ Added "${name}" — saved to the system`);
+        document.getElementById('new-item-name').value = '';
+        document.getElementById('new-item-par').value = '';
+        document.getElementById('new-item-unit').value = '';
+        await loadFromSupabase(); // reload so the new item shows up in the real list, not just added locally
+      } catch (err) {
+        showToast('✗ ' + err.message);
+      } finally {
+        newItemSave.disabled = false;
+      }
+    });
+  }
 
   const printBtn = document.getElementById('print-btn');
   if(printBtn){
