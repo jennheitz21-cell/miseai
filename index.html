@@ -178,6 +178,7 @@
   .courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:28px}
   .course{background:var(--espresso);border:2px solid transparent;border-image:var(--copper-grad) 1;padding:36px 30px;
     display:flex;flex-direction:column;transition:.2s}
+  section.cream .course.tier1, section.cream .course.tier3, .course.tier1, .course.tier3{border-image:none;border:2px solid #3D3226}
   .course:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(184,114,46,.25)}
   .course.star{border-image:var(--copper-grad) 1;background:#3D3226;color:#E8C9A0;
     box-shadow:0 0 40px rgba(184,114,46,.20)}
@@ -515,7 +516,7 @@
           <li>Lives on your machine, no cloud</li>
         </ul>
       </div>
-      <div class="course">
+      <div class="course tier1">
         <div class="cname">Tier 1</div>
         <div class="price">$20 / month</div>
         <ul>
@@ -546,7 +547,7 @@
         </ul>
         <button class="btn" style="margin-top:18px;width:100%" onclick="startCheckout('main_course')">Start — Tier 2</button>
       </div>
-      <div class="course">
+      <div class="course tier3">
         <div class="cname">Tier 3</div>
         <div class="price">$100 / month</div>
         <div class="napkin">For full-service restaurants with a bar program, around $1M/year or under — available after 2 months on Tier 2</div>
