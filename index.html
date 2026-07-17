@@ -4,28 +4,49 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mise.AI — Your numbers are waiting when you wake up.</title>
-<meta name="description" content="Mise.AI reads your restaurant's numbers overnight and leaves one honest brief waiting when you wake up. Built by a chef with 30 years in kitchens. From 50¢ a day." />
+<meta name="description" content="Mise.AI reads your invoices, labor, and sales overnight and hands you one clear brief every morning. Built by chefs, for independent restaurants. From $20/month." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* THE WOOD — bark ladder */
-    --midnight:#0e0906;
-    --bark:#1c1410;
-    --espresso:#241a13;
-    --walnut:#332319;
-    --darkgrey:#1e1e1e;
-    /* THE FIRE — orange scale */
-    --deep:#8a3206;
-    --brand:#c8540a;
-    --bright:#e06020;
-    --hot:#f07840;
-    --warm:#f8a070;
-    /* THE PAPER */
-    --parchment:#f2e8d5;
-    --cream:#faf3e3;
-    --ink:#231508;
+    /* ── THE SIX — charcoal / bark / pearl / brulee system ── */
+    --pearl:#F8F6F0;        /* lightest — main light background */
+    --cream2:#EEECE6;       /* recessed / secondary light surface */
+    --charcoal:#2A2118;     /* darkest — main dark background, darkest text */
+    --darkbark:#3D3226;     /* mid-dark structural tone — borders, secondary dark surfaces */
+    --brulee:#B8722E;       /* primary accent — bold pop on light or dark */
+    --brulee-pale:#E8C9A0;  /* bright pop color for dark backgrounds */
+
+    /* ── METALLIC BORDER TREATMENTS (gradients, not flat colors) ── */
+    --copper-grad: linear-gradient(135deg, #B87333 0%, #E8A662 25%, #8C4A1F 50%, #E8A662 75%, #B87333 100%);
+    --chrome-grad: linear-gradient(135deg, #C4C4C4 0%, #F5F5F5 20%, #8A8A8A 45%, #FFFFFF 55%, #A8A8A8 75%, #E0E0E0 100%);
+
+    /* Legacy aliases — map old variable names to the new system so every existing
+       var(--x) reference below updates automatically without hunting each one down */
+    --midnight: var(--pearl);
+    --bark: var(--darkbark);
+    --espresso: var(--charcoal);
+    --walnut: var(--darkbark);
+    --darkgrey: var(--charcoal);
+    --deep: var(--brulee);
+    --brand: var(--brulee);
+    --bright: var(--brulee);
+    --hot: var(--brulee-pale);
+    --warm: var(--brulee-pale);
+    --parchment: var(--pearl);
+    --cream: #FFFFFF;
+    --ink: var(--charcoal);
+
+    /* ── TYPE SCALE (applies everywhere: headers → data → smallest tabs) ── */
+    --fs-header:20px;      /* headers */
+    --fs-hero-num:18px;    /* hero numbers */
+    --fs-header2:14px;     /* secondary headers */
+    --fs-header3:12px;     /* 3rd headers */
+    --fs-data:11px;        /* all data */
+    --fs-data2:9px;        /* secondary data */
+    --fs-tab:8px;          /* small tabs, etc */
+
     /* type */
     --disp:'Anton', 'Arial Narrow', sans-serif;
     --body:'Fraunces', Georgia, serif;
@@ -34,15 +55,15 @@
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{
-    background:var(--midnight);
+    background:var(--pearl);
     background-image:
-      radial-gradient(ellipse 90% 60% at 50% -10%, rgba(240,120,64,.18), transparent 65%),
-      linear-gradient(var(--midnight), var(--bark) 40%, var(--midnight));
-    color:var(--parchment);
-    font-family:var(--body); font-size:18px; line-height:1.65;
+      radial-gradient(ellipse 90% 60% at 50% -10%, rgba(184,114,46,.10), transparent 65%),
+      linear-gradient(var(--pearl), var(--cream2) 40%, var(--pearl));
+    color:var(--charcoal);
+    font-family:var(--body); font-size:17px; line-height:1.65;
   }
   .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
-  ::selection{background:var(--brand);color:var(--cream)}
+  ::selection{background:var(--brulee);color:var(--pearl)}
 
   /* ── TOP BAR ── */
   .topbar{
@@ -51,158 +72,189 @@
     border-bottom:1px solid var(--walnut);
     display:flex;justify-content:space-between;align-items:center;
     padding:12px 22px;
-    font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;
   }
   .flame{color:var(--hot);font-weight:700}
   .flame .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--hot);
     margin-right:8px;vertical-align:1px;box-shadow:0 0 8px var(--hot);animation:ember 3s infinite}
   @keyframes ember{0%,100%{opacity:1}50%{opacity:.35}}
   .topbar a{color:var(--cream);text-decoration:none;border:1px solid var(--brand);
-    padding:14px 22px;transition:.15s;font-size:13px;display:inline-block}
+    padding:14px 22px;transition:.15s;font-size:14px;display:inline-block}
   .topbar a:hover{background:var(--brand)}
 
+  /* ── LOGO: MISE (plain) + .AI (copper) + -0000 (chrome) + lock ── */
+  .logo-mark{display:inline-flex;align-items:center;gap:7px;font-weight:700;color:var(--pearl)}
+  .logo-ai{background:var(--copper-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .logo-zeros{background:var(--chrome-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .logo-lock{width:13px;height:13px;flex-shrink:0}
+
   /* ── HERO ── */
-  .hero{padding:88px 0 64px;text-align:left;position:relative;overflow:hidden}
-  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--warm);margin-bottom:22px}
+  .hero{padding:88px 0 64px;text-align:left;position:relative;overflow:hidden;
+    background:var(--pearl);
+    border-bottom:3px solid transparent;border-image:var(--chrome-grad) 1}
+  .hero-watermark{position:absolute;top:50%;right:-40px;transform:translateY(-50%);
+    font-family:var(--disp);font-weight:400;font-size:clamp(120px,22vw,320px);
+    letter-spacing:-.02em;white-space:nowrap;pointer-events:none;z-index:0;opacity:.07;color:var(--charcoal)}
+  .hero-watermark .wm-ai{background:var(--copper-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-watermark .wm-zeros{background:var(--chrome-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero > .wrap{position:relative;z-index:1}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--darkbark);margin-bottom:22px}
   .kicker::before{content:"— ";color:var(--brand)}
   h1{font-family:var(--disp);font-weight:400;text-transform:uppercase;
-    font-size:clamp(44px,8vw,96px);line-height:.96;letter-spacing:.01em;color:var(--cream)}
-  h1 .fire{color:var(--hot);text-shadow:0 0 34px rgba(240,120,64,.35)}
-  .hero .sub{margin:26px 0 34px;max-width:600px;font-size:clamp(18px,2.3vw,21px);color:#cdbfa8}
-  .btn{display:inline-block;font-family:var(--mono);font-size:16px;font-weight:700;
+    font-size:clamp(40px,7vw,88px);line-height:.96;letter-spacing:.01em;color:var(--charcoal)}
+  h1 .fire{color:var(--brulee);text-shadow:none}
+  .hero .sub{margin:26px 0 34px;max-width:600px;font-size:18px;color:var(--darkbark)}
+  .btn{display:inline-block;font-family:var(--mono);font-size:13px;font-weight:700;
     letter-spacing:.1em;text-transform:uppercase;text-decoration:none;cursor:pointer;
-    padding:20px 36px;border:2px solid var(--bright);min-height:56px;color:var(--cream);
+    padding:20px 36px;border:2px solid var(--bright);min-height:56px;color:#fff;
     background:linear-gradient(180deg,var(--bright),var(--brand));transition:.15s}
-  .btn:hover{filter:brightness(1.12);transform:translateY(-2px);box-shadow:0 6px 24px rgba(224,96,32,.4)}
-  .btn.ghost{background:none;border-color:var(--walnut);color:var(--warm)}
+  .btn:hover{filter:brightness(1.12);transform:translateY(-2px);box-shadow:0 6px 24px rgba(184,114,46,.4)}
+  .btn.ghost{background:none;border-color:var(--darkbark);color:var(--darkbark)}
   .btn.ghost:hover{border-color:var(--brand);box-shadow:none}
   .cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-  .cta-note{font-family:var(--mono);font-size:12px;color:#9a8a72}
+  .cta-note{font-family:var(--mono);font-size:13px;color:var(--darkbark)}
 
   /* ── PROOF STRIP ── */
   .proof{border-top:1px solid var(--walnut);border-bottom:1px solid var(--walnut);
     background:var(--espresso);padding:18px 0;margin-top:70px}
   .proof .wrap{display:flex;gap:14px 40px;flex-wrap:wrap;justify-content:space-between;
-    font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:#bfae94}
-  .proof b{color:var(--hot);font-weight:700}
+    font-family:var(--mono);font-size:13px;letter-spacing:.04em;color:var(--brulee-pale)}
+  .proof b{color:var(--brulee);font-weight:700}
 
   /* ── SECTIONS ── */
-  section{padding:76px 0}
-  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  section{padding:104px 0}
+  .eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.18em;text-transform:uppercase;
     color:var(--brand);margin-bottom:14px}
   h2{font-family:var(--disp);font-weight:400;text-transform:uppercase;
-    font-size:clamp(32px,5vw,54px);line-height:1;color:var(--cream);margin-bottom:14px}
-  .lede{color:#cdbfa8;max-width:580px;font-size:18px;margin-bottom:44px}
+    font-size:clamp(30px,5vw,52px);line-height:1.15;color:var(--charcoal);margin-bottom:22px}
+  .lede{color:var(--darkbark);max-width:580px;font-size:17px;line-height:1.7;margin-bottom:56px}
 
   /* ── THE PAPER (brief) ── */
-  .paper-scene{background:radial-gradient(ellipse 70% 90% at 50% 50%, rgba(200,84,10,.08), transparent 70%)}
+  .paper-scene{background:radial-gradient(ellipse 70% 90% at 50% 50%, rgba(184,114,46,.08), transparent 70%)}
   .brief{
-    background:var(--parchment);color:var(--ink);
-    max-width:600px;padding:34px 36px;
+    background:var(--parchment)
+      repeating-linear-gradient(var(--parchment) 0 27px, rgba(139,90,43,.35) 27px 28px);
+    background-position:0 6px;
+    color:var(--ink);
+    max-width:600px;padding:34px 36px 34px 74px;
     box-shadow:0 24px 70px rgba(0,0,0,.6), 0 0 0 1px rgba(138,50,6,.25);
     transform:rotate(-.5deg);
-    font-size:16.5px;
+    font-size:13px;
+    position:relative;
+  }
+  .brief::before{
+    content:"";position:absolute;left:36px;top:0;bottom:0;width:0;
+    border-left:2px solid rgba(184,60,60,.55);
+  }
+  .brief::after{
+    content:"";position:absolute;left:16px;top:44px;width:20px;height:20px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #fff, var(--cream2) 55%, rgba(0,0,0,.25));
+    box-shadow:0 0 0 2px rgba(0,0,0,.12),
+               0 70px 0 0 var(--cream2), 0 70px 0 2px rgba(0,0,0,.12),
+               0 140px 0 0 var(--cream2), 0 140px 0 2px rgba(0,0,0,.12),
+               inset 0 2px 3px rgba(0,0,0,.35);
   }
   .brief .head{display:flex;justify-content:space-between;font-family:var(--mono);
-    font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--deep);
+    font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--deep);
     border-bottom:2px solid var(--deep);padding-bottom:10px;margin-bottom:16px}
   .brief p{margin-bottom:13px}
-  .brief .flag{background:rgba(200,84,10,.12);border-left:3px solid var(--brand);padding:10px 14px}
+  .brief .flag{background:rgba(184,114,46,.12);border-left:3px solid var(--brand);padding:10px 14px}
   .brief .call{font-weight:900;font-style:italic}
-  .brief .sig{font-family:var(--mono);font-size:12px;color:var(--deep);margin-top:18px}
+  .brief .sig{font-family:var(--mono);font-size:13px;color:var(--deep);margin-top:18px}
 
   /* ── BENEFITS ── */
   .benes{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;
     background:var(--walnut);border:1px solid var(--walnut)}
-  .bene{background:var(--bark);padding:28px 24px}
-  .bene h3{font-family:var(--body);font-weight:900;font-size:20px;color:var(--warm);margin-bottom:8px}
-  .bene p{font-size:16px;color:#bfae94}
-  .bene .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  .bene{background:var(--bark);padding:40px 32px}
+  .bene h3{font-family:var(--body);font-weight:900;font-size:22px;color:var(--warm);margin-bottom:8px}
+  .bene p{font-size:15px;color:var(--brulee-pale)}
+  .bene .tag{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
     color:var(--bright);display:block;margin-bottom:12px}
 
   /* ── MENU (tiers) ── */
-  .menu-note{font-family:var(--mono);font-size:13px;color:var(--warm);margin-bottom:34px}
-  .courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
-  .course{background:var(--espresso);border:1px solid var(--walnut);padding:28px 24px;
+  .menu-note{font-family:var(--mono);font-size:14px;color:var(--warm);margin-bottom:34px}
+  .courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:28px}
+  .course{background:var(--espresso);border:2px solid transparent;border-image:var(--copper-grad) 1;padding:36px 30px;
     display:flex;flex-direction:column;transition:.2s}
-  .course:hover{border-color:var(--brand);transform:translateY(-4px)}
-  .course.star{border-color:var(--bright);background:linear-gradient(180deg,var(--walnut),var(--espresso));
-    box-shadow:0 0 40px rgba(224,96,32,.15)}
-  .course .cname{font-family:var(--disp);font-size:24px;text-transform:uppercase;color:var(--cream);
+  .course:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(184,114,46,.25)}
+  .course.star{border-image:var(--copper-grad) 1;background:linear-gradient(180deg,var(--walnut),var(--espresso));
+    box-shadow:0 0 40px rgba(184,114,46,.20)}
+  .course .cname{font-family:var(--disp);font-size:22px;text-transform:uppercase;color:var(--cream);
     letter-spacing:.02em}
-  .course .price{font-family:var(--mono);font-size:14px;color:var(--hot);font-weight:700;margin:6px 0 4px}
-  .course .napkin{font-family:var(--mono);font-size:11px;color:#9a8a72;margin-bottom:18px;font-style:normal}
+  .course .price{font-family:var(--mono);font-size:14px;color:var(--hot);font-weight:700;margin:10px 0 6px}
+  .course .napkin{font-family:var(--mono);font-size:13px;color:var(--brulee-pale);margin-bottom:24px;font-style:normal;line-height:1.5}
   .course ul{list-style:none;flex:1}
-  .course li{font-size:16px;color:#cdbfa8;padding:10px 0 10px 22px;position:relative;
+  .course li{font-size:15px;color:var(--brulee-pale);padding:12px 0 12px 22px;position:relative;line-height:1.5;
     border-bottom:1px dotted var(--walnut)}
   .course li::before{content:"—";position:absolute;left:0;color:var(--brand)}
   .course li:last-child{border-bottom:none}
   .addons{margin-top:26px;background:var(--bark);border:1px dashed var(--deep);padding:22px 26px;
-    font-family:var(--mono);font-size:15px;color:#cdbfa8;line-height:2}
+    font-family:var(--mono);font-size:14px;color:var(--brulee-pale);line-height:2}
   .addons b{color:var(--warm)}
 
   /* ── BOARDS / SCREENSHOTS ── */
   .shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px}
   .shot{border:1px solid var(--walnut);background:var(--darkgrey);aspect-ratio:16/10;
     display:flex;align-items:center;justify-content:center;
-    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7a6c58}
+    font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--darkbark)}
   .shot img{width:100%;height:100%;object-fit:cover;display:block}
-  .shot-cap{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--warm);margin-top:9px}
-  .es-badge{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  .shot-cap{font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:var(--warm);margin-top:9px}
+  .es-badge{display:inline-block;font-family:var(--mono);font-size:13px;letter-spacing:.1em;
     border:1px solid var(--brand);color:var(--hot);padding:2px 7px;margin-left:8px;vertical-align:1px}
 
   /* ── HOW / ONBOARDING ── */
   .doors{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
   .door{background:var(--espresso);border-top:3px solid var(--bright);padding:28px 26px}
-  .door h3{font-weight:900;font-size:21px;color:var(--warm);margin-bottom:10px}
-  .door p{font-size:16.5px;color:#cdbfa8}
-  .door .free{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  .door h3{font-weight:900;font-size:19px;color:var(--warm);margin-bottom:10px}
+  .door p{font-size:15px;color:var(--brulee-pale)}
+  .door .free{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
     color:var(--hot);display:block;margin-bottom:12px}
 
   /* ── PROMISE ── */
   .promise{background:var(--espresso);border-top:1px solid var(--walnut);border-bottom:1px solid var(--walnut)}
   .promise .inner{display:flex;gap:30px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-  .promise blockquote{font-size:clamp(19px,2.6vw,25px);font-style:italic;color:var(--cream);max-width:640px}
-  .promise .who{font-family:var(--mono);font-size:12px;color:var(--warm);margin-top:12px;font-style:normal}
+  .promise blockquote{font-size:19px;font-style:italic;color:var(--cream);max-width:640px}
+  .promise .who{font-family:var(--mono);font-size:13px;color:var(--warm);margin-top:12px;font-style:normal}
 
   /* ── FINAL ── */
-  .final{text-align:center;padding:96px 0}
+  .final{text-align:center;padding:96px 0;position:relative;overflow:hidden}
+  .final .hero-watermark{right:50%;transform:translate(50%,-50%);opacity:.05}
   .final h2{margin-bottom:14px}
   .final .lede{margin:0 auto 34px}
 
-  footer{border-top:1px solid var(--walnut);padding:26px 22px;
+  footer{border-top:1px solid var(--cream2);padding:26px 22px;
     display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
-    font-family:var(--mono);font-size:12px;color:#9a8a72}
-  footer a{color:var(--hot);text-decoration:none;font-weight:700}
+    font-family:var(--mono);font-size:13px;color:var(--darkbark)}
+  footer a{color:var(--brulee);text-decoration:none;font-weight:700}
   footer a:hover{text-decoration:underline}
 
 
   /* cream rooms — paper sections */
   section.cream{background:var(--cream);color:var(--ink)}
   section.cream h2{color:var(--ink)}
-  section.cream .lede,section.cream .menu-note{color:#5a4630}
+  section.cream .lede,section.cream .menu-note{color:var(--charcoal)}
   section.cream .eyebrow{color:var(--deep)}
-  section.cream .course{background:#fff;border:1px solid #e0d3ba;color:var(--ink)}
+  section.cream .course{background:#fff;border:1px solid var(--cream2);color:var(--ink)}
   section.cream .course .cname{color:var(--ink)}
-  section.cream .course li{color:#4a3a26;border-bottom:1px dotted #e0d3ba}
+  section.cream .course li{color:var(--charcoal);border-bottom:1px dotted var(--cream2)}
   section.cream .course .price{color:var(--brand)}
-  section.cream .course .napkin{color:#9a8a72}
-  section.cream .course.star{border-color:var(--brand);background:linear-gradient(180deg,#fff7ea,#fff);box-shadow:0 10px 40px rgba(200,84,10,.15)}
-  section.cream .addons{background:#fff7ea;border:1px dashed var(--brand);color:#4a3a26}
+  section.cream .course .napkin{color:var(--darkbark)}
+  section.cream .course.star{border-color:var(--brand);background:linear-gradient(180deg,var(--pearl),#fff);box-shadow:0 10px 40px rgba(184,114,46,.15)}
+  section.cream .addons{background:var(--pearl);border:1px dashed var(--brand);color:var(--charcoal)}
   section.cream .addons b{color:var(--deep)}
   section.cream .door{background:#fff;border-top:3px solid var(--brand)}
   section.cream .door h3{color:var(--deep)}
-  section.cream .door p{color:#4a3a26}
+  section.cream .door p{color:var(--charcoal)}
   section.cream .door .free{color:var(--brand)}
-  section.cream .cta-note{color:#7a6c58}
+  section.cream .cta-note{color:var(--darkbark)}
 
 
   .journey{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px}
-  .jstep{background:#fff;border:1px solid #e0d3ba;border-top:4px solid var(--brand);padding:26px 24px}
-  .jnum{font-family:var(--disp);font-size:40px;line-height:1;color:var(--brand)}
-  .jstep h3{font-weight:900;font-size:20px;color:var(--deep);margin:10px 0 8px}
-  .jstep p{font-size:16px;color:#4a3a26}
+  .jstep{background:#fff;border:1px solid var(--cream2);border-top:4px solid var(--brand);padding:26px 24px}
+  .jnum{font-family:var(--disp);font-size:36px;line-height:1;color:var(--brand)}
+  .jstep h3{font-weight:900;font-size:19px;color:var(--deep);margin:10px 0 8px}
+  .jstep p{font-size:15px;color:var(--charcoal)}
 
   @media (max-width:640px){
     .hero{padding:56px 0 44px}
@@ -218,18 +270,29 @@
 <body>
 
 <div class="topbar">
-  <span class="flame"><span class="dot"></span>MISE.AI</span>
+  <span class="logo-mark">
+    <span class="dot"></span>MISE<span class="logo-ai">.AI</span><span class="logo-zeros">-0000</span>
+    <svg class="logo-lock" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="5" y="11" width="14" height="10" rx="2" fill="var(--brulee-pale)"/>
+      <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="var(--brulee-pale)" stroke-width="2" fill="none"/>
+    </svg>
+  </span>
+  <a href="mailto:michael@miseai-0000.com" style="margin-right:18px;font-size:13px">michael@miseai-0000.com</a>
   <a href="#signup">Claim your number</a>
 </div>
 
 <!-- HERO -->
 <div class="hero">
+  <div class="hero-watermark">.<span class="wm-ai">AI</span><span class="wm-zeros">-0000</span></div>
   <div class="wrap">
-    <div class="kicker">Built by a chef. For chefs.</div>
-    <h1>Your numbers are waiting<br><span class="fire">when you wake up.</span></h1>
-    <p class="sub">Mise.AI works the overnight shift — reading your invoices, your sales, your labor — and leaves one honest brief on the bar. Plain English. Chef to chef. You cook. It counts.</p>
+    <div class="kicker">Restaurant intelligence, built by a chef</div>
+    <h1 style="font-size:clamp(40px,7vw,88px)">Know your numbers<br><span class="fire">over your morning cup of coffee.</span></h1>
+    <p style="font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:.04em;color:var(--brulee);margin-top:16px;max-width:560px;padding-left:14px;border-left:3px solid var(--brulee)">
+      ★ Why "0000"? Every restaurant in our system gets a number, never a name — yours will be MISE-0011 or beyond. This site is MISE-0000: restaurant zero, the first house, built before any client ever was. Your data is protected the same way — by number, never by name.
+    </p>
+    <p class="sub" style="font-size:clamp(17px,2vw,20px)">Mise.AI reads your invoices, sales, and labor overnight and sends one clear morning brief — what happened, what changed, and what to do about it. No dashboards to babysit. No spreadsheets to build.</p>
     <div class="cta-row">
-      <a class="btn" href="#menu">See the menu</a>
+      <a class="btn" href="#menu">See pricing</a>
     </div>
     <p class="cta-note" style="margin-top:16px">From 50¢ a day · Free onboarding · No contracts</p>
   </div>
@@ -243,6 +306,14 @@
   </div>
 </div>
 
+<!-- ABOUT -->
+<section class="cream">
+  <div class="wrap" style="padding:50px 0">
+    <div class="eyebrow">What Mise.AI Is</div>
+    <p class="lede" style="max-width:760px">Mise.AI is built by chefs, for independent restaurants — a system that reads your invoices, labor, and sales overnight and hands you one clear brief every morning: what changed, what to watch, and what to do about it. No spreadsheets. No dashboard to babysit. Recipe costing, budgeting, and scheduling run in the background, and every restaurant is protected by number, never by name. Pricing scales with your revenue, from a free recipe calculator up to a full bar and beverage program. Think of it as a second set of hands doing the math, so you can stay in the kitchen.</p>
+  </div>
+</section>
+
 
 <!-- THE WEB -->
 <section id="web">
@@ -252,81 +323,81 @@
     <p class="lede">This is the map we drew before we built anything &mdash; fifty years of shifts turned into a web. Your paper goes in at the top; your morning decision comes out at the bottom. Every line on it is explained below.</p>
 
     <div style="overflow-x:auto">
-    <svg viewBox="0 0 720 980" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:0 auto" font-family="'JetBrains Mono',monospace">
+    <svg viewBox="0 0 760 1060" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:0 auto" font-family="'JetBrains Mono',monospace">
       <defs>
         <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="#c8540a"/>
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--brulee)"/>
         </marker>
         <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       </defs>
 
       <!-- connection lines -->
-      <g stroke="#8a3206" stroke-width="2" fill="none" marker-end="url(#arr)">
-        <path d="M120,88 L120,150 Q120,170 160,178 L300,208"/>
-        <path d="M360,88 L360,190"/>
-        <path d="M600,88 L600,150 Q600,170 560,178 L420,208"/>
-        <path d="M360,268 L360,330"/>
-        <path d="M360,430 L360,492"/>
-        <path d="M300,560 Q180,600 180,660"/>
-        <path d="M420,560 Q540,600 540,660"/>
-        <path d="M180,740 Q180,790 300,812"/>
-        <path d="M540,740 Q540,790 420,812"/>
-        <path d="M360,872 L360,912"/>
+      <g stroke="var(--brulee)" stroke-width="2" fill="none" marker-end="url(#arr)">
+        <path d="M130,100 L130,160 Q130,180 170,188 L310,218"/>
+        <path d="M380,100 L380,200"/>
+        <path d="M630,100 L630,160 Q630,180 590,188 L450,218"/>
+        <path d="M380,286 L380,350"/>
+        <path d="M380,458 L380,520"/>
+        <path d="M310,594 Q190,634 190,694"/>
+        <path d="M450,594 Q570,634 570,694"/>
+        <path d="M190,780 Q190,830 310,852"/>
+        <path d="M570,780 Q570,830 450,852"/>
+        <path d="M380,918 L380,958"/>
       </g>
       <!-- feedback loop: decision back to top -->
-      <path d="M472,940 Q690,940 690,500 Q690,60 640,50" stroke="#f07840" stroke-width="1.5" stroke-dasharray="5,6" fill="none" marker-end="url(#arr)"/>
-      <text x="702" y="500" fill="#f8a070" font-size="11" letter-spacing="1" transform="rotate(90 702 500)" text-anchor="middle">YOUR TWEAKS FEED BACK IN</text>
+      <path d="M492,986 Q730,986 730,530 Q730,60 670,50" stroke="var(--brulee-pale)" stroke-width="1.5" stroke-dasharray="5,6" fill="none" marker-end="url(#arr)"/>
+      <text x="745" y="530" fill="var(--brulee-pale)" font-size="12" letter-spacing="1" transform="rotate(90 745 530)" text-anchor="middle">YOUR TWEAKS FEED BACK IN</text>
 
       <!-- LAYER 1: what you send -->
       <g>
-        <rect x="40" y="40" width="160" height="48" rx="6" fill="#241a13" stroke="#332319"/>
-        <text x="120" y="60" text-anchor="middle" fill="#f8a070" font-size="12" font-weight="bold">INVOICES</text>
-        <text x="120" y="76" text-anchor="middle" fill="#9a8a72" font-size="10">every one, every day</text>
+        <rect x="40" y="40" width="180" height="60" rx="6" fill="var(--charcoal)" stroke="var(--darkbark)"/>
+        <text x="130" y="65" text-anchor="middle" fill="var(--brulee-pale)" font-size="13" font-weight="bold">INVOICES</text>
+        <text x="130" y="84" text-anchor="middle" fill="var(--brulee-pale)" font-size="12">every one, every day</text>
 
-        <rect x="280" y="40" width="160" height="48" rx="6" fill="#241a13" stroke="#332319"/>
-        <text x="360" y="60" text-anchor="middle" fill="#f8a070" font-size="12" font-weight="bold">SALES</text>
-        <text x="360" y="76" text-anchor="middle" fill="#9a8a72" font-size="10">yesterday's numbers</text>
+        <rect x="290" y="40" width="180" height="60" rx="6" fill="var(--charcoal)" stroke="var(--darkbark)"/>
+        <text x="380" y="65" text-anchor="middle" fill="var(--brulee-pale)" font-size="13" font-weight="bold">SALES</text>
+        <text x="380" y="84" text-anchor="middle" fill="var(--brulee-pale)" font-size="12">yesterday's numbers</text>
 
-        <rect x="520" y="40" width="160" height="48" rx="6" fill="#241a13" stroke="#332319"/>
-        <text x="600" y="60" text-anchor="middle" fill="#f8a070" font-size="12" font-weight="bold">RECIPES &amp; SCHEDULE</text>
-        <text x="600" y="76" text-anchor="middle" fill="#9a8a72" font-size="10">menu, pars, hourly</text>
+        <rect x="540" y="40" width="180" height="60" rx="6" fill="var(--charcoal)" stroke="var(--darkbark)"/>
+        <text x="630" y="65" text-anchor="middle" fill="var(--brulee-pale)" font-size="13" font-weight="bold">RECIPES</text>
+        <text x="630" y="84" text-anchor="middle" fill="var(--brulee-pale)" font-size="12">menu, pars, hourly</text>
       </g>
 
       <!-- LAYER 2: sniffer -->
-      <rect x="250" y="208" width="220" height="60" rx="6" fill="#1c1410" stroke="#c8540a" stroke-width="2" filter="url(#glow)"/>
-      <text x="360" y="233" text-anchor="middle" fill="#f07840" font-size="14" font-weight="bold">THE SNIFFER</text>
-      <text x="360" y="252" text-anchor="middle" fill="#bfae94" font-size="10.5">cleans every line · flags every cent</text>
+      <rect x="260" y="218" width="240" height="68" rx="6" fill="var(--charcoal)" stroke="var(--brulee)" stroke-width="2" filter="url(#glow)"/>
+      <text x="380" y="248" text-anchor="middle" fill="var(--brulee-pale)" font-size="14" font-weight="bold">THE SNIFFER</text>
+      <text x="380" y="268" text-anchor="middle" fill="var(--brulee-pale)" font-size="12">cleans every line, flags every cent</text>
 
       <!-- LAYER 3: engine -->
-      <rect x="230" y="330" width="260" height="100" rx="6" fill="#1c1410" stroke="#e06020" stroke-width="2.5" filter="url(#glow)"/>
-      <text x="360" y="362" text-anchor="middle" fill="#f07840" font-size="15" font-weight="bold">THE ENGINE</text>
-      <text x="360" y="382" text-anchor="middle" fill="#bfae94" font-size="10.5">corporate-grade data machinery</text>
-      <text x="360" y="398" text-anchor="middle" fill="#bfae94" font-size="10.5">costs · pars · P&amp;L · labor · trends</text>
-      <text x="360" y="414" text-anchor="middle" fill="#9a8a72" font-size="10">the AI lives in here, next to your numbers</text>
+      <rect x="230" y="350" width="300" height="108" rx="6" fill="var(--charcoal)" stroke="var(--brulee)" stroke-width="2.5" filter="url(#glow)"/>
+      <text x="380" y="382" text-anchor="middle" fill="var(--brulee-pale)" font-size="15" font-weight="bold">THE ENGINE</text>
+      <text x="380" y="404" text-anchor="middle" fill="var(--brulee-pale)" font-size="12">corporate-grade data machinery</text>
+      <text x="380" y="422" text-anchor="middle" fill="var(--brulee-pale)" font-size="12">costs, pars, P&amp;L, labor, trends</text>
+      <text x="380" y="440" text-anchor="middle" fill="var(--brulee-pale)" font-size="12">the AI lives here, next to your numbers</text>
 
       <!-- LAYER 4: brigade -->
-      <rect x="250" y="492" width="220" height="68" rx="6" fill="#1c1410" stroke="#c8540a" stroke-width="2"/>
-      <text x="360" y="518" text-anchor="middle" fill="#f07840" font-size="14" font-weight="bold">THE NIGHT BRIGADE</text>
-      <text x="360" y="537" text-anchor="middle" fill="#bfae94" font-size="10.5">prep cook → sous → exec</text>
-      <text x="360" y="551" text-anchor="middle" fill="#9a8a72" font-size="10">works while you sleep, when AI runs cheapest</text>
+      <rect x="260" y="520" width="240" height="74" rx="6" fill="var(--charcoal)" stroke="var(--brulee)" stroke-width="2"/>
+      <text x="380" y="547" text-anchor="middle" fill="var(--brulee-pale)" font-size="14" font-weight="bold">THE NIGHT BRIGADE</text>
+      <text x="380" y="566" text-anchor="middle" fill="var(--brulee-pale)" font-size="12">prep cook, sous, exec</text>
+      <text x="380" y="583" text-anchor="middle" fill="var(--brulee-pale)" font-size="12">works while you sleep</text>
 
       <!-- LAYER 5: outputs -->
-      <rect x="90" y="660" width="180" height="80" rx="6" fill="#241a13" stroke="#332319"/>
-      <text x="180" y="688" text-anchor="middle" fill="#f8a070" font-size="12" font-weight="bold">THE BOARDS</text>
-      <text x="180" y="706" text-anchor="middle" fill="#9a8a72" font-size="10">cook · chef · manager · owner</text>
-      <text x="180" y="721" text-anchor="middle" fill="#9a8a72" font-size="10">each sees their station</text>
+      <rect x="90" y="694" width="200" height="86" rx="6" fill="var(--charcoal)" stroke="var(--darkbark)"/>
+      <text x="190" y="724" text-anchor="middle" fill="var(--brulee-pale)" font-size="13" font-weight="bold">THE BOARDS</text>
+      <text x="190" y="744" text-anchor="middle" fill="var(--brulee-pale)" font-size="12">cook, chef, manager</text>
+      <text x="190" y="761" text-anchor="middle" fill="var(--brulee-pale)" font-size="12">each sees their station</text>
 
-      <rect x="450" y="660" width="180" height="80" rx="6" fill="#f2e8d5" stroke="#8a3206"/>
-      <text x="540" y="688" text-anchor="middle" fill="#8a3206" font-size="12" font-weight="bold">THE MORNING BRIEF</text>
-      <text x="540" y="706" text-anchor="middle" fill="#5a4630" font-size="10">one honest page</text>
-      <text x="540" y="721" text-anchor="middle" fill="#5a4630" font-size="10">waiting when you wake up</text>
+      <rect x="470" y="694" width="200" height="86" rx="6" fill="var(--pearl)" stroke="var(--brulee)"/>
+      <text x="570" y="724" text-anchor="middle" fill="var(--brulee)" font-size="13" font-weight="bold">THE MORNING BRIEF</text>
+      <text x="570" y="744" text-anchor="middle" fill="var(--charcoal)" font-size="12">one honest page</text>
+      <text x="570" y="761" text-anchor="middle" fill="var(--charcoal)" font-size="12">waiting when you wake up</text>
 
       <!-- LAYER 6: you -->
-      <rect x="248" y="812" width="224" height="60" rx="30" fill="#c8540a"/>
-      <text x="360" y="837" text-anchor="middle" fill="#faf3e3" font-size="14" font-weight="bold">YOU, OVER COFFEE</text>
-      <text x="360" y="856" text-anchor="middle" fill="#f2e8d5" font-size="10.5">30 seconds · one decision</text>
+      <rect x="268" y="852" width="224" height="66" rx="30" fill="var(--brulee)"/>
+      <text x="380" y="879" text-anchor="middle" fill="var(--pearl)" font-size="14" font-weight="bold">YOU, OVER COFFEE</text>
+      <text x="380" y="899" text-anchor="middle" fill="var(--pearl)" font-size="12">30 seconds, one decision</text>
 
-      <text x="360" y="945" text-anchor="middle" fill="#f8a070" font-size="13" font-style="italic" font-family="Fraunces,serif">"Your call, Chef."</text>
+      <text x="380" y="998" text-anchor="middle" fill="var(--brulee-pale)" font-size="14" font-style="italic" font-family="Fraunces,serif">"Your call, Chef."</text>
     </svg>
     </div>
 
@@ -359,12 +430,46 @@
     <div class="eyebrow">The Morning Brief</div>
     <h2>One honest page.<br>Every morning.</h2>
     <p class="lede">Not another dashboard about right now. One letter about yesterday — solved overnight, waiting whenever you wake up, read in the time it takes to pour a coffee.</p>
-    <div class="brief">
-      <div class="head"><span>The House Paper</span><span>While you slept</span></div>
-      <p>Morning, Chef. Solid Tuesday — sales landed at $2,340, about 8% over your usual. Food cost held at 29%.</p>
-      <p class="flag">Worth your eyes: Tuesday's produce invoice priced romaine 12% above your usual rate. Third week running. Might be time for a call.</p>
-      <p class="call">Your call, Chef.</p>
-      <p class="sig">— MISEai · Exec Chef</p>
+    <div class="brief-svg-wrap">
+      <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;display:block;filter:drop-shadow(0 24px 50px rgba(0,0,0,.45))">
+        <rect x="0" y="0" width="600" height="400" fill="#F8F6F0"/>
+        <!-- ruled lines -->
+        <g stroke="#C8722E" stroke-opacity="0.3" stroke-width="1">
+          <line x1="70" y1="80" x2="580" y2="80"/>
+          <line x1="70" y1="107" x2="580" y2="107"/>
+          <line x1="70" y1="134" x2="580" y2="134"/>
+          <line x1="70" y1="161" x2="580" y2="161"/>
+          <line x1="70" y1="188" x2="580" y2="188"/>
+          <line x1="70" y1="215" x2="580" y2="215"/>
+          <line x1="70" y1="242" x2="580" y2="242"/>
+          <line x1="70" y1="269" x2="580" y2="269"/>
+          <line x1="70" y1="296" x2="580" y2="296"/>
+          <line x1="70" y1="323" x2="580" y2="323"/>
+          <line x1="70" y1="350" x2="580" y2="350"/>
+        </g>
+        <!-- red margin line -->
+        <line x1="55" y1="10" x2="55" y2="390" stroke="#B84040" stroke-width="2"/>
+        <!-- binder holes -->
+        <circle cx="28" cy="80" r="10" fill="#F8F6F0" stroke="#00000030" stroke-width="2"/>
+        <circle cx="28" cy="200" r="10" fill="#F8F6F0" stroke="#00000030" stroke-width="2"/>
+        <circle cx="28" cy="320" r="10" fill="#F8F6F0" stroke="#00000030" stroke-width="2"/>
+        <!-- header -->
+        <text x="70" y="45" font-family="'JetBrains Mono',monospace" font-size="15" font-weight="700" letter-spacing="2" fill="#8C4A1F">THE HOUSE PAPER</text>
+        <text x="580" y="45" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="15" font-weight="700" letter-spacing="2" fill="#8C4A1F">WHILE YOU SLEPT</text>
+        <line x1="70" y1="55" x2="580" y2="55" stroke="#8C4A1F" stroke-width="2"/>
+        <!-- body copy -->
+        <text x="70" y="100" font-family="Fraunces,serif" font-size="16" fill="#2A2118">Morning, Chef. Solid Tuesday — sales landed at</text>
+        <text x="70" y="127" font-family="Fraunces,serif" font-size="16" fill="#2A2118">$2,340, about 8% over your usual. Food cost held</text>
+        <text x="70" y="154" font-family="Fraunces,serif" font-size="16" fill="#2A2118">at 29%.</text>
+        <!-- flag box -->
+        <rect x="70" y="175" width="500" height="66" fill="#B8722E" fill-opacity="0.12" stroke="#B8722E" stroke-width="2"/>
+        <text x="86" y="198" font-family="Fraunces,serif" font-size="15" font-weight="700" fill="#2A2118">Worth your eyes: </text>
+        <text x="86" y="222" font-family="Fraunces,serif" font-size="15" fill="#2A2118">Tuesday's produce invoice priced romaine 12%</text>
+        <text x="86" y="245" font-family="Fraunces,serif" font-size="15" fill="#2A2118">above usual. Third week running — might be a call.</text>
+        <!-- signoff -->
+        <text x="70" y="300" font-family="Fraunces,serif" font-style="italic" font-weight="700" font-size="16" fill="#2A2118">Your call, Chef.</text>
+        <text x="70" y="330" font-family="'JetBrains Mono',monospace" font-size="13" fill="#B8722E">— MISEai · Exec Chef</text>
+      </svg>
     </div>
   </div>
 </section>
@@ -374,7 +479,7 @@
   <div class="wrap">
     <div class="eyebrow">The Work It Does</div>
     <h2>While you're covering stations</h2>
-    <p class="lede">You're not watching screens — you're running a kitchen. So the system reads the numbers for you and speaks up only when something matters. <a href="v2/engine.html" style="color:var(--hot)">How it all works, told plain →</a></p>
+    <p class="lede">You're not watching screens — you're running a kitchen. So the system reads the numbers for you and speaks up only when something matters. <a href="v2/engine.html" style="color:var(--brulee);font-weight:700">How it all works, told plain →</a></p>
     <div class="benes">
       <div class="bene"><span class="tag">Every night</span>
         <h3>Invoices, parsed line by line.</h3>
@@ -396,62 +501,71 @@
 <section id="menu" class="cream">
   <div class="wrap">
     <div class="eyebrow">The Menu</div>
-    <h2>Priced like a napkin sketch</h2>
-    <p class="menu-note">Half a coffee. A coffee. A soda. That's the whole pricing model. Billed on the 1st, first month prorated — you pay for the days you use.</p>
+    <h2>Simple, transparent pricing</h2>
+    <p class="menu-note">Straightforward monthly pricing. Billed on the 1st, first month prorated — you pay for the days you use. Your price is locked at signup — it never goes up.</p>
     <div class="courses">
       <div class="course">
-        <div class="cname">Amuse Bouche</div>
-        <div class="price">Free</div>
-        <div class="napkin">the taste</div>
+        <div class="cname">Free</div>
+        <div class="price">$0 / month</div>
         <ul>
           <li>Recipe calculator — cost, yield, margin</li>
           <li>Holds 100 recipes</li>
           <li>Lives on your machine, no cloud</li>
-          <li>Bring your own AI key and the chat lights up</li>
         </ul>
       </div>
       <div class="course">
-        <div class="cname">First Course</div>
-        <div class="price">50¢ / day</div>
-        <div class="napkin">half a coffee</div>
+        <div class="cname">Tier 1</div>
+        <div class="price">$20 / month</div>
         <ul>
-          <li>Recipe book in the cloud, wired to your live prices</li>
-          <li>Cook dashboard — English / Spanish</li>
-          <li>15 AI minutes a day on your board</li>
+          <li>Recipe calculator, moved to the cloud</li>
+          <li>Unlimited recipes</li>
+          <li>One price-update upload per week</li>
+          <li>15 AI minutes a day for recipe writing &amp; costing</li>
         </ul>
-        <button class="btn" style="margin-top:18px;width:100%" onclick="startCheckout('first_course')">Start — First Course</button>
+        <button class="btn" style="margin-top:18px;width:100%" onclick="startCheckout('first_course')">Start — Tier 1</button>
       </div>
       <div class="course star">
-        <div class="cname">Main Course</div>
-        <div class="price">$1 / day</div>
-        <div class="napkin">a coffee</div>
+        <div class="cname">Tier 2</div>
+        <div class="price">$50 / month</div>
+        <div class="napkin">Solo chefs, food trucks, sandwich shops, coffee houses — best for restaurants around $700K/year or under. Everyone starts here.</div>
         <ul>
+          <li>Everything in Tier 1</li>
+          <li>Non-alcoholic beverage tracking</li>
           <li>The Morning Brief, waiting when you wake up</li>
-          <li>Invoices parsed nightly, line by line</li>
-          <li>Kitchen P&amp;L — food &amp; labor, owner-readable</li>
-          <li>Yield tracking — what you actually got per portion</li>
-          <li>Beverage costing, every size</li>
-          <li>30 AI minutes a day</li>
+          <li>Invoice parsing, daily, with price-spike alerts</li>
+          <li>Build your own budget</li>
+          <li>At-a-glance: food sales, food purchases, prime cost</li>
+          <li>3 recommended actions a day</li>
+          <li>Weather &amp; schedule import</li>
+          <li>Scan or upload invoices, receipts, and price sheets</li>
+          <li>Cook dashboard for your staff</li>
+          <li>Automated prep lists</li>
+          <li>20 AI minutes a day</li>
         </ul>
-        <button class="btn" style="margin-top:18px;width:100%" onclick="startCheckout('main_course')">Start — Main Course</button>
+        <button class="btn" style="margin-top:18px;width:100%" onclick="startCheckout('main_course')">Start — Tier 2</button>
       </div>
       <div class="course">
-        <div class="cname">Chef's Table</div>
-        <div class="price">$2 / day</div>
-        <div class="napkin">a soda</div>
+        <div class="cname">Tier 3</div>
+        <div class="price">$100 / month</div>
+        <div class="napkin">For full-service restaurants with a bar program, around $1M/year or under — available after 2 months on Tier 2</div>
         <ul>
-          <li>The full house — the board for everyone, plus the cook dashboard</li>
-          <li>The Bar book — your bar program, costed</li>
-          <li>Suggested prep sheets &amp; order sheets</li>
+          <li>Everything in Tier 2</li>
+          <li>20 AI minutes a day — Gemini 3.1 Pro, reads months of your history before every conversation</li>
+          <li>Automated ordering</li>
+          <li>Full beverage &amp; bar program, costed and par-tracked by season</li>
+          <li>Automated scheduling, with break compliance built in</li>
           <li>Front-of-house integration</li>
         </ul>
-        <button class="btn" style="margin-top:18px;width:100%" onclick="startCheckout('chefs_table')">Start — Chef's Table</button>
+        <button class="btn" style="margin-top:18px;width:100%" onclick="startCheckout('chefs_table')">Start — Tier 3</button>
       </div>
     </div>
     <div class="addons">
-      <b>Sides:</b> extra AI time — +15 min/day on any board, <b>$10/mo</b> ·
-      Extra board access for your people — <b>$5/mo each</b>
+      <b>Add-ons:</b> extra AI time — +15 min/day, <b>$10/mo</b> ·
+      Additional dashboard for your team — <b>$5/mo each</b>
     </div>
+    <p style="font-size:14px;color:var(--darkbark);margin-top:22px;max-width:720px;line-height:1.7">
+      <b>Why Tier 3 waits 2 months:</b> starting on Tier 2 isn't a sales tactic — it's how the AI learns your house. The longer it has real sales, labor, and schedule data, the better its decisions get. Automated ordering, a full bar program, and automated scheduling all depend on that runway — they aren't something we can safely turn on sooner, for any restaurant. Two months in, it knows your patterns well enough to start acting on them.
+    </p>
   </div>
 </section>
 
@@ -460,16 +574,16 @@
   <div class="wrap">
     <div class="eyebrow">The Board · Live</div>
     <h2>Go ahead — touch it</h2>
-    <p class="lede">No demo appointment. No sales call. No Brad. The actual board, sample house loaded — tap the tabs, poke the numbers, kick the tires right here. If software needs a tour guide, it's too complicated for a Tuesday night.</p>
+    <p class="lede">No demo call to schedule. This is the real dashboard, loaded with a sample restaurant — explore the tabs and see how it works for yourself, right now.</p>
   </div>
   <div style="max-width:1200px;margin:0 auto;padding:0 12px">
     <div style="border:1px solid var(--walnut);box-shadow:0 30px 80px rgba(0,0,0,.55)">
-      <iframe src="v2/board.html?v=13" title="Mise.AI live demo board" loading="lazy"
+      <iframe src="board.html?v=13" title="Mise.AI live demo board" loading="lazy"
         style="width:100%;height:min(84vh,900px);border:0;display:block;background:var(--bark)"></iframe>
     </div>
-    <p style="font-family:var(--mono);font-size:12px;color:#9a8a72;text-align:center;margin-top:12px">
+    <p style="font-family:var(--mono);font-size:13px;color:var(--darkbark);text-align:center;margin-top:12px">
       Sample data · a made-up house · your real board looks like this with YOUR numbers ·
-      <a href="v2/board.html?v=13" target="_blank" style="color:var(--hot)">open it full screen →</a>
+      <a href="board.html?v=13" target="_blank" style="color:var(--brulee);font-weight:700">open it full screen →</a>
     </p>
   </div>
 </section>
@@ -504,39 +618,29 @@
     </div>
     <div class="cta-row" style="margin-top:38px">
       <button class="btn" id="gsignin" type="button">Sign in with Gmail — claim your number</button>
-      <a class="btn ghost" href="mailto:overyourmorningcupofcoffee@gmail.com?subject=Mise.AI%20—%20Shoebox">Email the shoebox</a>
+      <a class="btn ghost" href="mailto:michael@miseai-0000.com?subject=Mise.AI%20—%20Shoebox">Email the shoebox</a>
     </div>
     <p class="cta-note" id="authstate" style="margin-top:14px"></p>
   </div>
 </section>
 </section>
 
-<!-- PROMISE -->
-<section class="promise">
-  <div class="wrap" style="padding-bottom:34px">
-    <div class="eyebrow">Who's Behind The Pass</div>
-    <p style="font-size:18px;color:#d8cbb4;max-width:720px">Fifty combined years in this industry &mdash; forty at the management level. Mikey started in the dish pit at fifteen and worked up to executive chef, owning a food truck and a gastro-pub-style restaurant along the way &mdash; farm-to-table, built on early-morning market runs and every purveyor from Sysco to the Ferry Building. Jenn's side is the bar: fifteen years running programs from high-traffic rooms like the Oakland Arena to craft houses with a 31-tap list that changed weekly. We built Mise because the spreadsheets stopped working &mdash; prices move too fast now to eyeball, and when you're the one covering stations, the end of the day is the first moment you find out where you stand. We didn't spend millions on data research; we spent fifty years on the line. That's why every tier costs less than a small coffee, and why the price you sign at never goes up.</p>
-  </div>
-  <div class="wrap inner">
-    <blockquote>
-      "Questions? You'll usually get me on the first ring. Worst case, I call you back within 24 hours. I've closed the walk-in at 1 AM and opened it again at 7 — I know exactly when you need an answer."
-      <div class="who">— Chef Mikey &amp; Jenn · your proprietors, and the people who answer the phone</div>
-    </blockquote>
-  </div>
-</section>
+<!-- Personal "Who's Behind The Pass" bio intentionally left out here — owner is
+     rewriting that section personally rather than using AI-drafted copy. -->
 
 <!-- FINAL -->
 <section class="final">
+  <div class="hero-watermark">.<span class="wm-ai">AI</span><span class="wm-zeros">-0000</span></div>
   <div class="wrap">
-    <h2>Run the kitchen.<br><span style="color:var(--hot)">The numbers run themselves.</span></h2>
+    <h2>Focus on the kitchen.<br><span style="color:var(--brulee)">Let the numbers handle themselves.</span></h2>
     <p class="lede">Start with a free taste, or go straight to the coffee. Either way, your first brief is closer than you think.</p>
     <a class="btn" href="#signup">Claim your number</a>
   </div>
 </section>
 
 <footer>
-  <span>MISE.AI © 2026 · Built by a chef. For chefs. · <a href="v2/engine.html" style="color:var(--warm)">The engine room →</a></span>
-  <a href="mailto:overyourmorningcupofcoffee@gmail.com">overyourmorningcupofcoffee@gmail.com</a>
+  <span>MISE.AI © 2026 · Built by a chef, for a chef. · <a href="v2/engine.html" style="color:var(--brulee);font-weight:700">The engine room →</a></span>
+  <a href="mailto:michael@miseai-0000.com">michael@miseai-0000.com</a>
 </footer>
 
 
@@ -580,7 +684,7 @@ async function startCheckout(tier){
 if(new URLSearchParams(location.search).get('welcome')){
   document.addEventListener('DOMContentLoaded',()=>{
     const b=document.createElement('div');
-    b.style.cssText='position:fixed;top:0;left:0;right:0;z-index:999;background:#c8540a;color:#faf3e3;font-family:JetBrains Mono,monospace;font-size:14px;letter-spacing:.06em;text-align:center;padding:14px';
+    b.style.cssText='position:fixed;top:0;left:0;right:0;z-index:999;background:var(--brulee);color:var(--pearl);font-family:JetBrains Mono,monospace;font-size:14px;letter-spacing:.06em;text-align:center;padding:14px';
     b.textContent='✓ WELCOME TO THE HOUSE — your restaurant number is being minted. Check your email, Chef.';
     document.body.prepend(b);
   });
