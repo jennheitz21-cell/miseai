@@ -7,7 +7,7 @@
 <meta name="description" content="Mise.AI reads your invoices, labor, and sales overnight and hands you one clear brief every morning. Built by chefs, for independent restaurants. From $20/month." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
     /* ── THE SIX — charcoal / bark / pearl / brulee system ── */
@@ -165,10 +165,10 @@
 
   /* ── BENEFITS ── */
   .benes{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;
-    background:var(--walnut);border:1px solid var(--walnut)}
-  .bene{background:var(--bark);padding:40px 32px}
-  .bene h3{font-family:var(--body);font-weight:900;font-size:22px;color:var(--warm);margin-bottom:8px}
-  .bene p{font-size:15px;color:var(--brulee-pale)}
+    background:var(--darkbark);border:1px solid var(--darkbark);width:100%}
+  .bene{background:var(--charcoal);padding:40px 32px}
+  .bene h3{font-family:'EB Garamond',serif;font-weight:700;font-size:24px;color:var(--warm);margin-bottom:8px}
+  .bene p{font-family:'EB Garamond',serif;font-size:17px;color:var(--brulee-pale)}
   .bene .tag{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
     color:var(--bright);display:block;margin-bottom:12px}
 
@@ -401,7 +401,7 @@
     </svg>
     </div>
 
-    <div class="benes" style="margin-top:44px">
+    <div class="benes" style="margin-top:44px;width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;max-width:100vw">
       <div class="bene"><span class="tag">Line 1 · paper in</span>
         <h3>Your house feeds the top.</h3>
         <p>Invoices, sales, recipes, schedule — sent once, then it flows. You never key in a number; that's the house rule.</p></div>
