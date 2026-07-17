@@ -240,22 +240,6 @@
   .text-right { text-align: right; }
   .tabular { font-variant-numeric: tabular-nums; }
 
-  /* ===== Inputs & Buttons ===== */
-  .qty-input {
-    width: 56px;
-    text-align: right;
-    padding: 4px 8px;
-    font-size: 14px;
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    outline: none;
-    color: var(--ink);
-    background: var(--white);
-  }
-  .qty-input:focus {
-    border-color: var(--ink);
-    box-shadow: 0 0 0 2px rgba(10,10,10,0.12);
-  }
   .icon-btn {
     display: inline-flex;
     align-items: center;
@@ -274,15 +258,6 @@
   .icon-btn.complete:hover { color: var(--ink); background: var(--paper); }
   .icon-btn:disabled { opacity: 0.3; cursor: not-allowed; }
   .icon-btn:disabled:hover { background: none; }
-  .icon-btn.qty-step {
-    width: 26px; height: 26px;
-    font-size: 16px; font-weight: 700; line-height: 1;
-    border: 1px solid var(--line-soft);
-    color: var(--ink-soft);
-    flex-shrink: 0;
-  }
-  .icon-btn.qty-step:hover { background: var(--paper); border-color: var(--ink); color: var(--ink); }
-  .assignee-select:focus { border-color: var(--ink); }
 
   /* ===== Status Badge ===== */
   .status-badge {
@@ -734,13 +709,9 @@ const ICONS = {
 
 /* ========== COMPUTED ========== */
 function compute() {
-  // Real fix: aiSuggestion was referenced (button tooltip + click handler) but
-  // never actually calculated anywhere — clicking "Set to AI" would have set
-  // prepped to undefined. Calculating it here, live, per the footer's own
-  // description: par minus whatever's already prepped, floored at zero.
-  // AI-suggested Qty to prep = par minus what's already on hand (inventory),
-  // not par minus what's been prepped today — On Hand is the AI-filled
-  // inventory number; Qty is how much more the chef needs to make.
+  // The "AI Suggests" number shown to the chef during sign-off week:
+  // par minus what's currently on hand. This is a read-only display value —
+  // the chef signs off or flags it, but cannot edit it directly.
   state.items.forEach(it => { it.aiSuggestion = Math.max(0, it.par - (it.onHand||0)); });
 
   const activeItems = state.items.filter(it => it.status !== "complete");
