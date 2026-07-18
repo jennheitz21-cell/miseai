@@ -681,11 +681,34 @@ btn?.addEventListener('click', async () => {
   });
   if (error) state.textContent = 'Sign-in hit a snag: ' + error.message;
 });
-supabase.auth.getSession().then(({ data }) => {
+supabase.auth.getSession().then(async ({ data }) => {
   const user = data?.session?.user;
   if (user) {
     btn.textContent = 'Signed in as ' + (user.email || 'chef') + ' ✓';
-    state.textContent = 'You\u2019re in. Course selection & checkout open soon — you\u2019ll be first through the door.';
+    state.textContent = 'Checking your house…';
+    try {
+      const res = await fetch('https://awzybqmplfqitzijkvdw.supabase.co/functions/v1/claim-membership', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + data.session.access_token,
+          'apikey': 'sb_publishable_h0VYK8QqyGLqUS2Rg3MDTA_3B71wuxv',
+          'Content-Type': 'application/json'
+        }
+      });
+      const d = await res.json();
+      if ((d.status === 'claimed' || d.status === 'member') && d.restaurants?.length) {
+        const r = d.restaurants[0];
+        state.textContent = '✓ Welcome to the house, Chef — ' + r.restaurant_code + ' · ' + (r.name || '') + '. Your board is being set up.';
+      } else if (d.status === 'pending') {
+        state.textContent = d.message || 'Your restaurant number is being minted — check back in a minute.';
+      } else if (d.status === 'no_signup') {
+        state.textContent = 'You\u2019re in. No paid signup under this Gmail yet — pick a course above to claim your number.';
+      } else {
+        state.textContent = 'You\u2019re in. Course selection & checkout open — you\u2019ll be first through the door.';
+      }
+    } catch (e) {
+      state.textContent = 'You\u2019re in. (Couldn\u2019t reach the house desk — try a refresh.)';
+    }
   }
 });
 </script>
