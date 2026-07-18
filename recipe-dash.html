@@ -1,0 +1,2240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISE EN PLACE 2026 — Cost · Scale · Yield</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;0,600;0,900;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:        #ddd6c8;
+  --surface:   #d2c9b8;
+  --surface-2: #ccc3b0;
+  --surface-3: #bfb49e;
+  --olive:     #c8231c;
+  --olive-lt:  #a8181c;
+  --olive-dim: #d9b8a8;
+  --red:       #c8231c;
+  --red-lt:    #a8181c;
+  --orange:    #c8231c;
+  --orange-lt: #a8181c;
+  --gold:      #000000;
+  --gold-dim:  #1a1a1a;
+  --gold-dk:   #000000;
+  --cream:     #000000;
+  --text:      #000000;
+  --text-dim:  #1a1a1a;
+  --text-mute: #5a5a52;
+  --border:    rgba(11,11,11,0.35);
+  --border-lt: rgba(11,11,11,0.2);
+  --blue:      #0b0b0b;
+  --blue-lt:   #0b0b0b;
+  --blue-dim:  #3d3d3d;
+  --border-red:rgba(200,35,28,0.4);
+  --shadow:    0 4px 24px rgba(0,0,0,0.18);
+  --font-serif: 'Anton', 'Arial Narrow', sans-serif;
+  --font-mono:  'JetBrains Mono', monospace;
+  --font-body:  'Fraunces', Georgia, serif;
+  --pad: clamp(14px,2.5vw,24px);
+  --gap: clamp(10px,1.8vw,18px);
+  --radius: 3px;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden;}
+/* scrollbar */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--surface);}
+::-webkit-scrollbar-thumb{background:var(--olive-dim);border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:var(--olive);}
+
+/* ══ HEADER ══════════════════════════════════════════════════════ */
+.header{
+  background:var(--surface);
+  border-bottom:2px solid var(--blue);
+  padding:0 var(--pad);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;height:72px;position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 20px rgba(0,0,0,0.5);
+}
+.logo{
+  display:flex;flex-direction:column;line-height:1;user-select:none;
+  border-right:1px solid var(--border);padding-right:20px;
+}
+.logo-word{
+  font-family:var(--font-mono);font-weight:700;
+  font-size:clamp(20px,3vw,30px);
+  letter-spacing:0.22em;color:var(--cream);
+}
+.logo-word em{color:var(--blue-lt);font-style:normal;}
+.logo-sub{
+  font-family:var(--font-mono);font-size:8px;
+  letter-spacing:0.4em;color:var(--olive);
+  text-transform:uppercase;margin-top:3px;
+}
+.header-center{
+  display:flex;gap:6px;align-items:center;flex:1;justify-content:center;
+}
+.header-pill{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;
+  text-transform:uppercase;padding:5px 12px;
+  border:1px solid rgba(11,11,11,0.25);border-radius:20px;
+  color:var(--text-dim);background:transparent;
+  transition:all 0.2s;cursor:pointer;
+}
+.header-pill:hover,.header-pill.active{
+  border-color:var(--red);color:var(--red);
+  background:rgba(200,35,28,0.06);
+}
+.header-right{
+  display:flex;gap:10px;align-items:center;
+}
+.sync-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--text-mute);
+  box-shadow:none;transition:all 0.5s;
+}
+.sync-dot.live{background:#4a7a3d;box-shadow:0 0 8px #4a7a3d;}
+.sync-dot.syncing{background:var(--red);animation:pulse 1s infinite;}
+.sync-dot.error{background:var(--red);}
+.sync-label{font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;color:var(--text-dim);}
+.btn-cfg{
+  background:transparent;border:1px solid rgba(11,11,11,0.25);
+  color:var(--text-dim);padding:6px 14px;cursor:pointer;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;
+  text-transform:uppercase;border-radius:var(--radius);
+  transition:all 0.2s;
+}
+.btn-cfg:hover{border-color:var(--red);color:var(--red);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+@media(max-width:700px){.header-center{display:none;}.logo-sub{display:none;}}
+
+/* ══ TABS ═════════════════════════════════════════════════════════ */
+.tab-bar{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  background:var(--bg);
+  border-bottom:2px solid var(--ink,#0b0b0b);
+}
+.tab{
+  font-family:var(--font-serif);font-weight:700;
+  font-size:clamp(16px,2.5vw,24px);
+  letter-spacing:0.06em;
+  padding:18px 14px 16px;
+  background:transparent;color:var(--text-dim);
+  border:none;cursor:pointer;
+  border-right:1px solid rgba(11,11,11,0.15);
+  transition:all 0.22s;position:relative;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+.tab:last-child{border-right:none;}
+.tab .t-icon{font-size:0.46em;font-family:var(--font-mono);
+  letter-spacing:0.3em;text-transform:uppercase;color:#c8231c;
+  font-weight:500;}
+.tab:hover{color:var(--ink,#0b0b0b);background:rgba(11,11,11,0.04);}
+.tab.on{
+  color:var(--ink,#0b0b0b);
+  background:rgba(11,11,11,0.03);
+  border-bottom:4px solid var(--ink,#0b0b0b);
+}
+.tab.on .t-icon{color:var(--ink,#0b0b0b);}
+
+/* ══ PANELS ═══════════════════════════════════════════════════════ */
+.panel{display:none;padding:var(--pad);animation:fadeUp 0.35s ease both;}
+.panel.on{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+
+/* ══ BOLD ALL PANEL CONTENT ══════════════════════════════════════ */
+.panel *,
+.recipe-card *,
+.results-box *,
+.vault-section *,
+.recipe-tile *,
+.scale-ctl *,
+.yield-diagram * {
+  font-weight:700;
+}
+.stat-val, .rc-total, .rc-pct, .panel-title, .rc-title {
+  font-weight:900;
+}
+
+/* ══ BOLD TEXT OVERRIDE ═══════════════════════════════════════════ */
+body,input,select,textarea,button{font-weight:600;}
+.field label{font-weight:700;letter-spacing:0.3em;}
+.stat-lbl,.tile-meta,.rc-meta,.logo-sub,.sync-label,.section-head,
+.rc-sh,.vault-count,.save-status,.haiku-tagline,.ing-hdr,.yield-sl,
+.tile-cat,.header-pill,.btn-cfg,.vault-search,.filter-btn{font-weight:700;}
+.stat-val,.rc-total,.rc-pct,.panel-title,.rc-title,.vault-title,
+.tab,.haiku-name,.logo-word{font-weight:900;}
+
+.panel-hd{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:var(--gap);padding-bottom:var(--gap);
+  border-bottom:1px solid var(--border);
+  gap:12px;flex-wrap:wrap;
+}
+.panel-title{
+  font-family:var(--font-serif);font-weight:900;
+  font-size:clamp(20px,3vw,32px);color:var(--cream);line-height:1.1;
+}
+.panel-title span{color:var(--orange);}
+.panel-desc{
+  font-family:var(--font-body);font-style:italic;
+  font-size:13px;color:var(--text-dim);margin-top:4px;
+}
+/* ── forms ── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);}
+.grid3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:var(--gap);}
+.grid-auto{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--gap);}
+@media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr;}}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{
+  font-family:var(--font-mono);font-size:9px;
+  letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--olive-lt);
+}
+.field input,.field select,.field textarea{
+  font-family:var(--font-mono);font-size:12px;
+  color:var(--cream);background:var(--surface-2);
+  border:1px solid var(--border);
+  border-left:3px solid var(--blue);
+  border-radius:var(--radius);
+  padding:10px 12px;outline:none;
+  transition:all 0.15s;
+}
+.field input:focus,.field select,.field textarea:focus{
+  border-color:var(--olive);border-left-color:var(--gold);
+  background:var(--surface-3);
+  box-shadow:0 0 0 3px rgba(200,35,28,0.15);
+}
+.field input::placeholder,.field textarea::placeholder{
+  color:var(--text-mute);font-style:italic;
+}
+.field select option{background:var(--surface-2);}
+.field textarea{resize:vertical;min-height:80px;}
+/* ── ingredient rows ── */
+.ing-hdr{
+  display:grid;
+  grid-template-columns:2.2fr 0.9fr 0.9fr 1fr 0.9fr 1.1fr 38px;
+  gap:8px;
+  font-family:var(--font-mono);font-size:8px;
+  letter-spacing:0.22em;text-transform:uppercase;color:var(--text-mute);
+  padding:8px 4px;border-bottom:1px solid var(--border);margin-bottom:6px;
+}
+.ing-hdr>*:nth-child(n+2):not(:last-child){text-align:right;}
+@media(max-width:680px){.ing-hdr{display:none;}}
+.ing-row{
+  display:grid;
+  grid-template-columns:2.2fr 0.9fr 0.9fr 1fr 0.9fr 1.1fr 38px;
+  gap:8px;padding:5px 0;align-items:center;
+  border-bottom:1px solid rgba(11,11,11,0.12);
+}
+@media(max-width:680px){
+  .ing-row{grid-template-columns:1fr 1fr;gap:8px;padding:12px 0;}
+  .ing-row>*:nth-child(1){grid-column:1/-1;}
+  .ing-row>*:last-child{grid-column:2/3;justify-self:end;}
+}
+.ing-row input{
+  font-family:var(--font-mono);font-size:11px;
+  color:var(--cream);background:var(--surface-2);
+  border:1px solid var(--border);border-radius:2px;
+  padding:8px 10px;outline:none;width:100%;
+  transition:all 0.15s;
+}
+.ing-row input:focus{border-color:var(--olive);background:var(--surface-3);}
+.ing-row .num{text-align:right;}
+.ing-row input[readonly]{
+  background:var(--surface-3);color:var(--gold);
+  border-color:var(--olive-dim);font-weight:700;text-align:right;
+  cursor:default;
+}
+.btn-x{
+  width:34px;height:34px;background:transparent;
+  border:1px solid var(--border-red);color:var(--red-lt);
+  font-size:14px;cursor:pointer;border-radius:2px;
+  transition:all 0.15s;flex-shrink:0;
+}
+.btn-x:hover{background:rgba(170,43,29,0.15);border-color:var(--red);}
+.btn-add{
+  margin-top:8px;background:var(--surface-3);
+  color:var(--cream);border:1px solid var(--border);
+  padding:11px 16px;font-family:var(--font-serif);font-weight:700;
+  font-size:16px;letter-spacing:0.06em;cursor:pointer;
+  border-radius:var(--radius);transition:all 0.15s;width:100%;
+}
+.btn-add:hover{background:var(--surface);border-color:var(--olive);color:var(--gold);}
+/* ── results / totals ── */
+.results-box{
+  margin-top:var(--gap);padding:var(--gap);
+  background:linear-gradient(135deg,var(--surface-2) 0%,var(--surface-3) 100%);
+  border:1px solid var(--border);border-left:3px solid var(--blue);
+  border-radius:var(--radius);
+}
+.results-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:var(--gap);
+}
+.stat{display:flex;flex-direction:column;gap:4px;}
+.stat-lbl{
+  font-family:var(--font-mono);font-size:8px;
+  letter-spacing:0.28em;color:var(--text-mute);text-transform:uppercase;
+}
+.stat-val{
+  font-family:var(--font-serif);font-weight:700;
+  font-size:clamp(24px,4vw,38px);line-height:1;color:var(--cream);
+}
+.stat-val.gold{color:var(--gold);}
+.stat-val.orange{color:var(--orange);}
+.stat-val.red{color:var(--red-lt);}
+.stat-val.ok{color:#3d6b32;}
+.stat-note{font-family:var(--font-body);font-style:italic;font-size:12px;color:var(--text-dim);}
+/* scale panel */
+.scale-ctl{
+  display:grid;grid-template-columns:1fr 48px 1fr;gap:var(--gap);
+  align-items:end;padding:var(--gap);
+  border:1px solid var(--border);border-radius:var(--radius);
+  background:var(--surface-2);margin-bottom:var(--gap);
+}
+@media(max-width:560px){.scale-ctl{grid-template-columns:1fr;}}
+.scale-arrow{
+  font-family:var(--font-serif);font-size:34px;
+  color:var(--olive);text-align:center;align-self:center;
+}
+.scale-ing{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr 38px;
+  gap:8px;padding:5px 0;align-items:center;
+  border-bottom:1px solid rgba(11,11,11,0.12);
+}
+@media(max-width:640px){
+  .scale-ing{grid-template-columns:1fr 1fr;padding:10px 0;}
+  .scale-ing>:first-child{grid-column:1/-1;}
+  .scale-ing>:last-child{grid-column:2/3;justify-self:end;}
+}
+.scale-ing input{
+  font-family:var(--font-mono);font-size:11px;
+  color:var(--cream);background:var(--surface-2);
+  border:1px solid var(--border);border-radius:2px;
+  padding:8px 10px;outline:none;width:100%;
+}
+.scale-ing input:focus{border-color:var(--olive);}
+.scale-ing input.scaled-val{
+  background:var(--surface-3);color:var(--gold);
+  border-color:var(--olive-dim);font-weight:700;
+  text-align:right;cursor:default;
+}
+/* yield panel */
+.yield-diagram{
+  display:grid;grid-template-columns:1fr 40px 1fr 40px 1fr;
+  gap:8px;align-items:center;padding:var(--gap);
+  border:1px solid var(--border);border-radius:var(--radius);
+  background:var(--surface-2);margin-bottom:var(--gap);
+}
+@media(max-width:560px){
+  .yield-diagram{grid-template-columns:1fr;}
+  .yield-arr{transform:rotate(90deg);justify-self:center;}
+}
+.yield-step{text-align:center;padding:8px;}
+.yield-sv{
+  font-family:var(--font-serif);font-weight:700;
+  font-size:clamp(24px,4vw,36px);line-height:1;
+}
+.yield-sv.raw{color:var(--orange);}
+.yield-sv.cooked{color:var(--gold);}
+.yield-sv.per{color:var(--olive-lt);}
+.yield-sl{
+  font-family:var(--font-mono);font-size:8px;
+  letter-spacing:0.25em;color:var(--text-mute);
+  text-transform:uppercase;margin-top:5px;
+}
+.yield-arr{
+  font-family:var(--font-serif);font-size:26px;
+  color:var(--olive-dim);text-align:center;
+}
+.section-head{
+  font-family:var(--font-mono);font-size:8px;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--blue);padding-bottom:6px;
+  border-bottom:1px solid var(--border);margin:var(--gap) 0 calc(var(--gap)*0.7);
+}
+
+/* ══ SAVE ROW ═══════════════════════════════════════════════════ */
+.save-row{
+  display:flex;gap:10px;align-items:center;margin-top:var(--gap);flex-wrap:wrap;
+}
+.btn-primary{
+  padding:11px 22px;background:var(--orange);color:var(--cream);
+  border:none;font-family:var(--font-serif);font-weight:700;
+  font-size:15px;letter-spacing:0.04em;cursor:pointer;
+  border-radius:var(--radius);transition:all 0.2s;
+}
+.btn-primary:hover{background:var(--orange-lt);box-shadow:0 2px 14px rgba(200,35,28,0.4);}
+.btn-secondary{
+  padding:11px 22px;background:transparent;color:var(--text-dim);
+  border:1px solid var(--border);font-family:var(--font-serif);font-weight:700;
+  font-size:15px;letter-spacing:0.04em;cursor:pointer;
+  border-radius:var(--radius);transition:all 0.2s;
+}
+.btn-secondary:hover{border-color:var(--olive);color:var(--olive-lt);}
+.save-status{
+  font-family:var(--font-mono);font-size:10px;
+  letter-spacing:0.2em;color:var(--text-mute);
+  animation:fadeUp 0.3s ease;
+}
+
+/* ══ RECIPE CARD PREVIEW ════════════════════════════════════════ */
+.card-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px var(--pad);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  background:var(--surface);cursor:pointer;user-select:none;
+  transition:background 0.2s;
+}
+.card-bar:hover{background:var(--surface-2);}
+.card-bar-label{
+  font-family:var(--font-mono);font-size:9px;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--olive-lt);
+  display:flex;align-items:center;gap:10px;
+}
+.card-bar-label::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--blue);box-shadow:0 0 6px var(--blue);
+}
+.card-chevron{font-size:12px;color:var(--text-mute);transition:transform 0.3s;}
+.card-bar.open .card-chevron{transform:rotate(180deg);}
+.recipe-card-wrap{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.5s cubic-bezier(0.4,0,0.2,1);
+  background:var(--bg);
+}
+.recipe-card-wrap.open{max-height:2000px;}
+.recipe-card{
+  margin:var(--pad);
+  background:
+    repeating-linear-gradient(to bottom,transparent 0px,transparent 34px,rgba(255,255,255,0.03) 34px,rgba(255,255,255,0.03) 35px),
+    #1a1a1a;
+  border:1px solid var(--border);border-radius:var(--radius);
+  position:relative;padding:28px 28px 28px 76px;overflow:hidden;
+  box-shadow:var(--shadow);
+  color:#f4efe6;
+}
+/* left gutter */
+.recipe-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:56px;
+  background:#0b0b0b;
+  border-right:2px solid #c8231c;
+}
+/* ring holes */
+.rc-holes{
+  position:absolute;left:0;top:0;bottom:0;width:56px;
+  display:flex;flex-direction:column;justify-content:space-around;
+  align-items:center;padding:20px 0;pointer-events:none;z-index:2;
+}
+.rc-hole{
+  width:20px;height:20px;border-radius:50%;
+  border:2px solid #ff8a3d;
+  background:#c8231c;
+}
+.rc-title{
+  font-family:var(--font-serif);font-weight:900;
+  font-size:clamp(22px,4vw,38px);
+  color:#f4efe6;text-transform:uppercase;
+  letter-spacing:1px;line-height:1;margin-bottom:4px;
+}
+.rc-title-empty{color:#8a8578;font-style:italic;text-transform:none;font-size:20px;font-weight:400;}
+.rc-meta{
+  font-family:var(--font-mono);font-size:9px;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:#e8a15a;margin-bottom:14px;
+}
+.rc-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px;}
+.rc-chip{
+  font-family:var(--font-mono);font-size:8px;font-weight:700;
+  letter-spacing:1px;padding:3px 10px;border-radius:20px;
+  border:1px solid;text-transform:uppercase;
+}
+.rc-chip-olive{border-color:#c8231c;color:#e8a15a;}
+.rc-chip-orange{border-color:#ff8a3d;color:#ff8a3d;}
+.rc-chip-gold{border-color:#8a8578;color:#c8bfa8;}
+.rc-divider{border:none;border-top:1px solid rgba(255,255,255,0.15);margin:14px 0;}
+.rc-cost-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4px;}
+.rc-total{
+  font-family:var(--font-serif);font-weight:700;
+  font-size:clamp(34px,5vw,52px);color:#ff8a3d;line-height:1;
+}
+.rc-portion{
+  font-family:var(--font-mono);font-size:11px;
+  color:#c8bfa8;margin-top:4px;
+}
+.rc-pct{
+  font-family:var(--font-serif);font-weight:700;
+  font-size:clamp(26px,4vw,40px);color:var(--orange);
+}
+.rc-sh{
+  font-family:var(--font-mono);font-size:8px;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:#e8a15a;margin:18px 0 10px;
+  padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,0.15);
+}
+table.rc-table{width:100%;border-collapse:collapse;}
+table.rc-table td{
+  font-family:var(--font-body);font-size:13px;
+  color:#f4efe6;padding:6px 0;
+  border-bottom:1px solid rgba(255,255,255,0.12);
+}
+table.rc-table td.rc-td-name{width:50%;font-weight:600;}
+table.rc-table td.rc-td-qty{width:25%;text-align:right;font-family:var(--font-mono);font-size:11px;color:#c8bfa8;}
+table.rc-table td.rc-td-cost{width:25%;text-align:right;font-family:var(--font-mono);font-size:11px;color:#ff8a3d;}
+tr.rc-ing-total td{border-top:2px solid rgba(255,255,255,0.2);font-weight:700;color:#ff8a3d;}
+.rc-step{display:flex;gap:14px;margin-bottom:10px;align-items:flex-start;}
+.rc-step-num{
+  font-family:var(--font-mono);font-size:9px;font-weight:700;
+  color:#ff8a3d;min-width:24px;margin-top:3px;
+  letter-spacing:0.1em;
+}
+.rc-step-txt{font-family:var(--font-body);font-size:13px;color:#f4efe6;line-height:1.6;}
+.rc-actions{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap;}
+
+/* ══ RECIPE VAULT ═══════════════════════════════════════════════ */
+.vault-section{padding:var(--pad);border-top:2px solid var(--olive);}
+.vault-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:var(--gap);gap:12px;flex-wrap:wrap;
+}
+.vault-title{
+  font-family:var(--font-serif);font-weight:900;
+  font-size:clamp(18px,3vw,30px);color:var(--cream);
+}
+.vault-title span{color:var(--gold);}
+.vault-controls{
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+}
+.vault-search{
+  font-family:var(--font-mono);font-size:11px;
+  color:var(--cream);background:var(--surface-2);
+  border:1px solid var(--border);border-left:3px solid var(--olive);
+  border-radius:var(--radius);padding:9px 14px;
+  outline:none;transition:all 0.2s;width:220px;
+}
+.vault-search:focus{border-color:var(--gold-dim);background:var(--surface-3);}
+.vault-search::placeholder{color:var(--text-mute);font-style:italic;}
+.filter-btn{
+  font-family:var(--font-mono);font-size:8px;
+  letter-spacing:0.2em;text-transform:uppercase;
+  padding:7px 14px;background:transparent;
+  border:1px solid var(--border);color:var(--text-mute);
+  border-radius:20px;cursor:pointer;transition:all 0.2s;
+}
+.filter-btn:hover,.filter-btn.active{
+  border-color:var(--olive);color:var(--olive-lt);
+  background:rgba(11,11,11,0.08);
+}
+.vault-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:var(--gap);
+}
+.recipe-tile{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px;
+  cursor:pointer;transition:all 0.22s;position:relative;
+  overflow:hidden;
+}
+.recipe-tile::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--orange),transparent);
+  transform:scaleX(0);transition:transform 0.3s;
+}
+.recipe-tile:hover{
+  border-color:var(--olive);background:var(--surface-2);
+  transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.4);
+}
+.recipe-tile:hover::after{transform:scaleX(1);}
+.tile-cat{
+  font-family:var(--font-mono);font-size:8px;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--orange);margin-bottom:6px;
+}
+.tile-name{
+  font-family:var(--font-serif);font-weight:700;
+  font-size:15px;color:var(--cream);line-height:1.2;
+  margin-bottom:8px;
+}
+.tile-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--font-mono);font-size:9px;color:var(--text-mute);
+}
+.tile-cost{color:var(--gold-dim);font-weight:700;}
+.tile-sync{
+  position:absolute;top:10px;right:10px;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--text-mute);
+}
+.tile-sync.cloud{background:var(--olive-lt);}
+.tile-load-btn{
+  margin-top:10px;width:100%;
+  background:rgba(200,35,28,0.1);color:var(--orange);
+  border:1px solid rgba(200,35,28,0.3);
+  font-family:var(--font-mono);font-size:8px;
+  letter-spacing:0.2em;text-transform:uppercase;
+  padding:7px;cursor:pointer;border-radius:2px;
+  transition:all 0.2s;
+}
+.tile-load-btn:hover{background:rgba(200,35,28,0.2);border-color:var(--orange);}
+.vault-count{
+  font-family:var(--font-mono);font-size:9px;
+  letter-spacing:0.2em;color:var(--text-mute);
+  margin-top:var(--gap);text-align:right;
+  padding-top:var(--gap);border-top:1px solid var(--border);
+}
+
+/* ══ HAIKU ASSISTANT ════════════════════════════════════════════ */
+.haiku-fab{
+  position:fixed;bottom:28px;right:28px;z-index:200;
+  width:58px;height:58px;border-radius:50%;
+  background:linear-gradient(135deg,var(--red) 0%,var(--ink,#0b0b0b) 100%);
+  border:2px solid var(--ink,#0b0b0b);
+  box-shadow:0 4px 20px rgba(0,0,0,0.25),0 0 0 0 rgba(200,35,28,0.3);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:22px;transition:all 0.25s;
+  animation:fabPulse 3s infinite;
+}
+.haiku-fab:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(0,0,0,0.3),0 0 0 6px rgba(200,35,28,0.15);}
+@keyframes fabPulse{0%,100%{box-shadow:0 4px 20px rgba(0,0,0,0.25),0 0 0 0 rgba(200,35,28,0.25);}50%{box-shadow:0 4px 20px rgba(0,0,0,0.25),0 0 0 10px rgba(200,35,28,0);}}
+.haiku-panel{
+  position:fixed;right:0;bottom:0;top:0;z-index:201;
+  width:min(420px,100vw);
+  background:var(--surface);
+  border-left:2px solid var(--olive);
+  display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  box-shadow:-8px 0 40px rgba(0,0,0,0.5);
+}
+.haiku-panel.open{transform:translateX(0);}
+.haiku-head{
+  padding:16px 20px;
+  background:linear-gradient(90deg,var(--surface-2),var(--surface));
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.haiku-brand{
+  display:flex;flex-direction:column;
+}
+.haiku-name{
+  font-family:var(--font-serif);font-weight:700;
+  font-size:18px;color:var(--gold);
+}
+.haiku-tagline{
+  font-family:var(--font-body);font-style:italic;
+  font-size:10px;color:var(--olive-lt);margin-top:2px;
+}
+.haiku-close{
+  width:34px;height:34px;background:transparent;
+  border:1px solid var(--border);color:var(--text-dim);
+  border-radius:50%;cursor:pointer;font-size:14px;
+  transition:all 0.2s;display:flex;align-items:center;justify-content:center;
+}
+.haiku-close:hover{border-color:var(--red);color:var(--red-lt);}
+/* cfg banner */
+.haiku-cfg{
+  padding:12px 16px;
+  background:rgba(170,43,29,0.1);border-bottom:1px solid rgba(170,43,29,0.3);
+  font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;
+  color:var(--text-dim);display:flex;gap:8px;align-items:center;flex-shrink:0;
+}
+.haiku-cfg input{
+  flex:1;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:2px;color:var(--cream);padding:6px 10px;
+  font-family:var(--font-mono);font-size:9px;outline:none;
+}
+.haiku-cfg input:focus{border-color:var(--olive);}
+.haiku-cfg button{
+  background:var(--olive-dim);border:none;color:var(--cream);
+  padding:6px 12px;font-family:var(--font-mono);font-size:8px;
+  letter-spacing:0.2em;cursor:pointer;border-radius:2px;
+  white-space:nowrap;transition:all 0.2s;
+}
+.haiku-cfg button:hover{background:var(--olive);}
+/* haiku poem area */
+.haiku-poem{
+  padding:14px 16px;
+  background:var(--surface-2);border-bottom:1px solid var(--border);
+  font-family:var(--font-body);font-style:italic;
+  font-size:12px;line-height:1.7;color:var(--gold-dim);
+  text-align:center;flex-shrink:0;
+}
+/* messages */
+.haiku-msgs{
+  flex:1;overflow-y:auto;padding:14px 16px;
+  display:flex;flex-direction:column;gap:12px;
+}
+.msg{
+  display:flex;flex-direction:column;gap:4px;
+  animation:fadeUp 0.25s ease;
+}
+.msg.user .msg-bubble{
+  background:rgba(11,11,11,0.15);border:1px solid var(--border);
+  align-self:flex-end;color:var(--cream);
+}
+.msg.sous .msg-bubble{
+  background:var(--surface-2);border:1px solid var(--border);
+  border-left:2px solid var(--orange);align-self:flex-start;
+  color:var(--text);
+}
+.msg-bubble{
+  padding:10px 14px;border-radius:4px;
+  font-family:var(--font-body);font-size:12px;line-height:1.6;
+  max-width:88%;white-space:pre-wrap;
+}
+.msg.user .msg-label{text-align:right;}
+.msg-label{font-family:var(--font-mono);font-size:8px;letter-spacing:0.2em;color:var(--text-mute);}
+.msg-bubble.thinking{
+  font-style:italic;color:var(--text-mute);
+  border-style:dashed;
+  animation:pulse 1.5s infinite;
+}
+/* shortcuts */
+.haiku-shortcuts{
+  padding:10px 16px;border-top:1px solid var(--border);
+  display:flex;flex-wrap:wrap;gap:6px;flex-shrink:0;
+}
+.shortcut{
+  font-family:var(--font-mono);font-size:8px;letter-spacing:0.1em;
+  padding:6px 12px;border:1px solid var(--border);
+  color:var(--text-mute);cursor:pointer;border-radius:20px;
+  transition:all 0.2s;background:transparent;
+}
+.shortcut:hover{border-color:var(--gold-dim);color:var(--gold-dim);}
+/* input area */
+.haiku-input-row{
+  padding:12px 16px;
+  border-top:1px solid var(--border);
+  background:var(--surface-2);
+  display:flex;gap:8px;align-items:flex-end;flex-shrink:0;
+}
+.haiku-input{
+  flex:1;background:var(--surface);border:1px solid var(--border);
+  border-radius:4px;color:var(--cream);padding:10px 12px;
+  font-family:var(--font-body);font-size:12px;outline:none;
+  resize:none;max-height:120px;overflow-y:auto;line-height:1.4;
+}
+.haiku-input:focus{border-color:var(--olive);}
+.haiku-send{
+  width:40px;height:40px;background:var(--orange);
+  border:none;color:var(--cream);border-radius:4px;
+  cursor:pointer;font-size:16px;transition:all 0.2s;flex-shrink:0;
+}
+.haiku-send:hover{background:var(--orange-lt);}
+.haiku-send:disabled{background:var(--surface-3);color:var(--text-mute);cursor:not-allowed;}
+
+/* ══ CONFIG MODAL ═══════════════════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(0,0,0,0.75);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.25s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{
+  background:var(--surface);border:1px solid var(--border);
+  border-top:3px solid var(--orange);border-radius:var(--radius);
+  padding:28px;width:min(520px,90vw);
+  box-shadow:var(--shadow);transform:translateY(20px);
+  transition:transform 0.25s;
+}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-title{
+  font-family:var(--font-serif);font-weight:700;font-size:20px;
+  color:var(--cream);margin-bottom:4px;
+}
+.modal-sub{font-family:var(--font-body);font-style:italic;font-size:12px;color:var(--text-dim);margin-bottom:20px;}
+.modal-field{margin-bottom:14px;}
+.modal-field label{
+  font-family:var(--font-mono);font-size:8px;
+  letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--olive-lt);display:block;margin-bottom:6px;
+}
+.modal-field input{
+  width:100%;font-family:var(--font-mono);font-size:11px;
+  color:var(--cream);background:var(--surface-2);
+  border:1px solid var(--border);border-left:3px solid var(--blue);
+  padding:10px 12px;outline:none;border-radius:var(--radius);
+}
+.modal-field input:focus{border-color:var(--olive);}
+.modal-hint{font-family:var(--font-body);font-size:10px;font-style:italic;color:var(--text-mute);margin-top:4px;}
+.modal-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end;}
+.modal-status{font-family:var(--font-mono);font-size:9px;color:var(--text-mute);margin-top:10px;min-height:18px;}
+
+/* ══ FOOTER ═════════════════════════════════════════════════════ */
+.footer{
+  padding:var(--pad);border-top:1px solid var(--border);
+  background:var(--surface);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  gap:10px;
+}
+.footer-left{
+  font-family:var(--font-mono);font-size:8px;
+  letter-spacing:0.3em;text-transform:uppercase;color:var(--text-mute);
+}
+.footer-left span{color:var(--olive);}
+.footer-right{
+  font-family:var(--font-body);font-style:italic;
+  font-size:11px;color:var(--text-mute);
+}
+/* ══ TOAST ══════════════════════════════════════════════════════ */
+.toast{
+  position:fixed;bottom:100px;right:28px;z-index:500;
+  background:var(--surface-3);border:1px solid var(--olive);
+  border-left:3px solid var(--blue);
+  padding:12px 18px;border-radius:var(--radius);
+  font-family:var(--font-mono);font-size:10px;letter-spacing:0.15em;
+  color:var(--cream);box-shadow:var(--shadow);
+  transform:translateX(120%);transition:transform 0.3s;
+  max-width:300px;
+}
+.toast.show{transform:translateX(0);}
+/* responsive helper */
+@media(max-width:480px){
+  .haiku-fab{bottom:16px;right:16px;width:50px;height:50px;font-size:18px;}
+  .vault-search{width:100%;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════ -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-word">MI<em>SE</em></div>
+    <div class="logo-sub">en place · 2026</div>
+  </div>
+  <div class="header-center">
+    <button class="header-pill active" onclick="scrollToSection('calc')">Calculators</button>
+    <button class="header-pill" onclick="scrollToSection('vault')">Vault</button>
+  </div>
+  <div class="header-right">
+    <div class="sync-dot" id="syncDot" title="Supabase sync status"></div>
+    <span class="sync-label" id="syncLabel">offline</span>
+    <button class="btn-cfg" onclick="openConfig()">⚙ Config</button>
+  </div>
+</header>
+
+<!-- ══ CALC SECTION ═════════════════════════════════════════════ -->
+<div id="calc">
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab on" onclick="switchTab('cost',this)">
+    <span class="t-icon">01 · cost</span>Recipe Costing
+  </button>
+  <button class="tab" onclick="switchTab('scale',this)">
+    <span class="t-icon">02 · scale</span>Batch Scaling
+  </button>
+  <button class="tab" onclick="switchTab('yield',this)">
+    <span class="t-icon">03 · yield</span>Yield Analysis
+  </button>
+</div>
+
+<!-- ── COST PANEL ─────────────────────────────────────────────── -->
+<div class="panel on" id="panel-cost">
+  <div class="panel-hd">
+    <div>
+      <div class="panel-title">Recipe <span>Costing</span></div>
+      <div class="panel-desc">Calculate total batch cost, per-portion cost, and food cost percentage</div>
+    </div>
+    <div id="costSaveStatus" class="save-status"></div>
+  </div>
+  <div class="grid2">
+    <div class="field"><label>Recipe Name</label>
+      <input type="text" id="costName" placeholder="e.g. Beef Bourguignon" oninput="calcCost();updateCard()">
+    </div>
+    <div class="field"><label>Number of Portions</label>
+      <input type="number" id="costPortions" value="4" min="1" oninput="calcCost();updateCard()">
+    </div>
+  </div>
+  <div class="grid2" style="margin-top:var(--gap)">
+    <div class="field"><label>Menu Price per Portion ($)</label>
+      <input type="number" id="costPrice" value="" placeholder="28.00" step="0.01" oninput="calcCost();updateCard()">
+    </div>
+    <div class="field"><label>Target Food Cost %</label>
+      <input type="number" id="costTarget" value="30" placeholder="30" step="1" oninput="calcCost();updateCard()">
+    </div>
+  </div>
+  <div class="section-head">Ingredients</div>
+  <div class="ing-hdr">
+    <span>Ingredient</span><span style="text-align:right">Qty</span>
+    <span style="text-align:right">Unit</span>
+    <span style="text-align:right">Pkg Size</span>
+    <span style="text-align:right">Pkg $</span>
+    <span style="text-align:right">Line Cost</span>
+    <span></span>
+  </div>
+  <div id="costIngList"></div>
+  <button class="btn-add" onclick="addCostIng()">+ Add Ingredient</button>
+  <div class="results-box" id="costResults">
+    <div class="results-grid">
+      <div class="stat">
+        <div class="stat-lbl">Batch Cost</div>
+        <div class="stat-val gold" id="resBatchCost">$0.00</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Per Portion</div>
+        <div class="stat-val" id="resPerPortion">$0.00</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Food Cost %</div>
+        <div class="stat-val orange" id="resFoodCostPct">—</div>
+        <div class="stat-note" id="resFoodCostNote"></div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Ideal Menu $</div>
+        <div class="stat-val" id="resIdealPrice">—</div>
+        <div class="stat-note" id="resCostNote"></div>
+      </div>
+    </div>
+  </div>
+  <div class="section-head" style="margin-top:var(--gap)">Directions</div>
+  <div class="field">
+    <textarea id="costDirections" placeholder="Step-by-step method…&#10;1. Season the beef generously…&#10;2. Sear in batches until browned…" rows="4" oninput="updateCard()"></textarea>
+  </div>
+  <div class="save-row">
+    <button class="btn-primary" onclick="saveToVault('cost')">↑ Save to Vault</button>
+    <button class="btn-secondary" onclick="clearCost()">Clear</button>
+    <button class="btn-secondary" onclick="printCard()">🖨 Print Card</button>
+  </div>
+</div>
+
+<!-- ── SCALE PANEL ─────────────────────────────────────────────── -->
+<div class="panel" id="panel-scale">
+  <div class="panel-hd">
+    <div>
+      <div class="panel-title">Batch <span>Scaling</span></div>
+      <div class="panel-desc">Scale any recipe up or down with automatic quantity conversion</div>
+    </div>
+  </div>
+  <div class="scale-ctl">
+    <div class="grid2" style="gap:var(--gap)">
+      <div class="field"><label>Recipe Name</label>
+        <input type="text" id="scaleName" placeholder="Recipe name…" oninput="calcScale();updateCard()">
+      </div>
+      <div class="field"><label>Base Unit</label>
+        <input type="text" id="scaleUnit" placeholder="portions / servings / kg…" oninput="calcScale();updateCard()">
+      </div>
+    </div>
+    <div class="scale-arrow">→</div>
+    <div class="grid2" style="gap:var(--gap)">
+      <div class="field"><label>Original Qty</label>
+        <input type="number" id="scaleFrom" value="4" min="0.01" step="0.01" oninput="calcScale();updateCard()">
+      </div>
+      <div class="field"><label>Target Qty</label>
+        <input type="number" id="scaleTo" value="20" min="0.01" step="0.01" oninput="calcScale();updateCard()">
+      </div>
+    </div>
+  </div>
+  <div class="section-head">Ingredients</div>
+  <div id="scaleIngList"></div>
+  <button class="btn-add" onclick="addScaleIng()">+ Add Ingredient</button>
+  <div class="results-box" style="margin-top:var(--gap)">
+    <div class="results-grid">
+      <div class="stat">
+        <div class="stat-lbl">Scale Factor</div>
+        <div class="stat-val gold" id="scaleFactor">×5.00</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Original</div>
+        <div class="stat-val" id="scaleOrigLabel">4 portions</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Target</div>
+        <div class="stat-val orange" id="scaleTargLabel">20 portions</div>
+      </div>
+    </div>
+  </div>
+  <div class="save-row">
+    <button class="btn-primary" onclick="saveToVault('scale')">↑ Save to Vault</button>
+    <button class="btn-secondary" onclick="clearScale()">Clear</button>
+  </div>
+</div>
+
+<!-- ── YIELD PANEL ─────────────────────────────────────────────── -->
+<div class="panel" id="panel-yield">
+  <div class="panel-hd">
+    <div>
+      <div class="panel-title">Yield <span>Analysis</span></div>
+      <div class="panel-desc">Calculate usable yield, waste percentage, and cost per usable unit</div>
+    </div>
+  </div>
+  <div class="grid3">
+    <div class="field"><label>Ingredient / Product</label>
+      <input type="text" id="yieldName" placeholder="e.g. Beef Tenderloin" oninput="calcYield();updateCard()">
+    </div>
+    <div class="field"><label>Unit</label>
+      <select id="yieldUnit" onchange="calcYield();updateCard()">
+        <option value="lb">lb</option><option value="kg">kg</option>
+        <option value="oz">oz</option><option value="g">g</option>
+        <option value="each">each</option>
+      </select>
+    </div>
+    <div class="field"><label>Cost per Unit ($)</label>
+      <input type="number" id="yieldCostPer" placeholder="12.50" step="0.01" oninput="calcYield();updateCard()">
+    </div>
+  </div>
+  <div class="yield-diagram" style="margin-top:var(--gap)">
+    <div class="yield-step">
+      <div class="yield-sv raw" id="yRaw">—</div>
+      <div class="yield-sl">Raw / As-Purchased</div>
+      <div class="field" style="margin-top:10px">
+        <label>AP Weight</label>
+        <input type="number" id="yieldRaw" placeholder="10.0" step="0.01"
+          style="background:var(--surface-2);border:1px solid var(--border);border-left:3px solid var(--blue);color:var(--cream);padding:8px 10px;font-family:var(--font-mono);font-size:11px;outline:none;border-radius:2px;width:100%"
+          oninput="calcYield();updateCard()">
+      </div>
+    </div>
+    <div class="yield-arr">→</div>
+    <div class="yield-step">
+      <div class="yield-sv cooked" id="yCooked">—</div>
+      <div class="yield-sl">Usable / EP Weight</div>
+      <div class="field" style="margin-top:10px">
+        <label>EP Weight</label>
+        <input type="number" id="yieldCooked" placeholder="7.5" step="0.01"
+          style="background:var(--surface-2);border:1px solid var(--border);border-left:3px solid var(--gold-dk);color:var(--cream);padding:8px 10px;font-family:var(--font-mono);font-size:11px;outline:none;border-radius:2px;width:100%"
+          oninput="calcYield();updateCard()">
+      </div>
+    </div>
+    <div class="yield-arr">→</div>
+    <div class="yield-step">
+      <div class="yield-sv per" id="yPer">—</div>
+      <div class="yield-sl">Portion Weight</div>
+      <div class="field" style="margin-top:10px">
+        <label>Portion Size</label>
+        <input type="number" id="yieldPortion" placeholder="0.5" step="0.01"
+          style="background:var(--surface-2);border:1px solid var(--border);border-left:3px solid var(--olive);color:var(--cream);padding:8px 10px;font-family:var(--font-mono);font-size:11px;outline:none;border-radius:2px;width:100%"
+          oninput="calcYield();updateCard()">
+      </div>
+    </div>
+  </div>
+  <div class="results-box">
+    <div class="results-grid">
+      <div class="stat">
+        <div class="stat-lbl">Yield %</div>
+        <div class="stat-val gold" id="yieldPct">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Waste %</div>
+        <div class="stat-val orange" id="yieldWaste">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">EP Cost / Unit</div>
+        <div class="stat-val" id="yieldEpCost">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Cost / Portion</div>
+        <div class="stat-val" id="yieldCostPortion">—</div>
+        <div class="stat-note" id="yieldPortionCount"></div>
+      </div>
+    </div>
+  </div>
+  <div class="save-row">
+    <button class="btn-primary" onclick="saveToVault('yield')">↑ Save to Vault</button>
+    <button class="btn-secondary" onclick="clearYield()">Clear</button>
+  </div>
+</div>
+</div><!-- /calc -->
+
+<!-- ══ RECIPE CARD PREVIEW ══════════════════════════════════════ -->
+<div class="card-bar" id="cardBar" onclick="toggleCard()">
+  <span class="card-bar-label">Live Recipe Card Preview</span>
+  <span class="card-chevron">▼</span>
+</div>
+<div class="recipe-card-wrap" id="cardWrap">
+  <div class="recipe-card">
+    <div class="rc-holes">
+      <div class="rc-hole"></div><div class="rc-hole"></div><div class="rc-hole"></div>
+    </div>
+    <div class="rc-title" id="rcTitle">Untitled Recipe</div>
+    <div class="rc-meta" id="rcMeta">—</div>
+    <div class="rc-chips" id="rcChips"></div>
+    <hr class="rc-divider">
+    <div class="rc-cost-row">
+      <div>
+        <div class="rc-total" id="rcTotal">$—</div>
+        <div class="rc-portion" id="rcPortion">batch cost</div>
+      </div>
+      <div class="rc-pct" id="rcPct">—%</div>
+    </div>
+    <hr class="rc-divider">
+    <div class="rc-sh">Ingredients</div>
+    <table class="rc-table"><tbody id="rcIngTable"><tr><td class="rc-td-name" style="color:var(--text-mute);font-style:italic">Add ingredients above…</td><td></td><td></td></tr></tbody></table>
+    <div class="rc-sh">Method</div>
+    <div id="rcSteps" style="font-style:italic;color:var(--text-mute);font-size:12px">Add directions above…</div>
+    <div class="rc-actions">
+      <button class="btn-secondary" onclick="printCard()" style="font-size:12px;padding:8px 16px">🖨 Print</button>
+      <button class="btn-secondary" onclick="saveToVault(currentTab)" style="font-size:12px;padding:8px 16px">↑ Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RECIPE VAULT ══════════════════════════════════════════════ -->
+<!-- ══ VAULT DRAWER TOGGLE BAR ════════════════════════════════════ -->
+<div class="card-bar" id="vaultBar" onclick="toggleVault()" style="border-top:2px solid var(--olive);border-bottom:none;">
+  <span class="card-bar-label">📁 Recipe Vault — click to open</span>
+  <span class="card-chevron" id="vaultChevron">▼</span>
+</div>
+<div class="recipe-card-wrap" id="vaultWrap">
+  <div class="vault-section" id="vault">
+    <div class="vault-header">
+      <div>
+        <div class="vault-title">Recipe <span>Vault</span></div>
+        <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;color:var(--text-mute);margin-top:4px">
+          30 recipes · cloud-synced
+        </div>
+      </div>
+      <div class="vault-controls">
+        <input class="vault-search" type="text" id="vaultSearch"
+          placeholder="Search recipes…" oninput="filterVault()">
+        <button class="filter-btn active" data-cat="all" onclick="setFilter('all',this)">All</button>
+        <button class="filter-btn" data-cat="meat" onclick="setFilter('meat',this)">Meat</button>
+        <button class="filter-btn" data-cat="fish" onclick="setFilter('fish',this)">Fish</button>
+        <button class="filter-btn" data-cat="veg" onclick="setFilter('veg',this)">Veg</button>
+        <button class="filter-btn" data-cat="dessert" onclick="setFilter('dessert',this)">Dessert</button>
+      </div>
+    </div>
+    <div class="vault-grid" id="vaultGrid"></div>
+    <div class="vault-count" id="vaultCount"></div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ═══════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-left">MISE<span> en Place</span> · 2026 · Cost · Scale · Yield</div>
+  <div class="footer-right">Kitchen intelligence, meticulously crafted.</div>
+</footer>
+
+<!-- ══ HAIKU ASSISTANT ══════════════════════════════════════════ -->
+<button class="haiku-fab" id="haikuFab" onclick="toggleHaiku()" title="Open Sous Chef AI">🍳</button>
+<div class="haiku-panel" id="haikuPanel">
+  <div class="haiku-head">
+    <div class="haiku-brand">
+      <div class="haiku-name">Sous Chef AI</div>
+      <div class="haiku-tagline">Powered by Claude Haiku · Your kitchen intelligence</div>
+    </div>
+    <button class="haiku-close" onclick="toggleHaiku()">✕</button>
+  </div>
+  <div class="haiku-cfg" id="haikuCfg">
+    <input type="password" id="haikuKey" placeholder="sk-ant-… (Anthropic API key)" autocomplete="off">
+    <button onclick="saveHaikuKey()">Save</button>
+  </div>
+  <div class="haiku-poem" id="haikuPoem">
+    Hot pan sizzles—<br>numbers become nourishment,<br>cost becomes art.
+  </div>
+  <div class="haiku-msgs" id="haikuMsgs"></div>
+  <div class="haiku-shortcuts">
+    <button class="shortcut" onclick="quickAsk('Check my ingredient costs and suggest where I can save money')">Cost check</button>
+    <button class="shortcut" onclick="quickAsk('What menu price should I charge to hit a 28% food cost?')">Ideal price</button>
+    <button class="shortcut" onclick="quickAsk('Suggest ingredient substitutions that lower cost without compromising quality')">Subs</button>
+    <button class="shortcut" onclick="quickAsk('What are common scaling mistakes I should watch for with this recipe?')">Scale tips</button>
+    <button class="shortcut" onclick="quickAsk('Give me a haiku about the current recipe')">✦ Haiku</button>
+  </div>
+  <div class="haiku-input-row">
+    <textarea class="haiku-input" id="haikuInput" rows="1"
+      placeholder="Ask about costs, scaling, subs…"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendToHaiku();}"></textarea>
+    <button class="haiku-send" id="haikuSend" onclick="sendToHaiku()">↑</button>
+  </div>
+</div>
+
+<!-- ══ CONFIG MODAL ══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="configModal">
+  <div class="modal">
+    <div class="modal-title">⚙ Configuration</div>
+    <div class="modal-sub">Connect Supabase for real-time cloud sync across devices</div>
+    <div class="modal-field">
+      <label>Supabase Project URL</label>
+      <input type="text" id="cfgUrl" placeholder="https://your-project.supabase.co">
+      <div class="modal-hint">Found in your Supabase dashboard → Project Settings → API</div>
+    </div>
+    <div class="modal-field">
+      <label>Supabase Anon Key</label>
+      <input type="password" id="cfgKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9…">
+      <div class="modal-hint">Use the <strong>anon public</strong> key (not the service role key)</div>
+    </div>
+    <div class="modal-field">
+      <label>Anthropic API Key (for Haiku AI)</label>
+      <input type="password" id="cfgAntKey" placeholder="sk-ant-api03-…">
+      <div class="modal-hint">Your key is stored in localStorage only and never sent to any server</div>
+    </div>
+    <div class="modal-status" id="cfgStatus"></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeConfig()">Cancel</button>
+      <button class="btn-primary" onclick="applyConfig()">Connect & Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST ═════════════════════════════════════════════════════ -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// SEED DATA — 30 Recipes
+// ════════════════════════════════════════════════════════════════
+const SEED_RECIPES = [
+  { id:'r01', name:'Beef Bourguignon', category:'meat', servings:6, menu_price:38,
+    ingredients:[
+      {name:'Beef chuck, cubed',qty:3,unit:'lb',pkg_size:1,price:8.50},
+      {name:'Burgundy wine',qty:1,unit:'bottle',pkg_size:1,price:14.00},
+      {name:'Bacon lardons',qty:0.5,unit:'lb',pkg_size:1,price:5.00},
+      {name:'Pearl onions',qty:1,unit:'lb',pkg_size:1,price:3.50},
+      {name:'Cremini mushrooms',qty:1,unit:'lb',pkg_size:1,price:4.00},
+      {name:'Carrots',qty:3,unit:'each',pkg_size:1,price:0.75},
+      {name:'Garlic cloves',qty:4,unit:'each',pkg_size:1,price:0.50},
+      {name:'Beef stock',qty:2,unit:'cups',pkg_size:1,price:2.00},
+      {name:'Tomato paste',qty:2,unit:'tbsp',pkg_size:1,price:0.50},
+    ],
+    directions:'1. Marinate beef in wine overnight.\n2. Sear bacon lardons, remove.\n3. Brown beef in batches.\n4. Sauté vegetables.\n5. Deglaze with wine marinade.\n6. Braise at 325°F for 2.5 hours.\n7. Add mushrooms last 30 min.' },
+  { id:'r02', name:'Chicken Tikka Masala', category:'meat', servings:6, menu_price:24,
+    ingredients:[
+      {name:'Chicken breast',qty:2.5,unit:'lb',pkg_size:1,price:4.99},
+      {name:'Yogurt',qty:1,unit:'cup',pkg_size:1,price:1.50},
+      {name:'Crushed tomatoes',qty:28,unit:'oz',pkg_size:1,price:2.50},
+      {name:'Heavy cream',qty:1,unit:'cup',pkg_size:1,price:2.00},
+      {name:'Yellow onion',qty:2,unit:'each',pkg_size:1,price:1.00},
+      {name:'Garam masala',qty:2,unit:'tbsp',pkg_size:1,price:1.50},
+      {name:'Ginger-garlic paste',qty:3,unit:'tbsp',pkg_size:1,price:1.00},
+    ],
+    directions:'1. Marinate chicken in spiced yogurt 4 hrs.\n2. Grill or broil chicken.\n3. Build masala sauce with tomatoes and cream.\n4. Simmer chicken in sauce 15 min.' },
+  { id:'r03', name:'Lobster Bisque', category:'fish', servings:8, menu_price:22,
+    ingredients:[
+      {name:'Lobster tails',qty:2,unit:'lb',pkg_size:1,price:28.00},
+      {name:'Heavy cream',qty:2,unit:'cups',pkg_size:1,price:4.00},
+      {name:'Dry sherry',qty:0.5,unit:'cup',pkg_size:1,price:4.00},
+      {name:'Lobster stock',qty:2,unit:'cups',pkg_size:1,price:5.00},
+      {name:'Carrots',qty:2,unit:'each',pkg_size:1,price:0.60},
+      {name:'Celery',qty:3,unit:'stalks',pkg_size:1,price:0.75},
+      {name:'Shallots',qty:4,unit:'each',pkg_size:1,price:1.50},
+    ],
+    directions:'1. Sauté aromatics in butter.\n2. Add tomato paste and sherry.\n3. Add stock and simmer 20 min.\n4. Blend until smooth.\n5. Stir in cream, adjust seasoning.' },
+  { id:'r04', name:'Duck Confit', category:'meat', servings:4, menu_price:36,
+    ingredients:[
+      {name:'Duck legs',qty:4,unit:'each',pkg_size:1,price:7.50},
+      {name:'Duck fat',qty:2,unit:'cups',pkg_size:1,price:14.00},
+      {name:'Kosher salt',qty:3,unit:'tbsp',pkg_size:1,price:0.25},
+      {name:'Thyme',qty:8,unit:'sprigs',pkg_size:1,price:1.00},
+      {name:'Bay leaves',qty:4,unit:'each',pkg_size:1,price:0.25},
+      {name:'Garlic',qty:6,unit:'cloves',pkg_size:1,price:0.50},
+    ],
+    directions:'1. Cure duck legs in salt 24 hrs.\n2. Submerge in duck fat with aromatics.\n3. Slow cook at 200°F for 3 hours.\n4. Cool and store in fat.\n5. Crisp skin in hot pan before service.' },
+  { id:'r05', name:'Pan Seared Salmon', category:'fish', servings:4, menu_price:28,
+    ingredients:[
+      {name:'Salmon fillets 6oz',qty:4,unit:'each',pkg_size:1,price:9.00},
+      {name:'Unsalted butter',qty:4,unit:'tbsp',pkg_size:1,price:1.00},
+      {name:'Capers',qty:2,unit:'tbsp',pkg_size:1,price:1.50},
+      {name:'Lemon',qty:2,unit:'each',pkg_size:1,price:0.75},
+      {name:'Fresh dill',qty:0.25,unit:'oz',pkg_size:1,price:1.50},
+    ],
+    directions:'1. Pat salmon dry.\n2. Season and sear skin-side 4 min.\n3. Flip, baste with butter.\n4. Rest 2 min.\n5. Serve with caper-lemon beurre blanc.' },
+  { id:'r06', name:'Mushroom Risotto', category:'veg', servings:6, menu_price:22,
+    ingredients:[
+      {name:'Arborio rice',qty:2,unit:'cups',pkg_size:1,price:3.50},
+      {name:'Mixed mushrooms',qty:1.5,unit:'lb',pkg_size:1,price:8.00},
+      {name:'Dry white wine',qty:1,unit:'cup',pkg_size:1,price:4.00},
+      {name:'Parmesan, grated',qty:1,unit:'cup',pkg_size:1,price:5.00},
+      {name:'Vegetable stock',qty:6,unit:'cups',pkg_size:1,price:3.00},
+      {name:'Shallots',qty:4,unit:'each',pkg_size:1,price:1.50},
+      {name:'Unsalted butter',qty:4,unit:'tbsp',pkg_size:1,price:1.00},
+    ],
+    directions:'1. Sauté shallots in butter.\n2. Toast rice 2 min.\n3. Deglaze with wine.\n4. Add stock ladle by ladle, 20 min.\n5. Fold in mushrooms and parmesan.' },
+  { id:'r07', name:'Rack of Lamb Provençal', category:'meat', servings:4, menu_price:48,
+    ingredients:[
+      {name:'Rack of lamb (8 bones)',qty:2,unit:'each',pkg_size:1,price:32.00},
+      {name:'Dijon mustard',qty:3,unit:'tbsp',pkg_size:1,price:1.50},
+      {name:'Breadcrumbs',qty:1,unit:'cup',pkg_size:1,price:1.00},
+      {name:'Fresh herbs (rosemary, thyme)',qty:3,unit:'tbsp',pkg_size:1,price:2.00},
+      {name:'Garlic',qty:4,unit:'cloves',pkg_size:1,price:0.50},
+      {name:'Olive oil',qty:3,unit:'tbsp',pkg_size:1,price:1.50},
+    ],
+    directions:'1. French the bones.\n2. Sear rack on all sides.\n3. Coat with Dijon.\n4. Press herbed breadcrumbs onto crust.\n5. Roast at 400°F to 130°F internal.\n6. Rest 8 min, carve.' },
+  { id:'r08', name:'Caesar Salad', category:'veg', servings:6, menu_price:14,
+    ingredients:[
+      {name:'Romaine hearts',qty:3,unit:'each',pkg_size:1,price:3.00},
+      {name:'Parmesan Reggiano',qty:3,unit:'oz',pkg_size:1,price:4.50},
+      {name:'Sourdough croutons',qty:1.5,unit:'cups',pkg_size:1,price:2.00},
+      {name:'Egg yolks',qty:2,unit:'each',pkg_size:1,price:0.80},
+      {name:'Anchovies',qty:4,unit:'fillets',pkg_size:1,price:1.50},
+      {name:'Lemon juice',qty:2,unit:'tbsp',pkg_size:1,price:0.50},
+      {name:'Dijon mustard',qty:1,unit:'tsp',pkg_size:1,price:0.25},
+      {name:'Extra virgin olive oil',qty:0.5,unit:'cup',pkg_size:1,price:3.00},
+    ],
+    directions:'1. Emulsify dressing with yolks, lemon, anchovy.\n2. Whisk in oil.\n3. Toss romaine in dressing.\n4. Top with parmesan and croutons.' },
+  { id:'r09', name:'French Onion Soup', category:'veg', servings:8, menu_price:16,
+    ingredients:[
+      {name:'Yellow onions',qty:4,unit:'lb',pkg_size:1,price:3.00},
+      {name:'Beef consommé',qty:4,unit:'cups',pkg_size:1,price:4.00},
+      {name:'Dry sherry',qty:0.5,unit:'cup',pkg_size:1,price:4.00},
+      {name:'Baguette slices',qty:8,unit:'each',pkg_size:1,price:2.00},
+      {name:'Gruyère, grated',qty:8,unit:'oz',pkg_size:1,price:9.00},
+      {name:'Unsalted butter',qty:6,unit:'tbsp',pkg_size:1,price:1.25},
+      {name:'Fresh thyme',qty:4,unit:'sprigs',pkg_size:1,price:0.75},
+    ],
+    directions:'1. Caramelize onions low and slow 1 hour.\n2. Deglaze with sherry.\n3. Add stock and simmer 20 min.\n4. Ladle into crocks.\n5. Top with bread and gruyère.\n6. Broil until bubbly.' },
+  { id:'r10', name:'Beef Wellington', category:'meat', servings:6, menu_price:58,
+    ingredients:[
+      {name:'Beef tenderloin',qty:2.5,unit:'lb',pkg_size:1,price:35.00},
+      {name:'Prosciutto di Parma',qty:6,unit:'oz',pkg_size:1,price:9.00},
+      {name:'Cremini mushrooms (duxelles)',qty:1.5,unit:'lb',pkg_size:1,price:6.00},
+      {name:'Puff pastry',qty:1,unit:'sheet',pkg_size:1,price:6.00},
+      {name:'Dijon mustard',qty:3,unit:'tbsp',pkg_size:1,price:1.50},
+      {name:'Egg wash',qty:2,unit:'each',pkg_size:1,price:0.80},
+    ],
+    directions:'1. Sear beef and brush with Dijon.\n2. Spread duxelles on plastic wrap.\n3. Layer prosciutto, then duxelles.\n4. Roll tight and chill 30 min.\n5. Wrap in pastry, egg wash.\n6. Roast 425°F to 125°F internal.' },
+  { id:'r11', name:'Pasta Carbonara', category:'meat', servings:4, menu_price:22,
+    ingredients:[
+      {name:'Spaghetti or rigatoni',qty:1,unit:'lb',pkg_size:1,price:3.50},
+      {name:'Guanciale or pancetta',qty:8,unit:'oz',pkg_size:1,price:7.00},
+      {name:'Egg yolks',qty:4,unit:'each',pkg_size:1,price:1.60},
+      {name:'Pecorino Romano',qty:4,unit:'oz',pkg_size:1,price:5.00},
+      {name:'Black pepper',qty:1,unit:'tbsp',pkg_size:1,price:0.50},
+    ],
+    directions:'1. Cook pasta al dente.\n2. Render guanciale until crispy.\n3. Whisk yolks with pecorino.\n4. Off heat, toss pasta with guanciale.\n5. Add egg mixture, toss vigorously.\n6. Add pasta water to emulsify.' },
+  { id:'r12', name:'Bouillabaisse', category:'fish', servings:8, menu_price:32,
+    ingredients:[
+      {name:'Mussels',qty:1.5,unit:'lb',pkg_size:1,price:8.00},
+      {name:'Clams',qty:1,unit:'lb',pkg_size:1,price:7.00},
+      {name:'Sea bass fillets',qty:1.5,unit:'lb',pkg_size:1,price:16.00},
+      {name:'Shrimp, shell-on',qty:1,unit:'lb',pkg_size:1,price:10.00},
+      {name:'Saffron',qty:0.5,unit:'g',pkg_size:1,price:4.00},
+      {name:'Fennel bulb',qty:2,unit:'each',pkg_size:1,price:3.00},
+      {name:'Tomatoes',qty:4,unit:'each',pkg_size:1,price:2.50},
+      {name:'Fish stock',qty:4,unit:'cups',pkg_size:1,price:5.00},
+    ],
+    directions:'1. Bloom saffron in warm stock.\n2. Sauté fennel and tomatoes.\n3. Add stock and simmer 20 min.\n4. Add fish and shellfish in stages.\n5. Serve with rouille and croutons.' },
+  { id:'r13', name:'Coq au Vin', category:'meat', servings:6, menu_price:28,
+    ingredients:[
+      {name:'Chicken pieces',qty:4,unit:'lb',pkg_size:1,price:5.50},
+      {name:'Pinot Noir',qty:1,unit:'bottle',pkg_size:1,price:12.00},
+      {name:'Bacon lardons',qty:0.5,unit:'lb',pkg_size:1,price:5.00},
+      {name:'Pearl onions',qty:1,unit:'lb',pkg_size:1,price:3.50},
+      {name:'Button mushrooms',qty:1,unit:'lb',pkg_size:1,price:3.50},
+      {name:'Chicken stock',qty:1,unit:'cup',pkg_size:1,price:1.50},
+      {name:'Thyme and bay',qty:1,unit:'bunch',pkg_size:1,price:1.00},
+    ],
+    directions:'1. Brown chicken in batches.\n2. Render bacon.\n3. Deglaze with wine.\n4. Add stock and aromatics.\n5. Braise 1 hour.\n6. Add mushrooms and onions last 20 min.' },
+  { id:'r14', name:'Shrimp Scampi', category:'fish', servings:4, menu_price:26,
+    ingredients:[
+      {name:'Jumbo shrimp 16/20',qty:1.5,unit:'lb',pkg_size:1,price:16.00},
+      {name:'Linguine',qty:0.75,unit:'lb',pkg_size:1,price:2.50},
+      {name:'Unsalted butter',qty:6,unit:'tbsp',pkg_size:1,price:1.25},
+      {name:'Garlic cloves',qty:6,unit:'each',pkg_size:1,price:0.60},
+      {name:'Dry white wine',qty:0.5,unit:'cup',pkg_size:1,price:2.50},
+      {name:'Lemon juice',qty:3,unit:'tbsp',pkg_size:1,price:0.75},
+      {name:'Parsley',qty:0.25,unit:'cup',pkg_size:1,price:0.50},
+    ],
+    directions:'1. Cook pasta.\n2. Sauté garlic in butter.\n3. Add shrimp 2 min per side.\n4. Deglaze with wine.\n5. Finish with butter, lemon.\n6. Toss with pasta.' },
+  { id:'r15', name:'Osso Buco', category:'meat', servings:4, menu_price:42,
+    ingredients:[
+      {name:'Veal shanks (4)',qty:4,unit:'each',pkg_size:1,price:14.00},
+      {name:'White wine',qty:1,unit:'cup',pkg_size:1,price:5.00},
+      {name:'Canned San Marzano tomatoes',qty:14,unit:'oz',pkg_size:1,price:3.00},
+      {name:'Carrots',qty:2,unit:'each',pkg_size:1,price:0.60},
+      {name:'Celery stalks',qty:2,unit:'each',pkg_size:1,price:0.50},
+      {name:'Onion',qty:1,unit:'each',pkg_size:1,price:0.75},
+      {name:'Gremolata (lemon, garlic, parsley)',qty:1,unit:'bunch',pkg_size:1,price:1.50},
+    ],
+    directions:'1. Brown veal shanks on all sides.\n2. Sauté soffritto.\n3. Add wine, tomatoes, stock.\n4. Braise at 300°F 2.5 hours.\n5. Top with gremolata to serve.' },
+  { id:'r16', name:'Branzino en Papillote', category:'fish', servings:2, menu_price:34,
+    ingredients:[
+      {name:'Whole branzino, cleaned',qty:2,unit:'each',pkg_size:1,price:16.00},
+      {name:'Lemon, sliced',qty:2,unit:'each',pkg_size:1,price:0.75},
+      {name:'Cherry tomatoes',qty:1,unit:'cup',pkg_size:1,price:2.50},
+      {name:'Olives, pitted',qty:0.5,unit:'cup',pkg_size:1,price:2.00},
+      {name:'Capers',qty:2,unit:'tbsp',pkg_size:1,price:1.50},
+      {name:'Fresh basil',qty:10,unit:'leaves',pkg_size:1,price:1.00},
+      {name:'Extra virgin olive oil',qty:4,unit:'tbsp',pkg_size:1,price:1.50},
+    ],
+    directions:'1. Stuff fish with lemon and basil.\n2. Create parchment packets.\n3. Add tomatoes, olives, capers.\n4. Drizzle with oil.\n5. Bake 400°F 18-20 minutes.' },
+  { id:'r17', name:'Crispy Pork Belly', category:'meat', servings:6, menu_price:32,
+    ingredients:[
+      {name:'Pork belly, skin-on',qty:3,unit:'lb',pkg_size:1,price:5.00},
+      {name:'Five-spice powder',qty:2,unit:'tbsp',pkg_size:1,price:1.50},
+      {name:'Soy sauce',qty:4,unit:'tbsp',pkg_size:1,price:1.00},
+      {name:'Rice wine',qty:3,unit:'tbsp',pkg_size:1,price:1.50},
+      {name:'Garlic',qty:4,unit:'cloves',pkg_size:1,price:0.50},
+      {name:'Hoisin sauce',qty:3,unit:'tbsp',pkg_size:1,price:1.50},
+    ],
+    directions:'1. Score skin, rub with five-spice.\n2. Marinate overnight in fridge uncovered.\n3. Roast 325°F for 2 hours.\n4. Blast at 425°F 20 min for crackling.\n5. Rest and slice.' },
+  { id:'r18', name:'Moroccan Vegetable Tagine', category:'veg', servings:6, menu_price:18,
+    ingredients:[
+      {name:'Butternut squash',qty:1.5,unit:'lb',pkg_size:1,price:3.00},
+      {name:'Chickpeas, canned',qty:30,unit:'oz',pkg_size:1,price:2.50},
+      {name:'Crushed tomatoes',qty:14,unit:'oz',pkg_size:1,price:2.00},
+      {name:'Harissa paste',qty:3,unit:'tbsp',pkg_size:1,price:2.50},
+      {name:'Preserved lemon',qty:1,unit:'each',pkg_size:1,price:1.50},
+      {name:'Ras el hanout',qty:2,unit:'tbsp',pkg_size:1,price:2.00},
+      {name:'Green olives',qty:0.5,unit:'cup',pkg_size:1,price:2.00},
+    ],
+    directions:'1. Bloom spices in oil.\n2. Add onions and garlic.\n3. Add squash and tomatoes.\n4. Simmer 25 min.\n5. Add chickpeas and preserved lemon.\n6. Finish with harissa and olives.' },
+  { id:'r19', name:'Roasted Beet Salad', category:'veg', servings:4, menu_price:16,
+    ingredients:[
+      {name:'Mixed beets',qty:6,unit:'each',pkg_size:1,price:4.00},
+      {name:'Arugula',qty:4,unit:'cups',pkg_size:1,price:3.50},
+      {name:'Goat cheese',qty:4,unit:'oz',pkg_size:1,price:4.00},
+      {name:'Candied walnuts',qty:0.5,unit:'cup',pkg_size:1,price:3.00},
+      {name:'Orange supremes',qty:2,unit:'each',pkg_size:1,price:1.50},
+      {name:'Champagne vinegar',qty:3,unit:'tbsp',pkg_size:1,price:1.50},
+      {name:'Honey',qty:1,unit:'tsp',pkg_size:1,price:0.25},
+    ],
+    directions:'1. Roast beets wrapped in foil 1 hour.\n2. Peel and slice.\n3. Make vinaigrette.\n4. Toss arugula with dressing.\n5. Arrange beets, add cheese and walnuts.' },
+  { id:'r20', name:'Truffle Mac & Cheese', category:'veg', servings:6, menu_price:24,
+    ingredients:[
+      {name:'Cavatappi pasta',qty:1,unit:'lb',pkg_size:1,price:3.00},
+      {name:'Gruyère, grated',qty:8,unit:'oz',pkg_size:1,price:10.00},
+      {name:'White cheddar',qty:6,unit:'oz',pkg_size:1,price:5.00},
+      {name:'Heavy cream',qty:2,unit:'cups',pkg_size:1,price:4.00},
+      {name:'Black truffle oil',qty:2,unit:'tbsp',pkg_size:1,price:8.00},
+      {name:'Breadcrumbs',qty:1,unit:'cup',pkg_size:1,price:1.00},
+      {name:'Unsalted butter',qty:4,unit:'tbsp',pkg_size:1,price:1.00},
+    ],
+    directions:'1. Make béchamel with butter and cream.\n2. Melt in cheeses.\n3. Fold in cooked pasta.\n4. Add truffle oil.\n5. Top with breadcrumbs.\n6. Bake 375°F 25 min until golden.' },
+  { id:'r21', name:'Steak Frites', category:'meat', servings:2, menu_price:42,
+    ingredients:[
+      {name:'Ribeye 14oz',qty:2,unit:'each',pkg_size:1,price:22.00},
+      {name:'Russet potatoes',qty:2,unit:'lb',pkg_size:1,price:1.50},
+      {name:'Fry oil',qty:2,unit:'qt',pkg_size:1,price:4.00},
+      {name:'Compound butter',qty:2,unit:'oz',pkg_size:1,price:1.50},
+      {name:'Sea salt flakes',qty:1,unit:'tbsp',pkg_size:1,price:0.75},
+    ],
+    directions:'1. Double-fry potatoes: blanch at 325°F.\n2. Season steaks.\n3. Cast iron sear 3 min per side.\n4. Baste with herb butter.\n5. Rest 5 min.\n6. Final fry potatoes at 375°F.\n7. Serve immediately.' },
+  { id:'r22', name:'Lemon Tart', category:'dessert', servings:8, menu_price:10,
+    ingredients:[
+      {name:'Lemon juice (fresh)',qty:0.75,unit:'cup',pkg_size:1,price:2.50},
+      {name:'Lemon zest',qty:3,unit:'each',pkg_size:1,price:0.75},
+      {name:'Whole eggs',qty:4,unit:'each',pkg_size:1,price:1.60},
+      {name:'Sugar',qty:1,unit:'cup',pkg_size:1,price:0.75},
+      {name:'Unsalted butter',qty:10,unit:'tbsp',pkg_size:1,price:2.00},
+      {name:'Pâte sucrée shell',qty:1,unit:'each',pkg_size:1,price:4.00},
+    ],
+    directions:'1. Whisk eggs, sugar, juice, zest.\n2. Cook over double boiler to 175°F.\n3. Strain, whisk in cold butter.\n4. Pour into blind-baked shell.\n5. Chill 2 hours.\n6. Brûlée top if desired.' },
+  { id:'r23', name:'Crème Brûlée', category:'dessert', servings:6, menu_price:11,
+    ingredients:[
+      {name:'Heavy cream',qty:2,unit:'cups',pkg_size:1,price:4.00},
+      {name:'Egg yolks',qty:5,unit:'each',pkg_size:1,price:2.00},
+      {name:'Granulated sugar',qty:0.5,unit:'cup',pkg_size:1,price:0.50},
+      {name:'Vanilla bean',qty:1,unit:'each',pkg_size:1,price:3.50},
+      {name:'Raw sugar (brûlée)',qty:6,unit:'tbsp',pkg_size:1,price:0.50},
+    ],
+    directions:'1. Infuse cream with vanilla.\n2. Temper into yolks with sugar.\n3. Strain into ramekins.\n4. Bake bain-marie 300°F 40 min.\n5. Chill overnight.\n6. Brûlée with raw sugar to order.' },
+  { id:'r24', name:'Chocolate Fondant', category:'dessert', servings:6, menu_price:12,
+    ingredients:[
+      {name:'Valrhona 70% chocolate',qty:6,unit:'oz',pkg_size:1,price:7.00},
+      {name:'Unsalted butter',qty:6,unit:'tbsp',pkg_size:1,price:1.25},
+      {name:'Eggs',qty:3,unit:'each',pkg_size:1,price:1.20},
+      {name:'Egg yolks',qty:3,unit:'each',pkg_size:1,price:1.20},
+      {name:'Caster sugar',qty:0.5,unit:'cup',pkg_size:1,price:0.50},
+      {name:'All-purpose flour',qty:3,unit:'tbsp',pkg_size:1,price:0.25},
+    ],
+    directions:'1. Melt chocolate and butter.\n2. Whisk eggs, yolks, sugar until pale.\n3. Fold chocolate into eggs.\n4. Fold in flour.\n5. Chill in buttered ramekins.\n6. Bake 425°F 12 min.\n7. Unmold and serve immediately.' },
+  { id:'r25', name:'Tiramisu', category:'dessert', servings:10, menu_price:12,
+    ingredients:[
+      {name:'Mascarpone',qty:1,unit:'lb',pkg_size:1,price:8.00},
+      {name:'Egg yolks',qty:6,unit:'each',pkg_size:1,price:2.40},
+      {name:'Sugar',qty:0.75,unit:'cup',pkg_size:1,price:0.75},
+      {name:'Savoiardi ladyfingers',qty:24,unit:'each',pkg_size:1,price:5.00},
+      {name:'Espresso, brewed',qty:1.5,unit:'cups',pkg_size:1,price:2.00},
+      {name:'Marsala wine',qty:3,unit:'tbsp',pkg_size:1,price:2.00},
+      {name:'Cocoa powder',qty:3,unit:'tbsp',pkg_size:1,price:1.00},
+    ],
+    directions:'1. Beat yolks with sugar over double boiler.\n2. Cool, fold in mascarpone.\n3. Dip ladyfingers in espresso-marsala.\n4. Layer with cream.\n5. Dust with cocoa.\n6. Chill minimum 4 hours.' },
+  { id:'r26', name:'Apple Tarte Tatin', category:'dessert', servings:8, menu_price:11,
+    ingredients:[
+      {name:'Granny Smith apples',qty:6,unit:'each',pkg_size:1,price:4.00},
+      {name:'Granulated sugar',qty:1,unit:'cup',pkg_size:1,price:1.00},
+      {name:'Unsalted butter',qty:8,unit:'tbsp',pkg_size:1,price:1.75},
+      {name:'Puff pastry round',qty:1,unit:'each',pkg_size:1,price:5.00},
+      {name:'Vanilla ice cream',qty:1,unit:'pint',pkg_size:1,price:5.50},
+    ],
+    directions:'1. Peel and quarter apples.\n2. Caramelize sugar to amber.\n3. Add butter, then arrange apples.\n4. Top with pastry, tuck edges.\n5. Bake 400°F 25 min.\n6. Invert onto plate immediately.' },
+  { id:'r27', name:'Miso Glazed Black Cod', category:'fish', servings:4, menu_price:38,
+    ingredients:[
+      {name:'Black cod fillets',qty:1.5,unit:'lb',pkg_size:1,price:28.00},
+      {name:'White miso paste',qty:6,unit:'tbsp',pkg_size:1,price:4.00},
+      {name:'Sake',qty:0.25,unit:'cup',pkg_size:1,price:3.00},
+      {name:'Mirin',qty:3,unit:'tbsp',pkg_size:1,price:2.00},
+      {name:'Sugar',qty:3,unit:'tbsp',pkg_size:1,price:0.30},
+      {name:'Pickled ginger',qty:2,unit:'oz',pkg_size:1,price:1.50},
+    ],
+    directions:'1. Combine miso, sake, mirin, sugar.\n2. Marinate cod 24-72 hrs.\n3. Wipe excess marinade.\n4. Broil 5-6 min until caramelized.\n5. Serve with pickled ginger and rice.' },
+  { id:'r28', name:'Braised Short Ribs', category:'meat', servings:4, menu_price:44,
+    ingredients:[
+      {name:'Bone-in short ribs',qty:4,unit:'lb',pkg_size:1,price:10.00},
+      {name:'Cabernet Sauvignon',qty:2,unit:'cups',pkg_size:1,price:12.00},
+      {name:'Beef stock',qty:2,unit:'cups',pkg_size:1,price:3.00},
+      {name:'Carrots',qty:3,unit:'each',pkg_size:1,price:0.75},
+      {name:'Celery',qty:3,unit:'stalks',pkg_size:1,price:0.75},
+      {name:'Onion',qty:1,unit:'each',pkg_size:1,price:0.75},
+      {name:'Tomato paste',qty:2,unit:'tbsp',pkg_size:1,price:0.50},
+    ],
+    directions:'1. Season and sear ribs.\n2. Sauté vegetables.\n3. Add tomato paste, then wine.\n4. Add stock.\n5. Braise covered 325°F for 3.5 hours.\n6. Reduce braising liquid for sauce.' },
+  { id:'r29', name:'Lobster Thermidor', category:'fish', servings:2, menu_price:72,
+    ingredients:[
+      {name:'Live lobsters 1.5lb',qty:2,unit:'each',pkg_size:1,price:32.00},
+      {name:'Heavy cream',qty:0.5,unit:'cup',pkg_size:1,price:1.50},
+      {name:'Cognac',qty:3,unit:'tbsp',pkg_size:1,price:4.00},
+      {name:'Dijon mustard',qty:2,unit:'tsp',pkg_size:1,price:0.50},
+      {name:'Gruyère, grated',qty:2,unit:'oz',pkg_size:1,price:2.50},
+      {name:'Shallots',qty:2,unit:'each',pkg_size:1,price:0.75},
+      {name:'Tarragon',qty:2,unit:'sprigs',pkg_size:1,price:0.75},
+    ],
+    directions:'1. Split and broil lobsters 8 min.\n2. Remove meat, reserve shells.\n3. Sauté shallots, flambé with cognac.\n4. Add cream and mustard, reduce.\n5. Fold in lobster meat.\n6. Return to shells, top with gruyère.\n7. Broil until golden.' },
+  { id:'r30', name:'Chicken Cordon Bleu', category:'meat', servings:4, menu_price:28,
+    ingredients:[
+      {name:'Chicken breast halves',qty:4,unit:'each',pkg_size:1,price:8.00},
+      {name:'Gruyère, sliced',qty:4,unit:'oz',pkg_size:1,price:5.00},
+      {name:'Ham, thinly sliced',qty:4,unit:'oz',pkg_size:1,price:4.00},
+      {name:'Breadcrumbs panko',qty:1.5,unit:'cups',pkg_size:1,price:1.50},
+      {name:'Eggs',qty:2,unit:'each',pkg_size:1,price:0.80},
+      {name:'All-purpose flour',qty:0.5,unit:'cup',pkg_size:1,price:0.50},
+      {name:'Unsalted butter',qty:4,unit:'tbsp',pkg_size:1,price:1.00},
+    ],
+    directions:'1. Pound chicken thin.\n2. Layer ham and gruyère.\n3. Roll tight and secure.\n4. Bread: flour, egg, panko.\n5. Pan-fry until golden.\n6. Finish in oven 375°F 15 min.' },
+];
+
+// ════════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════════
+let currentTab = 'cost';
+let supaClient = null;
+let vaultRecipes = [...SEED_RECIPES];
+let currentFilter = 'all';
+let haikuKey = localStorage.getItem('haiku_key') || '';
+let haikuHistory = [];
+let haikuOpen = false;
+
+// ════════════════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════════════════
+const $ = id => document.getElementById(id);
+const money = v => '$' + (+v||0).toFixed(2);
+const pct   = v => ((+v||0)*100).toFixed(1) + '%';
+
+function showToast(msg, dur=2800){
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), dur);
+}
+
+function scrollToSection(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+// ════════════════════════════════════════════════════════════════
+// TABS
+// ════════════════════════════════════════════════════════════════
+function switchTab(name, el){
+  currentTab = name;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  $('panel-'+name).classList.add('on');
+  setTimeout(updateCard, 60);
+}
+
+// ════════════════════════════════════════════════════════════════
+// COST CALCULATOR
+// ════════════════════════════════════════════════════════════════
+function addCostIng(data=null){
+  const list = $('costIngList');
+  const row = document.createElement('div');
+  row.className = 'ing-row';
+  row.innerHTML = `
+    <input type="text" placeholder="Ingredient name" value="${data?.name||''}" oninput="calcCost();updateCard()">
+    <input type="number" class="num" placeholder="Qty" value="${data?.qty||''}" step="0.01" min="0" oninput="calcCost();updateCard()">
+    <input type="text" placeholder="Unit" value="${data?.unit||''}" oninput="calcCost();updateCard()">
+    <input type="number" class="num" placeholder="Pkg size" value="${data?.pkg_size||''}" step="0.01" min="0" oninput="calcCost();updateCard()">
+    <input type="number" class="num" placeholder="Pkg $" value="${data?.price||''}" step="0.01" min="0" oninput="calcCost();updateCard()">
+    <input type="text" class="num" readonly placeholder="Line cost" tabindex="-1">
+    <button class="btn-x" onclick="this.closest('.ing-row').remove();calcCost();updateCard()">×</button>`;
+  list.appendChild(row);
+  calcCost();
+}
+
+function calcCost(){
+  const rows = $('costIngList').querySelectorAll('.ing-row');
+  let batch = 0;
+  rows.forEach(r => {
+    const ins = r.querySelectorAll('input');
+    const qty   = parseFloat(ins[1].value)||0;
+    const pkgSz = parseFloat(ins[3].value)||0;
+    const pkgPr = parseFloat(ins[4].value)||0;
+    const lineCost = pkgSz > 0 ? (qty / pkgSz) * pkgPr : 0;
+    ins[5].value = lineCost > 0 ? money(lineCost) : '';
+    batch += lineCost;
+  });
+  const portions = parseFloat($('costPortions').value)||1;
+  const menuPrice = parseFloat($('costPrice').value)||0;
+  const target = parseFloat($('costTarget').value)||30;
+  const perPortion = batch / portions;
+  const fcPct = menuPrice > 0 ? (perPortion / menuPrice) * 100 : null;
+  const idealPrice = target > 0 ? perPortion / (target/100) : null;
+
+  $('resBatchCost').textContent  = money(batch);
+  $('resPerPortion').textContent = money(perPortion);
+  if(fcPct !== null){
+    $('resFoodCostPct').textContent = fcPct.toFixed(1) + '%';
+    $('resFoodCostPct').className = 'stat-val ' + (fcPct < target ? 'ok' : fcPct < target*1.2 ? 'orange' : 'red');
+    $('resFoodCostNote').textContent = fcPct < target ? '✓ Under target' : fcPct < target*1.2 ? '↑ Slightly high' : '⚠ Over target';
+  } else {
+    $('resFoodCostPct').textContent = '—';
+    $('resFoodCostPct').className = 'stat-val';
+    $('resFoodCostNote').textContent = 'Enter menu price';
+  }
+  if(idealPrice !== null){
+    $('resIdealPrice').textContent = money(idealPrice);
+    $('resCostNote').textContent = `@ ${target}% food cost`;
+  } else {
+    $('resIdealPrice').textContent = '—';
+    $('resCostNote').textContent = 'Set target above';
+  }
+}
+
+function clearCost(){
+  $('costName').value='';$('costPortions').value='4';
+  $('costPrice').value='';$('costTarget').value='30';
+  $('costDirections').value='';
+  $('costIngList').innerHTML='';
+  calcCost();updateCard();
+}
+
+// ════════════════════════════════════════════════════════════════
+// SCALE CALCULATOR
+// ════════════════════════════════════════════════════════════════
+function addScaleIng(data=null){
+  const list = $('scaleIngList');
+  const row = document.createElement('div');
+  row.className = 'scale-ing';
+  row.innerHTML = `
+    <input type="text" placeholder="Ingredient" value="${data?.name||''}" oninput="calcScale();updateCard()">
+    <input type="number" class="num" placeholder="Base qty" value="${data?.qty||''}" step="0.01" min="0" oninput="calcScale();updateCard()">
+    <input type="text" placeholder="Unit" value="${data?.unit||''}" oninput="calcScale();updateCard()">
+    <input class="scaled-val" type="text" readonly placeholder="Scaled qty" tabindex="-1">
+    <button class="btn-x" onclick="this.closest('.scale-ing').remove();calcScale();updateCard()">×</button>`;
+  list.appendChild(row);
+  calcScale();
+}
+
+function calcScale(){
+  const from = parseFloat($('scaleFrom').value)||1;
+  const to   = parseFloat($('scaleTo').value)||1;
+  const factor = from > 0 ? to/from : 1;
+  $('scaleFactor').textContent = '×' + factor.toFixed(3);
+  const unit = $('scaleUnit').value || 'portions';
+  $('scaleOrigLabel').textContent = from + ' ' + unit;
+  $('scaleTargLabel').textContent = to + ' ' + unit;
+  $('scaleIngList').querySelectorAll('.scale-ing').forEach(r=>{
+    const ins = r.querySelectorAll('input');
+    const baseQty = parseFloat(ins[1].value)||0;
+    ins[3].value = baseQty > 0 ? (baseQty*factor).toFixed(3) + (ins[2].value ? ' '+ins[2].value : '') : '';
+  });
+  updateCard();
+}
+
+function clearScale(){
+  $('scaleName').value='';$('scaleUnit').value='';
+  $('scaleFrom').value='4';$('scaleTo').value='20';
+  $('scaleIngList').innerHTML='';
+  calcScale();updateCard();
+}
+
+// ════════════════════════════════════════════════════════════════
+// YIELD CALCULATOR
+// ════════════════════════════════════════════════════════════════
+function calcYield(){
+  const raw     = parseFloat($('yieldRaw').value)||0;
+  const cooked  = parseFloat($('yieldCooked').value)||0;
+  const portion = parseFloat($('yieldPortion').value)||0;
+  const costPer = parseFloat($('yieldCostPer').value)||0;
+  const unit    = $('yieldUnit').value||'lb';
+
+  $('yRaw').textContent    = raw > 0    ? raw + ' ' + unit : '—';
+  $('yCooked').textContent = cooked > 0 ? cooked + ' ' + unit : '—';
+  $('yPer').textContent    = portion > 0 ? portion + ' ' + unit : '—';
+
+  const yPct   = raw > 0 && cooked > 0 ? (cooked/raw)*100 : null;
+  const epCost = yPct !== null && costPer > 0 ? costPer / (yPct/100) : null;
+  const portions = cooked > 0 && portion > 0 ? Math.floor(cooked/portion) : null;
+  const portCost = epCost !== null && portion > 0 ? epCost * portion : null;
+
+  $('yieldPct').textContent  = yPct !== null ? yPct.toFixed(1)+'%' : '—';
+  $('yieldWaste').textContent = yPct !== null ? (100-yPct).toFixed(1)+'%' : '—';
+  $('yieldEpCost').textContent = epCost !== null ? money(epCost)+'/'+unit : '—';
+  $('yieldCostPortion').textContent = portCost !== null ? money(portCost) : '—';
+  $('yieldPortionCount').textContent = portions !== null ? portions + ' portions possible' : '';
+  updateCard();
+}
+
+function clearYield(){
+  ['yieldName','yieldCostPer','yieldRaw','yieldCooked','yieldPortion']
+    .forEach(id=>$(id).value='');
+  $('yieldUnit').value='lb';
+  calcYield();
+}
+
+// ════════════════════════════════════════════════════════════════
+// RECIPE CARD
+// ════════════════════════════════════════════════════════════════
+function toggleCard(){
+  const bar = $('cardBar'), wrap = $('cardWrap');
+  const open = wrap.classList.toggle('open');
+  bar.classList.toggle('open', open);
+}
+
+function toggleVault(){
+  const bar = $('vaultBar'), wrap = $('vaultWrap'), chev = $('vaultChevron');
+  const open = wrap.classList.toggle('open');
+  bar.classList.toggle('open', open);
+  chev.textContent = open ? '▲' : '▼';
+  bar.querySelector('.card-bar-label').textContent = open ? '📁 Recipe Vault — click to close' : '📁 Recipe Vault — click to open';
+}
+
+function updateCard(){
+  const tab = currentTab;
+  $('rcMeta').textContent = tab.charAt(0).toUpperCase()+tab.slice(1)+' · '+
+    new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+  let title='', ings=[], batchCost=0, perCost=0, menuPrice=0, fcPct='', portions='';
+
+  if(tab==='cost'){
+    title = $('costName').value;
+    const n = parseFloat($('costPortions').value)||1;
+    portions = n + ' portion'+(n>1?'s':'');
+    menuPrice = parseFloat($('costPrice').value)||0;
+    const rows = $('costIngList').querySelectorAll('.ing-row');
+    rows.forEach(r=>{
+      const ins = r.querySelectorAll('input');
+      const nm = ins[0].value; const qty = parseFloat(ins[1].value)||0;
+      const pkgSz = parseFloat(ins[3].value)||0;
+      const pkgPr = parseFloat(ins[4].value)||0;
+      const lc = pkgSz>0 ? (qty/pkgSz)*pkgPr : 0;
+      if(nm) ings.push({name:nm, qty:(qty||'—')+(ins[2].value?' '+ins[2].value:''), cost:lc>0?money(lc):''});
+      batchCost += lc;
+    });
+    perCost = batchCost/n;
+    if(menuPrice>0 && perCost>0) fcPct = ((perCost/menuPrice)*100).toFixed(1)+'%';
+  } else if(tab==='scale'){
+    title = $('scaleName').value;
+    const to = $('scaleTo').value; const u = $('scaleUnit').value||'portions';
+    portions = to + ' ' + u;
+    $('scaleIngList').querySelectorAll('.scale-ing').forEach(r=>{
+      const ins = r.querySelectorAll('input');
+      if(ins[0].value) ings.push({name:ins[0].value, qty:ins[3].value||'—', cost:''});
+    });
+  } else {
+    title = $('yieldName').value;
+    const raw = $('yieldRaw').value; const cooked = $('yieldCooked').value;
+    const u = $('yieldUnit').value;
+    const yp = raw>0&&cooked>0 ? ((cooked/raw)*100).toFixed(1)+'%' : '—';
+    ings = [
+      {name:'As-purchased weight', qty:(raw||'—')+' '+u, cost:''},
+      {name:'Usable / EP weight',  qty:(cooked||'—')+' '+u, cost:''},
+      {name:'Yield percentage',    qty:yp, cost:''},
+    ];
+  }
+
+  // title
+  const rcTitle = $('rcTitle');
+  if(title){rcTitle.textContent=title;rcTitle.classList.remove('rc-title-empty');}
+  else{rcTitle.textContent='Untitled Recipe';rcTitle.classList.add('rc-title-empty');}
+
+  // chips
+  const chips = [];
+  chips.push(`<span class="rc-chip rc-chip-olive">${tab}</span>`);
+  if(portions) chips.push(`<span class="rc-chip rc-chip-olive">${portions}</span>`);
+  if(fcPct) chips.push(`<span class="rc-chip rc-chip-orange">${fcPct} food cost</span>`);
+  $('rcChips').innerHTML = chips.join('');
+
+  // costs
+  if(tab==='cost' && batchCost>0){
+    $('rcTotal').textContent  = money(batchCost);
+    $('rcPortion').textContent = money(perCost)+' / portion';
+    $('rcPct').textContent = fcPct||'—';
+  } else {
+    $('rcTotal').textContent='$—';$('rcPortion').textContent='batch cost';$('rcPct').textContent='—';
+  }
+
+  // table
+  const tbl = $('rcIngTable');
+  if(ings.length){
+    const rows = ings.map(i =>
+      `<tr><td class="rc-td-name">${i.name}</td><td class="rc-td-qty">${i.qty}</td><td class="rc-td-cost">${i.cost}</td></tr>`
+    ).join('');
+    const total = tab==='cost'&&batchCost>0
+      ? `<tr class="rc-ing-total"><td>Total</td><td></td><td class="rc-td-cost">${money(batchCost)}</td></tr>` : '';
+    tbl.innerHTML = rows + total;
+  } else {
+    tbl.innerHTML = `<tr><td class="rc-td-name" style="color:var(--text-mute);font-style:italic">Add ingredients above…</td><td></td><td></td></tr>`;
+  }
+
+  // directions
+  const stepsEl = $('rcSteps');
+  const dirs = tab==='cost' ? ($('costDirections').value||'') : '';
+  if(dirs.trim()){
+    stepsEl.innerHTML = dirs.trim().split('\n').filter(Boolean).map((line,i)=>{
+      const clean = line.replace(/^\d+[\.\)]\s*/,'');
+      return `<div class="rc-step"><div class="rc-step-num">${String(i+1).padStart(2,'0')}</div><div class="rc-step-txt">${clean}</div></div>`;
+    }).join('');
+  } else {
+    stepsEl.innerHTML = `<div style="font-style:italic;color:var(--text-mute);font-size:12px">Add directions above…</div>`;
+  }
+
+  // auto-open
+  if(ings.length && !$('cardWrap').classList.contains('open')) toggleCard();
+}
+
+// ════════════════════════════════════════════════════════════════
+// VAULT
+// ════════════════════════════════════════════════════════════════
+function renderVault(){
+  const grid = $('vaultGrid');
+  const q = ($('vaultSearch').value||'').toLowerCase();
+  const filtered = vaultRecipes.filter(r => {
+    const matchCat = currentFilter==='all' || r.category===currentFilter;
+    const matchQ   = !q || r.name.toLowerCase().includes(q) || r.category.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+  grid.innerHTML = filtered.map(r => {
+    const batchCost = (r.ingredients||[]).reduce((s,i)=>{
+      const pkgSz = parseFloat(i.pkg_size)||1;
+      const lc = pkgSz>0 ? ((+i.qty||0)/pkgSz)*(+i.price||0) : 0;
+      return s+lc;
+    },0);
+    const perPortion = r.servings>0 ? batchCost/r.servings : 0;
+    const fcPct = r.menu_price>0&&perPortion>0 ? ((perPortion/r.menu_price)*100).toFixed(1)+'%' : '—';
+    const isCloud = r._cloud;
+    return `<div class="recipe-tile">
+      <div class="tile-sync ${isCloud?'cloud':''}" title="${isCloud?'Synced to cloud':'Local'}"></div>
+      <div class="tile-cat">${r.category}</div>
+      <div class="tile-name">${r.name}</div>
+      <div class="tile-meta">
+        <span>${r.servings} servings</span>
+        <span class="tile-cost">${money(perPortion)}/portion · ${fcPct} FC</span>
+      </div>
+      <button class="tile-load-btn" onclick="loadRecipe('${r.id}')">→ Load into Calculator</button>
+    </div>`;
+  }).join('');
+  $('vaultCount').textContent = `Showing ${filtered.length} of ${vaultRecipes.length} recipes`;
+}
+
+function filterVault(){ renderVault(); }
+
+function setFilter(cat, el){
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderVault();
+}
+
+function loadRecipe(id){
+  const r = vaultRecipes.find(x=>x.id===id);
+  if(!r) return;
+  // Switch to cost tab
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab')[0].classList.add('on');
+  $('panel-cost').classList.add('on');
+  currentTab = 'cost';
+  // Fill form
+  $('costName').value = r.name;
+  $('costPortions').value = r.servings;
+  $('costPrice').value = r.menu_price||'';
+  $('costDirections').value = r.directions||'';
+  $('costIngList').innerHTML = '';
+  (r.ingredients||[]).forEach(i => addCostIng(i));
+  calcCost(); updateCard();
+  scrollToSection('calc');
+  showToast('✓ Loaded: '+r.name);
+}
+
+async function saveToVault(mode){
+  let name, servings, ingredients, directions, menu_price;
+  if(mode==='cost'){
+    name = $('costName').value || 'Untitled Recipe';
+    servings = parseFloat($('costPortions').value)||1;
+    menu_price = parseFloat($('costPrice').value)||0;
+    directions = $('costDirections').value;
+    ingredients = [...$('costIngList').querySelectorAll('.ing-row')].map(r=>{
+      const ins = r.querySelectorAll('input');
+      return {name:ins[0].value,qty:parseFloat(ins[1].value)||0,unit:ins[2].value,pkg_size:parseFloat(ins[3].value)||1,price:parseFloat(ins[4].value)||0};
+    }).filter(i=>i.name);
+  } else if(mode==='scale'){
+    name = $('scaleName').value || 'Untitled Scale';
+    servings = parseFloat($('scaleTo').value)||1;
+    menu_price = 0;
+    directions = '';
+    ingredients = [...$('scaleIngList').querySelectorAll('.scale-ing')].map(r=>{
+      const ins = r.querySelectorAll('input');
+      return {name:ins[0].value,qty:parseFloat(ins[1].value)||0,unit:ins[2].value,pkg_size:1,price:0};
+    }).filter(i=>i.name);
+  } else {
+    name = $('yieldName').value || 'Yield Analysis';
+    servings = 1; menu_price = 0; directions = '';
+    ingredients = [{name:'AP Weight',qty:parseFloat($('yieldRaw').value)||0,unit:$('yieldUnit').value,pkg_size:1,price:parseFloat($('yieldCostPer').value)||0}];
+  }
+
+  const recipe = {
+    id: 'local_'+Date.now(),
+    name, servings, ingredients, directions, menu_price,
+    category: 'meat', _cloud: false
+  };
+
+  // Try Supabase
+  if(supaClient){
+    try{
+      const {data, error} = await supaClient.from('recipes').insert([{
+        name, servings, ingredients, directions, menu_price,
+        category:'meat', created_at: new Date().toISOString()
+      }]).select();
+      if(!error && data){
+        recipe.id = data[0].id;
+        recipe._cloud = true;
+        setSyncStatus('live');
+      }
+    } catch(e){ console.warn('Supabase save failed:', e); }
+  }
+
+  // Add to local vault (avoid dupes)
+  const existing = vaultRecipes.findIndex(r=>r.name===name);
+  if(existing>=0) vaultRecipes[existing] = recipe;
+  else vaultRecipes.unshift(recipe);
+  renderVault();
+  showToast('✓ Saved: '+name+(recipe._cloud?' · Cloud synced':''));
+}
+
+// ════════════════════════════════════════════════════════════════
+// SUPABASE CONFIG
+// ════════════════════════════════════════════════════════════════
+function openConfig(){
+  $('cfgUrl').value  = localStorage.getItem('sb_url')||'';
+  $('cfgKey').value  = localStorage.getItem('sb_key')||'';
+  $('cfgAntKey').value = localStorage.getItem('haiku_key')||'';
+  $('configModal').classList.add('open');
+}
+function closeConfig(){ $('configModal').classList.remove('open'); }
+
+async function applyConfig(){
+  const url = $('cfgUrl').value.trim();
+  const key = $('cfgKey').value.trim();
+  const antKey = $('cfgAntKey').value.trim();
+  $('cfgStatus').textContent = 'Connecting…';
+
+  if(antKey){
+    localStorage.setItem('haiku_key', antKey);
+    haikuKey = antKey;
+    $('haikuKey').value = antKey;
+    $('haikuCfg').style.display = 'none';
+  }
+
+  if(url && key){
+    localStorage.setItem('sb_url', url);
+    localStorage.setItem('sb_key', key);
+    try{
+      supaClient = window.supabase.createClient(url, key);
+      // Test connection
+      const {error} = await supaClient.from('recipes').select('id').limit(1);
+      if(error) throw error;
+      setSyncStatus('live');
+      // Load cloud recipes
+      await loadCloudRecipes();
+      $('cfgStatus').textContent = '✓ Connected to Supabase!';
+      // Subscribe realtime
+      subscribeRealtime();
+      setTimeout(closeConfig, 1200);
+    } catch(e){
+      $('cfgStatus').textContent = '⚠ Connection failed: '+e.message;
+      setSyncStatus('error');
+    }
+  } else {
+    $('cfgStatus').textContent = url||key ? '⚠ Both URL and key required' : '✓ API key saved. No Supabase config.';
+    if(!url&&!key) setTimeout(closeConfig, 1200);
+  }
+}
+
+async function loadCloudRecipes(){
+  if(!supaClient) return;
+  try{
+    const {data, error} = await supaClient.from('recipes').select('*').order('created_at',{ascending:false});
+    if(error) throw error;
+    if(data && data.length){
+      const cloudRecipes = data.map(r=>({...r, _cloud:true}));
+      // Merge: cloud takes precedence over seeds
+      const seedIds = new Set(SEED_RECIPES.map(r=>r.id));
+      vaultRecipes = [...cloudRecipes, ...SEED_RECIPES.filter(r=>!cloudRecipes.find(c=>c.name===r.name))];
+      renderVault();
+    }
+  } catch(e){ console.warn('Cloud load failed:', e); }
+}
+
+function subscribeRealtime(){
+  if(!supaClient) return;
+  supaClient.channel('recipe_changes')
+    .on('postgres_changes', {event:'*', schema:'public', table:'recipes'}, payload=>{
+      setSyncStatus('syncing');
+      setTimeout(async ()=>{
+        await loadCloudRecipes();
+        setSyncStatus('live');
+      }, 500);
+    }).subscribe();
+}
+
+function setSyncStatus(status){
+  const dot = $('syncDot'), lbl = $('syncLabel');
+  dot.className = 'sync-dot ' + status;
+  const labels = {live:'live sync', syncing:'syncing…', error:'error', offline:'offline'};
+  lbl.textContent = labels[status]||status;
+}
+
+// ════════════════════════════════════════════════════════════════
+// HAIKU AI ASSISTANT
+// ════════════════════════════════════════════════════════════════
+function toggleHaiku(){
+  haikuOpen = !haikuOpen;
+  $('haikuPanel').classList.toggle('open', haikuOpen);
+  if(haikuOpen && !haikuHistory.length){
+    logHaikuMsg('sous',
+      "I'm your Sous Chef — ask me anything about your recipe costs, scaling, or yield.\n\n" +
+      "I can help you:\n• Audit ingredient costs and find savings\n• Set the right menu price for your target food cost\n• Scale recipes for service volumes\n• Suggest smart ingredient substitutions\n\n" +
+      "What are you working on?");
+    // Show a poem
+    updateHaikuPoem();
+  }
+  if(haikuOpen) setTimeout(()=>$('haikuInput').focus(), 400);
+  const key = localStorage.getItem('haiku_key')||'';
+  if(key) $('haikuCfg').style.display = 'none';
+}
+
+function saveHaikuKey(){
+  const k = $('haikuKey').value.trim();
+  if(k){ localStorage.setItem('haiku_key',k); haikuKey=k; $('haikuCfg').style.display='none'; showToast('✓ API key saved');}
+}
+
+function logHaikuMsg(role, text, opts={}){
+  const msgs = $('haikuMsgs');
+  const div = document.createElement('div');
+  div.className = 'msg '+role;
+  div.innerHTML = `
+    <div class="msg-label">${role==='user'?'You':'Sous Chef'}</div>
+    <div class="msg-bubble${opts.thinking?' thinking':''}">${text.replace(/\n/g,'<br>')}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+function buildContext(){
+  const tab = currentTab;
+  if(tab==='cost'){
+    const ings = [...$('costIngList').querySelectorAll('.ing-row')].map(r=>{
+      const ins = r.querySelectorAll('input');
+      return {name:ins[0].value, qty:ins[1].value, unit:ins[2].value, price:ins[4].value};
+    }).filter(i=>i.name);
+    return {mode:'cost', recipe:$('costName').value, portions:$('costPortions').value,
+      menuPrice:$('costPrice').value, targetFC:$('costTarget').value,
+      batchCost:$('resBatchCost').textContent, perPortion:$('resPerPortion').textContent,
+      foodCostPct:$('resFoodCostPct').textContent, ingredients:ings};
+  } else if(tab==='scale'){
+    return {mode:'scale', recipe:$('scaleName').value,
+      from:$('scaleFrom').value, to:$('scaleTo').value, unit:$('scaleUnit').value,
+      factor:$('scaleFactor').textContent};
+  } else {
+    return {mode:'yield', product:$('yieldName').value,
+      raw:$('yieldRaw').value, cooked:$('yieldCooked').value,
+      yieldPct:$('yieldPct').textContent, wastePct:$('yieldWaste').textContent,
+      epCost:$('yieldEpCost').textContent};
+  }
+}
+
+async function sendToHaiku(){
+  const input = $('haikuInput');
+  const text = input.value.trim();
+  if(!text) return;
+  const key = localStorage.getItem('haiku_key')||haikuKey;
+  if(!key){
+    logHaikuMsg('sous','⚠ Please enter your Anthropic API key in the field above to use the AI assistant.');
+    return;
+  }
+  input.value=''; input.style.height='auto';
+  $('haikuSend').disabled=true;
+  logHaikuMsg('user',text);
+  haikuHistory.push({role:'user', content:text});
+  const thinking = logHaikuMsg('sous','Thinking…',{thinking:true});
+  try{
+    const ctx = buildContext();
+    const systemPrompt = `You are a highly skilled culinary sous chef and food cost expert. You help chefs and restaurant operators analyze recipe costs, improve profitability, and make smart kitchen decisions. You have access to the user's current calculator state.
+
+Current board state: ${JSON.stringify(ctx, null,0)}
+
+Guidelines:
+- Give precise, actionable advice about food costing, scaling, and yield
+- Reference the actual numbers from the board state when relevant
+- Suggest specific substitutions with realistic cost comparisons
+- Use culinary terms naturally
+- Keep answers focused and practical (2-4 paragraphs max)
+- When asked for a haiku, write one that captures the essence of the current recipe or cost situation`;
+
+    const messages = haikuHistory.slice(-12);
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body: JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:800,
+        system:systemPrompt,
+        messages
+      })
+    });
+    if(!response.ok){
+      const err = await response.json().catch(()=>({}));
+      throw new Error(err.error?.message || 'API error '+response.status);
+    }
+    const data = await response.json();
+    const reply = data.content?.[0]?.text || '(no response)';
+    thinking.remove();
+    logHaikuMsg('sous', reply);
+    haikuHistory.push({role:'assistant', content:reply});
+    while(haikuHistory.length>12) haikuHistory.shift();
+    // Update poem if haiku was requested
+    if(text.toLowerCase().includes('haiku')) updateHaikuPoem(reply);
+  } catch(e){
+    thinking.remove();
+    logHaikuMsg('sous','⚠ '+e.message);
+  } finally {
+    $('haikuSend').disabled=false;
+    $('haikuInput').focus();
+  }
+}
+
+function quickAsk(text){
+  $('haikuInput').value = text;
+  sendToHaiku();
+}
+
+const haiku_poems = [
+  'Hot pan sizzles—<br>numbers become nourishment,<br>cost becomes art.',
+  'Weigh each gram with care,<br>profit hides in the margin—<br>mise en place, always.',
+  'Thirty percent sought,<br>butter melts through every dish—<br>price the dream, not fear.',
+  'Scale the recipe:<br>five portions become fifty—<br>ratios hold true.',
+  'Yield reveals the truth:<br>ten pounds raw, seven usable—<br>waste tells the story.',
+  'Saffron costs much gold,<br>a pinch transforms everything—<br>spend where taste is born.',
+];
+let poemIdx = 0;
+function updateHaikuPoem(customText=null){
+  if(customText && customText.includes('—')){
+    // If it looks like a haiku, display it
+    const lines = customText.split('\n').map(l=>l.trim()).filter(l=>l&&!l.startsWith('Here')).slice(0,3);
+    if(lines.length>=2) {$('haikuPoem').innerHTML=lines.join('<br>');return;}
+  }
+  $('haikuPoem').innerHTML = haiku_poems[poemIdx % haiku_poems.length];
+  poemIdx++;
+}
+
+// ════════════════════════════════════════════════════════════════
+// PRINT CARD
+// ════════════════════════════════════════════════════════════════
+function printCard(){
+  const name = $('rcTitle').textContent;
+  const total = $('rcTotal').textContent;
+  const portion = $('rcPortion').textContent;
+  const pct = $('rcPct').textContent;
+  const tblHTML = $('rcIngTable').innerHTML;
+  const stepsHTML = $('rcSteps').innerHTML;
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${name}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;700&family=Fraunces:ital,wght@0,400;0,600;0,900&display=swap" rel="stylesheet">
+  <style>
+    body{margin:0;background:#e8e1d2;font-family:'Fraunces',Georgia,serif;color:#0b0b0b;}
+    .card{max-width:700px;margin:40px auto;
+      background:repeating-linear-gradient(to bottom,transparent 0px,transparent 34px,rgba(11,11,11,0.04) 34px,rgba(11,11,11,0.04) 35px), #f4efe6;
+      border:2px solid #0b0b0b;padding:32px 32px 32px 80px;
+      box-shadow:6px 6px 0 #0b0b0b;position:relative;}
+    .gutter{position:absolute;left:0;top:0;bottom:0;width:60px;
+      background:#0b0b0b;border-right:2px solid #c8231c;}
+    h1{font-family:'Anton','Arial Narrow',sans-serif;font-weight:400;font-size:40px;
+      color:#0b0b0b;text-transform:uppercase;margin:0 0 4px;}
+    .meta{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.3em;
+      text-transform:uppercase;color:#3d3d3d;margin-bottom:20px;}
+    table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+    td{padding:7px 0;border-bottom:1px dotted rgba(11,11,11,0.2);font-size:14px;}
+    td:nth-child(2),td:nth-child(3){text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px;}
+    .costs{display:flex;gap:40px;padding-top:16px;border-top:2px solid #0b0b0b;margin-bottom:24px;}
+    .cv{font-family:'Anton','Arial Narrow',sans-serif;font-weight:400;font-size:38px;color:#c8231c;}
+    .cl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.3em;color:#3d3d3d;text-transform:uppercase;}
+    .sh{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:#3d3d3d;margin:20px 0 10px;padding-bottom:6px;border-bottom:2px solid #0b0b0b;}
+    .step{display:flex;gap:14px;margin-bottom:8px;}
+    .sn{font-family:'JetBrains Mono',monospace;font-size:9px;color:#c8231c;font-weight:700;min-width:24px;margin-top:2px;}
+    .st{font-size:13px;line-height:1.6;}
+    @media print{body{background:#f4efe6;} .card{margin:0;box-shadow:none;max-width:none;}}
+  </style></head><body>
+  <div class="card"><div class="gutter"></div>
+    <h1>${name}</h1>
+    <div class="meta">${$('rcMeta').textContent}</div>
+    <div class="costs">
+      <div><div class="cl">Batch Cost</div><div class="cv">${total}</div></div>
+      <div><div class="cl">Per Portion</div><div class="cv" style="font-size:26px">${portion}</div></div>
+      <div><div class="cl">Food Cost %</div><div class="cv" style="color:#c8231c">${pct}</div></div>
+    </div>
+    <div class="sh">Ingredients</div>
+    <table>${tblHTML}</table>
+    <div class="sh">Method</div>
+    ${stepsHTML}
+  </div>
+  <script>window.onload=()=>window.print();<\/script>
+  </body></html>`;
+  const w = window.open('','_blank');
+  w.document.write(html); w.document.close();
+}
+
+// ════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════
+// Close modal on backdrop click
+$('configModal').addEventListener('click', e => { if(e.target===$('configModal')) closeConfig(); });
+
+// Init haiku key display
+if(localStorage.getItem('haiku_key')) $('haikuCfg').style.display = 'none';
+
+// Auto-connect Supabase if keys exist
+(async ()=>{
+  const url = localStorage.getItem('sb_url');
+  const key = localStorage.getItem('sb_key');
+  if(url && key){
+    try{
+      supaClient = window.supabase.createClient(url, key);
+      const {error} = await supaClient.from('recipes').select('id').limit(1);
+      if(!error){
+        setSyncStatus('live');
+        await loadCloudRecipes();
+        subscribeRealtime();
+      }
+    } catch(e){ setSyncStatus('error'); }
+  }
+})();
+
+// Add a few starter ingredients to cost panel
+addCostIng({name:'Beef chuck, cubed', qty:3, unit:'lb', pkg_size:1, price:8.50});
+addCostIng({name:'Burgundy wine', qty:1, unit:'bottle', pkg_size:1, price:14.00});
+addCostIng({name:'Pearl onions', qty:1, unit:'lb', pkg_size:1, price:3.50});
+$('costName').value = 'Beef Bourguignon';
+$('costPortions').value = 6;
+$('costPrice').value = 38;
+calcCost();
+
+// Add starter scale ingredients
+addScaleIng({name:'Beef chuck', qty:3, unit:'lb'});
+addScaleIng({name:'Burgundy wine', qty:1, unit:'bottle'});
+addScaleIng({name:'Pearl onions', qty:1, unit:'lb'});
+$('scaleName').value = 'Beef Bourguignon';
+calcScale();
+
+// Render vault
+renderVault();
+updateCard();
+</script>
+</body>
+</html>
