@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;600;700&family=Barlow:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=Anton&family=JetBrains+Mono:wght@400;500;700&family=Fraunces:ital,wght@0,400;0,600;0,900;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
-
 *{box-sizing:border-box;margin:0;padding:0;}
 .app-switcher{display:flex;background:#12100C;border-bottom:2px solid #7A6A3D;position:sticky;top:0;z-index:9999;}
 .app-tab{flex:1;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:16px 20px;background:transparent;color:#7A6A3D;border:none;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;text-align:center;}
@@ -15,22 +14,7 @@
 .app-tab.on{color:#F8F6F0;border-bottom:3px solid #A8783C;background:rgba(168,120,60,0.10);}
 .app-pane{display:none;}
 .app-pane.on{display:block;}
-#pane-rd{
-  --bg:#ddd6c8;--surface:#d2c9b8;--surface-2:#ccc3b0;--surface-3:#bfb49e;
-  --olive:#c8231c;--olive-lt:#a8181c;--olive-dim:#d9b8a8;
-  --red:#c8231c;--red-lt:#a8181c;--orange:#c8231c;--orange-lt:#a8181c;
-  --gold:#0b0b0b;--gold-dim:#3d3d3d;--gold-dk:#0b0b0b;
-  --cream:#0b0b0b;--text:#0b0b0b;--text-dim:#3d3d3d;--text-mute:#a8a8a0;
-  --border:rgba(11,11,11,0.35);--border-lt:rgba(11,11,11,0.2);
-  --blue:#0b0b0b;--blue-lt:#0b0b0b;--blue-dim:#3d3d3d;
-  --border-red:rgba(200,35,28,0.4);--shadow:0 4px 24px rgba(0,0,0,0.18);
-  --font-serif:'Anton','Arial Narrow',sans-serif;
-  --font-mono:'JetBrains Mono',monospace;
-  --font-body:'Fraunces',Georgia,serif;
-  --pad:clamp(14px,2.5vw,24px);--gap:clamp(10px,1.8vw,18px);--radius:3px;
-  background:var(--bg);color:var(--text);font-family:var(--font-body);
-}
-
+#pane-rd{--bg:#ddd6c8;--surface:#d2c9b8;--surface-2:#ccc3b0;--surface-3:#bfb49e;--olive:#c8231c;--olive-lt:#a8181c;--olive-dim:#d9b8a8;--red:#c8231c;--red-lt:#a8181c;--orange:#c8231c;--orange-lt:#a8181c;--gold:#0b0b0b;--gold-dim:#3d3d3d;--gold-dk:#0b0b0b;--cream:#0b0b0b;--text:#0b0b0b;--text-dim:#3d3d3d;--text-mute:#a8a8a0;--border:rgba(11,11,11,0.35);--border-lt:rgba(11,11,11,0.2);--blue:#0b0b0b;--blue-lt:#0b0b0b;--blue-dim:#3d3d3d;--border-red:rgba(200,35,28,0.4);--shadow:0 4px 24px rgba(0,0,0,0.18);--font-serif:'Anton','Arial Narrow',sans-serif;--font-mono:'JetBrains Mono',monospace;--font-body:'Fraunces',Georgia,serif;--pad:clamp(14px,2.5vw,24px);--gap:clamp(10px,1.8vw,18px);--radius:3px;background:var(--bg);color:var(--text);font-family:var(--font-body);}
 
 /* ═══════════════════════════════════════════════════
    MISE.ai · Recipe Book — Design System v2
@@ -2330,7 +2314,7 @@ tr.rc-ing-total td{border-top:2px solid rgba(255,255,255,0.2);font-weight:700;co
   </div>
   <div class="chat-body" id="chatBody">
     <div class="chat-messages" id="chatMessages">
-      <div class="msg ai"><strong>MISE.AI</strong>Hello. I know your recipe book. Ask me anything kitchen-related.</div>
+      <div class="msg ai"><strong>Haiku Chef Assistant</strong>Hello. I know your recipe book. Ask me anything kitchen-related.</div>
     </div>
     <div class="chat-input-row">
       <button class="chat-mic" id="chatMic" onclick="toggleVoice()" title="Hold to speak">🎙</button>
@@ -2660,7 +2644,7 @@ tr.rc-ing-total td{border-top:2px solid rgba(255,255,255,0.2);font-weight:700;co
     <button class="haiku-close" onclick="toggleHaiku()">✕</button>
   </div>
   <div class="haiku-cfg" id="haikuCfg">
-    <input type="password" id="haikuKey" placeholder="AIza… (Gemini API key)" autocomplete="off">
+    <input type="password" id="haikuKey" placeholder="sk-ant-… (Anthropic API key)" autocomplete="off">
     <button onclick="saveHaikuKey()">Save</button>
   </div>
   <div class="haiku-poem" id="haikuPoem">
@@ -2698,8 +2682,8 @@ tr.rc-ing-total td{border-top:2px solid rgba(255,255,255,0.2);font-weight:700;co
       <div class="modal-hint">Use the <strong>anon public</strong> key (not the service role key)</div>
     </div>
     <div class="modal-field">
-      <label>Gemini API Key</label>
-      <input type="password" id="cfgAntKey" placeholder="AIzaSy…">
+      <label>Anthropic API Key (for Haiku AI)</label>
+      <input type="password" id="cfgAntKey" placeholder="sk-ant-api03-…">
       <div class="modal-hint">Your key is stored in localStorage only and never sent to any server</div>
     </div>
     <div class="modal-status" id="cfgStatus"></div>
@@ -3056,7 +3040,7 @@ const money = v => '$' + (+v||0).toFixed(2);
 const pct   = v => ((+v||0)*100).toFixed(1) + '%';
 
 function showToast(msg, dur=2800){
-  const t = $('toast');
+  const t = $$('toast');
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'), dur);
@@ -3074,7 +3058,7 @@ function switchTab(name, el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   el.classList.add('on');
-  $('panel-'+name).classList.add('on');
+  $$('panel-'+name).classList.add('on');
   setTimeout(updateCard, 60);
 }
 
@@ -3082,7 +3066,7 @@ function switchTab(name, el){
 // COST CALCULATOR
 // ════════════════════════════════════════════════════════════════
 function addCostIng(data=null){
-  const list = $('costIngList');
+  const list = $$('costIngList');
   const row = document.createElement('div');
   row.className = 'ing-row';
   row.innerHTML = `
@@ -3098,7 +3082,7 @@ function addCostIng(data=null){
 }
 
 function calcCost(){
-  const rows = $('costIngList').querySelectorAll('.ing-row');
+  const rows = $$('costIngList').querySelectorAll('.ing-row');
   let batch = 0;
   rows.forEach(r => {
     const ins = r.querySelectorAll('input');
@@ -3109,38 +3093,38 @@ function calcCost(){
     ins[5].value = lineCost > 0 ? money(lineCost) : '';
     batch += lineCost;
   });
-  const portions = parseFloat($('costPortions').value)||1;
-  const menuPrice = parseFloat($('costPrice').value)||0;
-  const target = parseFloat($('costTarget').value)||30;
+  const portions = parseFloat($$('costPortions').value)||1;
+  const menuPrice = parseFloat($$('costPrice').value)||0;
+  const target = parseFloat($$('costTarget').value)||30;
   const perPortion = batch / portions;
   const fcPct = menuPrice > 0 ? (perPortion / menuPrice) * 100 : null;
   const idealPrice = target > 0 ? perPortion / (target/100) : null;
 
-  $('resBatchCost').textContent  = money(batch);
-  $('resPerPortion').textContent = money(perPortion);
+  $$('resBatchCost').textContent  = money(batch);
+  $$('resPerPortion').textContent = money(perPortion);
   if(fcPct !== null){
-    $('resFoodCostPct').textContent = fcPct.toFixed(1) + '%';
-    $('resFoodCostPct').className = 'stat-val ' + (fcPct < target ? 'ok' : fcPct < target*1.2 ? 'orange' : 'red');
-    $('resFoodCostNote').textContent = fcPct < target ? '✓ Under target' : fcPct < target*1.2 ? '↑ Slightly high' : '⚠ Over target';
+    $$('resFoodCostPct').textContent = fcPct.toFixed(1) + '%';
+    $$('resFoodCostPct').className = 'stat-val ' + (fcPct < target ? 'ok' : fcPct < target*1.2 ? 'orange' : 'red');
+    $$('resFoodCostNote').textContent = fcPct < target ? '✓ Under target' : fcPct < target*1.2 ? '↑ Slightly high' : '⚠ Over target';
   } else {
-    $('resFoodCostPct').textContent = '—';
-    $('resFoodCostPct').className = 'stat-val';
-    $('resFoodCostNote').textContent = 'Enter menu price';
+    $$('resFoodCostPct').textContent = '—';
+    $$('resFoodCostPct').className = 'stat-val';
+    $$('resFoodCostNote').textContent = 'Enter menu price';
   }
   if(idealPrice !== null){
-    $('resIdealPrice').textContent = money(idealPrice);
-    $('resCostNote').textContent = `@ ${target}% food cost`;
+    $$('resIdealPrice').textContent = money(idealPrice);
+    $$('resCostNote').textContent = `@ ${target}% food cost`;
   } else {
-    $('resIdealPrice').textContent = '—';
-    $('resCostNote').textContent = 'Set target above';
+    $$('resIdealPrice').textContent = '—';
+    $$('resCostNote').textContent = 'Set target above';
   }
 }
 
 function clearCost(){
-  $('costName').value='';$('costPortions').value='4';
-  $('costPrice').value='';$('costTarget').value='30';
-  $('costDirections').value='';
-  $('costIngList').innerHTML='';
+  $$('costName').value='';$$('costPortions').value='4';
+  $$('costPrice').value='';$$('costTarget').value='30';
+  $$('costDirections').value='';
+  $$('costIngList').innerHTML='';
   calcCost();updateCard();
 }
 
@@ -3148,7 +3132,7 @@ function clearCost(){
 // SCALE CALCULATOR
 // ════════════════════════════════════════════════════════════════
 function addScaleIng(data=null){
-  const list = $('scaleIngList');
+  const list = $$('scaleIngList');
   const row = document.createElement('div');
   row.className = 'scale-ing';
   row.innerHTML = `
@@ -3162,14 +3146,14 @@ function addScaleIng(data=null){
 }
 
 function calcScale(){
-  const from = parseFloat($('scaleFrom').value)||1;
-  const to   = parseFloat($('scaleTo').value)||1;
+  const from = parseFloat($$('scaleFrom').value)||1;
+  const to   = parseFloat($$('scaleTo').value)||1;
   const factor = from > 0 ? to/from : 1;
-  $('scaleFactor').textContent = '×' + factor.toFixed(3);
-  const unit = $('scaleUnit').value || 'portions';
-  $('scaleOrigLabel').textContent = from + ' ' + unit;
-  $('scaleTargLabel').textContent = to + ' ' + unit;
-  $('scaleIngList').querySelectorAll('.scale-ing').forEach(r=>{
+  $$('scaleFactor').textContent = '×' + factor.toFixed(3);
+  const unit = $$('scaleUnit').value || 'portions';
+  $$('scaleOrigLabel').textContent = from + ' ' + unit;
+  $$('scaleTargLabel').textContent = to + ' ' + unit;
+  $$('scaleIngList').querySelectorAll('.scale-ing').forEach(r=>{
     const ins = r.querySelectorAll('input');
     const baseQty = parseFloat(ins[1].value)||0;
     ins[3].value = baseQty > 0 ? (baseQty*factor).toFixed(3) + (ins[2].value ? ' '+ins[2].value : '') : '';
@@ -3178,9 +3162,9 @@ function calcScale(){
 }
 
 function clearScale(){
-  $('scaleName').value='';$('scaleUnit').value='';
-  $('scaleFrom').value='4';$('scaleTo').value='20';
-  $('scaleIngList').innerHTML='';
+  $$('scaleName').value='';$$('scaleUnit').value='';
+  $$('scaleFrom').value='4';$$('scaleTo').value='20';
+  $$('scaleIngList').innerHTML='';
   calcScale();updateCard();
 }
 
@@ -3188,33 +3172,33 @@ function clearScale(){
 // YIELD CALCULATOR
 // ════════════════════════════════════════════════════════════════
 function calcYield(){
-  const raw     = parseFloat($('yieldRaw').value)||0;
-  const cooked  = parseFloat($('yieldCooked').value)||0;
-  const portion = parseFloat($('yieldPortion').value)||0;
-  const costPer = parseFloat($('yieldCostPer').value)||0;
-  const unit    = $('yieldUnit').value||'lb';
+  const raw     = parseFloat($$('yieldRaw').value)||0;
+  const cooked  = parseFloat($$('yieldCooked').value)||0;
+  const portion = parseFloat($$('yieldPortion').value)||0;
+  const costPer = parseFloat($$('yieldCostPer').value)||0;
+  const unit    = $$('yieldUnit').value||'lb';
 
-  $('yRaw').textContent    = raw > 0    ? raw + ' ' + unit : '—';
-  $('yCooked').textContent = cooked > 0 ? cooked + ' ' + unit : '—';
-  $('yPer').textContent    = portion > 0 ? portion + ' ' + unit : '—';
+  $$('yRaw').textContent    = raw > 0    ? raw + ' ' + unit : '—';
+  $$('yCooked').textContent = cooked > 0 ? cooked + ' ' + unit : '—';
+  $$('yPer').textContent    = portion > 0 ? portion + ' ' + unit : '—';
 
   const yPct   = raw > 0 && cooked > 0 ? (cooked/raw)*100 : null;
   const epCost = yPct !== null && costPer > 0 ? costPer / (yPct/100) : null;
   const portions = cooked > 0 && portion > 0 ? Math.floor(cooked/portion) : null;
   const portCost = epCost !== null && portion > 0 ? epCost * portion : null;
 
-  $('yieldPct').textContent  = yPct !== null ? yPct.toFixed(1)+'%' : '—';
-  $('yieldWaste').textContent = yPct !== null ? (100-yPct).toFixed(1)+'%' : '—';
-  $('yieldEpCost').textContent = epCost !== null ? money(epCost)+'/'+unit : '—';
-  $('yieldCostPortion').textContent = portCost !== null ? money(portCost) : '—';
-  $('yieldPortionCount').textContent = portions !== null ? portions + ' portions possible' : '';
+  $$('yieldPct').textContent  = yPct !== null ? yPct.toFixed(1)+'%' : '—';
+  $$('yieldWaste').textContent = yPct !== null ? (100-yPct).toFixed(1)+'%' : '—';
+  $$('yieldEpCost').textContent = epCost !== null ? money(epCost)+'/'+unit : '—';
+  $$('yieldCostPortion').textContent = portCost !== null ? money(portCost) : '—';
+  $$('yieldPortionCount').textContent = portions !== null ? portions + ' portions possible' : '';
   updateCard();
 }
 
 function clearYield(){
   ['yieldName','yieldCostPer','yieldRaw','yieldCooked','yieldPortion']
     .forEach(id=>$(id).value='');
-  $('yieldUnit').value='lb';
+  $$('yieldUnit').value='lb';
   calcYield();
 }
 
@@ -3222,13 +3206,13 @@ function clearYield(){
 // RECIPE CARD
 // ════════════════════════════════════════════════════════════════
 function toggleCard(){
-  const bar = $('cardBar'), wrap = $('cardWrap');
+  const bar = $$('cardBar'), wrap = $$('cardWrap');
   const open = wrap.classList.toggle('open');
   bar.classList.toggle('open', open);
 }
 
 function toggleVault(){
-  const bar = $('vaultBar'), wrap = $('vaultWrap'), chev = $('vaultChevron');
+  const bar = $$('vaultBar'), wrap = $$('vaultWrap'), chev = $$('vaultChevron');
   const open = wrap.classList.toggle('open');
   bar.classList.toggle('open', open);
   chev.textContent = open ? '▲' : '▼';
@@ -3237,17 +3221,17 @@ function toggleVault(){
 
 function updateCard(){
   const tab = currentTab;
-  $('rcMeta').textContent = tab.charAt(0).toUpperCase()+tab.slice(1)+' · '+
+  $$('rcMeta').textContent = tab.charAt(0).toUpperCase()+tab.slice(1)+' · '+
     new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 
   let title='', ings=[], batchCost=0, perCost=0, menuPrice=0, fcPct='', portions='';
 
   if(tab==='cost'){
-    title = $('costName').value;
-    const n = parseFloat($('costPortions').value)||1;
+    title = $$('costName').value;
+    const n = parseFloat($$('costPortions').value)||1;
     portions = n + ' portion'+(n>1?'s':'');
-    menuPrice = parseFloat($('costPrice').value)||0;
-    const rows = $('costIngList').querySelectorAll('.ing-row');
+    menuPrice = parseFloat($$('costPrice').value)||0;
+    const rows = $$('costIngList').querySelectorAll('.ing-row');
     rows.forEach(r=>{
       const ins = r.querySelectorAll('input');
       const nm = ins[0].value; const qty = parseFloat(ins[1].value)||0;
@@ -3260,17 +3244,17 @@ function updateCard(){
     perCost = batchCost/n;
     if(menuPrice>0 && perCost>0) fcPct = ((perCost/menuPrice)*100).toFixed(1)+'%';
   } else if(tab==='scale'){
-    title = $('scaleName').value;
-    const to = $('scaleTo').value; const u = $('scaleUnit').value||'portions';
+    title = $$('scaleName').value;
+    const to = $$('scaleTo').value; const u = $$('scaleUnit').value||'portions';
     portions = to + ' ' + u;
-    $('scaleIngList').querySelectorAll('.scale-ing').forEach(r=>{
+    $$('scaleIngList').querySelectorAll('.scale-ing').forEach(r=>{
       const ins = r.querySelectorAll('input');
       if(ins[0].value) ings.push({name:ins[0].value, qty:ins[3].value||'—', cost:''});
     });
   } else {
-    title = $('yieldName').value;
-    const raw = $('yieldRaw').value; const cooked = $('yieldCooked').value;
-    const u = $('yieldUnit').value;
+    title = $$('yieldName').value;
+    const raw = $$('yieldRaw').value; const cooked = $$('yieldCooked').value;
+    const u = $$('yieldUnit').value;
     const yp = raw>0&&cooked>0 ? ((cooked/raw)*100).toFixed(1)+'%' : '—';
     ings = [
       {name:'As-purchased weight', qty:(raw||'—')+' '+u, cost:''},
@@ -3280,7 +3264,7 @@ function updateCard(){
   }
 
   // title
-  const rcTitle = $('rcTitle');
+  const rcTitle = $$('rcTitle');
   if(title){rcTitle.textContent=title;rcTitle.classList.remove('rc-title-empty');}
   else{rcTitle.textContent='Untitled Recipe';rcTitle.classList.add('rc-title-empty');}
 
@@ -3289,19 +3273,19 @@ function updateCard(){
   chips.push(`<span class="rc-chip rc-chip-olive">${tab}</span>`);
   if(portions) chips.push(`<span class="rc-chip rc-chip-olive">${portions}</span>`);
   if(fcPct) chips.push(`<span class="rc-chip rc-chip-orange">${fcPct} food cost</span>`);
-  $('rcChips').innerHTML = chips.join('');
+  $$('rcChips').innerHTML = chips.join('');
 
   // costs
   if(tab==='cost' && batchCost>0){
-    $('rcTotal').textContent  = money(batchCost);
-    $('rcPortion').textContent = money(perCost)+' / portion';
-    $('rcPct').textContent = fcPct||'—';
+    $$('rcTotal').textContent  = money(batchCost);
+    $$('rcPortion').textContent = money(perCost)+' / portion';
+    $$('rcPct').textContent = fcPct||'—';
   } else {
-    $('rcTotal').textContent='$—';$('rcPortion').textContent='batch cost';$('rcPct').textContent='—';
+    $$('rcTotal').textContent='$—';$$('rcPortion').textContent='batch cost';$$('rcPct').textContent='—';
   }
 
   // table
-  const tbl = $('rcIngTable');
+  const tbl = $$('rcIngTable');
   if(ings.length){
     const rows = ings.map(i =>
       `<tr><td class="rc-td-name">${i.name}</td><td class="rc-td-qty">${i.qty}</td><td class="rc-td-cost">${i.cost}</td></tr>`
@@ -3314,8 +3298,8 @@ function updateCard(){
   }
 
   // directions
-  const stepsEl = $('rcSteps');
-  const dirs = tab==='cost' ? ($('costDirections').value||'') : '';
+  const stepsEl = $$('rcSteps');
+  const dirs = tab==='cost' ? ($$('costDirections').value||'') : '';
   if(dirs.trim()){
     stepsEl.innerHTML = dirs.trim().split('\n').filter(Boolean).map((line,i)=>{
       const clean = line.replace(/^\d+[\.\)]\s*/,'');
@@ -3326,15 +3310,15 @@ function updateCard(){
   }
 
   // auto-open
-  if(ings.length && !$('cardWrap').classList.contains('open')) toggleCard();
+  if(ings.length && !$$('cardWrap').classList.contains('open')) toggleCard();
 }
 
 // ════════════════════════════════════════════════════════════════
 // VAULT
 // ════════════════════════════════════════════════════════════════
 function renderVault(){
-  const grid = $('vaultGrid');
-  const q = ($('vaultSearch').value||'').toLowerCase();
+  const grid = $$('vaultGrid');
+  const q = ($$('vaultSearch').value||'').toLowerCase();
   const filtered = vaultRecipes.filter(r => {
     const matchCat = currentFilter==='all' || r.category===currentFilter;
     const matchQ   = !q || r.name.toLowerCase().includes(q) || r.category.toLowerCase().includes(q);
@@ -3360,7 +3344,7 @@ function renderVault(){
       <button class="tile-load-btn" onclick="loadRecipe('${r.id}')">→ Load into Calculator</button>
     </div>`;
   }).join('');
-  $('vaultCount').textContent = `Showing ${filtered.length} of ${vaultRecipes.length} recipes`;
+  $$('vaultCount').textContent = `Showing ${filtered.length} of ${vaultRecipes.length} recipes`;
 }
 
 function filterVault(){ renderVault(); }
@@ -3379,14 +3363,14 @@ function loadRecipe(id){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.tab')[0].classList.add('on');
-  $('panel-cost').classList.add('on');
+  $$('panel-cost').classList.add('on');
   currentTab = 'cost';
   // Fill form
-  $('costName').value = r.name;
-  $('costPortions').value = r.servings;
-  $('costPrice').value = r.menu_price||'';
-  $('costDirections').value = r.directions||'';
-  $('costIngList').innerHTML = '';
+  $$('costName').value = r.name;
+  $$('costPortions').value = r.servings;
+  $$('costPrice').value = r.menu_price||'';
+  $$('costDirections').value = r.directions||'';
+  $$('costIngList').innerHTML = '';
   (r.ingredients||[]).forEach(i => addCostIng(i));
   calcCost(); updateCard();
   scrollToSection('calc');
@@ -3396,27 +3380,27 @@ function loadRecipe(id){
 async function saveToVault(mode){
   let name, servings, ingredients, directions, menu_price;
   if(mode==='cost'){
-    name = $('costName').value || 'Untitled Recipe';
-    servings = parseFloat($('costPortions').value)||1;
-    menu_price = parseFloat($('costPrice').value)||0;
-    directions = $('costDirections').value;
-    ingredients = [...$('costIngList').querySelectorAll('.ing-row')].map(r=>{
+    name = $$('costName').value || 'Untitled Recipe';
+    servings = parseFloat($$('costPortions').value)||1;
+    menu_price = parseFloat($$('costPrice').value)||0;
+    directions = $$('costDirections').value;
+    ingredients = [...$$('costIngList').querySelectorAll('.ing-row')].map(r=>{
       const ins = r.querySelectorAll('input');
       return {name:ins[0].value,qty:parseFloat(ins[1].value)||0,unit:ins[2].value,pkg_size:parseFloat(ins[3].value)||1,price:parseFloat(ins[4].value)||0};
     }).filter(i=>i.name);
   } else if(mode==='scale'){
-    name = $('scaleName').value || 'Untitled Scale';
-    servings = parseFloat($('scaleTo').value)||1;
+    name = $$('scaleName').value || 'Untitled Scale';
+    servings = parseFloat($$('scaleTo').value)||1;
     menu_price = 0;
     directions = '';
-    ingredients = [...$('scaleIngList').querySelectorAll('.scale-ing')].map(r=>{
+    ingredients = [...$$('scaleIngList').querySelectorAll('.scale-ing')].map(r=>{
       const ins = r.querySelectorAll('input');
       return {name:ins[0].value,qty:parseFloat(ins[1].value)||0,unit:ins[2].value,pkg_size:1,price:0};
     }).filter(i=>i.name);
   } else {
-    name = $('yieldName').value || 'Yield Analysis';
+    name = $$('yieldName').value || 'Yield Analysis';
     servings = 1; menu_price = 0; directions = '';
-    ingredients = [{name:'AP Weight',qty:parseFloat($('yieldRaw').value)||0,unit:$('yieldUnit').value,pkg_size:1,price:parseFloat($('yieldCostPer').value)||0}];
+    ingredients = [{name:'AP Weight',qty:parseFloat($$('yieldRaw').value)||0,unit:$$('yieldUnit').value,pkg_size:1,price:parseFloat($$('yieldCostPer').value)||0}];
   }
 
   const recipe = {
@@ -3452,24 +3436,24 @@ async function saveToVault(mode){
 // SUPABASE CONFIG
 // ════════════════════════════════════════════════════════════════
 function openConfig(){
-  $('cfgUrl').value  = localStorage.getItem('sb_url')||'';
-  $('cfgKey').value  = localStorage.getItem('sb_key')||'';
-  $('cfgAntKey').value = localStorage.getItem('haiku_key')||'';
-  $('configModal').classList.add('open');
+  $$('cfgUrl').value  = localStorage.getItem('sb_url')||'';
+  $$('cfgKey').value  = localStorage.getItem('sb_key')||'';
+  $$('cfgAntKey').value = localStorage.getItem('haiku_key')||'';
+  $$('configModal').classList.add('open');
 }
-function closeConfig(){ $('configModal').classList.remove('open'); }
+function closeConfig(){ $$('configModal').classList.remove('open'); }
 
 async function applyConfig(){
-  const url = $('cfgUrl').value.trim();
-  const key = $('cfgKey').value.trim();
-  const antKey = $('cfgAntKey').value.trim();
-  $('cfgStatus').textContent = 'Connecting…';
+  const url = $$('cfgUrl').value.trim();
+  const key = $$('cfgKey').value.trim();
+  const antKey = $$('cfgAntKey').value.trim();
+  $$('cfgStatus').textContent = 'Connecting…';
 
   if(antKey){
     localStorage.setItem('haiku_key', antKey);
     haikuKey = antKey;
-    $('haikuKey').value = antKey;
-    $('haikuCfg').style.display = 'none';
+    $$('haikuKey').value = antKey;
+    $$('haikuCfg').style.display = 'none';
   }
 
   if(url && key){
@@ -3483,16 +3467,16 @@ async function applyConfig(){
       setSyncStatus('live');
       // Load cloud recipes
       await loadCloudRecipes();
-      $('cfgStatus').textContent = '✓ Connected to Supabase!';
+      $$('cfgStatus').textContent = '✓ Connected to Supabase!';
       // Subscribe realtime
       subscribeRealtime();
       setTimeout(closeConfig, 1200);
     } catch(e){
-      $('cfgStatus').textContent = '⚠ Connection failed: '+e.message;
+      $$('cfgStatus').textContent = '⚠ Connection failed: '+e.message;
       setSyncStatus('error');
     }
   } else {
-    $('cfgStatus').textContent = url||key ? '⚠ Both URL and key required' : '✓ API key saved. No Supabase config.';
+    $$('cfgStatus').textContent = url||key ? '⚠ Both URL and key required' : '✓ API key saved. No Supabase config.';
     if(!url&&!key) setTimeout(closeConfig, 1200);
   }
 }
@@ -3525,7 +3509,7 @@ function subscribeRealtime(){
 }
 
 function setSyncStatus(status){
-  const dot = $('syncDot'), lbl = $('syncLabel');
+  const dot = $$('syncDot'), lbl = $$('syncLabel');
   dot.className = 'sync-dot ' + status;
   const labels = {live:'live sync', syncing:'syncing…', error:'error', offline:'offline'};
   lbl.textContent = labels[status]||status;
@@ -3536,7 +3520,7 @@ function setSyncStatus(status){
 // ════════════════════════════════════════════════════════════════
 function toggleHaiku(){
   haikuOpen = !haikuOpen;
-  $('haikuPanel').classList.toggle('open', haikuOpen);
+  $$('haikuPanel').classList.toggle('open', haikuOpen);
   if(haikuOpen && !haikuHistory.length){
     logHaikuMsg('sous',
       "I'm your Sous Chef — ask me anything about your recipe costs, scaling, or yield.\n\n" +
@@ -3545,18 +3529,18 @@ function toggleHaiku(){
     // Show a poem
     updateHaikuPoem();
   }
-  if(haikuOpen) setTimeout(()=>$('haikuInput').focus(), 400);
+  if(haikuOpen) setTimeout(()=>$$('haikuInput').focus(), 400);
   const key = localStorage.getItem('haiku_key')||'';
-  if(key) $('haikuCfg').style.display = 'none';
+  if(key) $$('haikuCfg').style.display = 'none';
 }
 
 function saveHaikuKey(){
-  const k = $('haikuKey').value.trim();
-  if(k){ localStorage.setItem('haiku_key',k); haikuKey=k; $('haikuCfg').style.display='none'; showToast('✓ API key saved');}
+  const k = $$('haikuKey').value.trim();
+  if(k){ localStorage.setItem('haiku_key',k); haikuKey=k; $$('haikuCfg').style.display='none'; showToast('✓ API key saved');}
 }
 
 function logHaikuMsg(role, text, opts={}){
-  const msgs = $('haikuMsgs');
+  const msgs = $$('haikuMsgs');
   const div = document.createElement('div');
   div.className = 'msg '+role;
   div.innerHTML = `
@@ -3570,37 +3554,37 @@ function logHaikuMsg(role, text, opts={}){
 function buildContext(){
   const tab = currentTab;
   if(tab==='cost'){
-    const ings = [...$('costIngList').querySelectorAll('.ing-row')].map(r=>{
+    const ings = [...$$('costIngList').querySelectorAll('.ing-row')].map(r=>{
       const ins = r.querySelectorAll('input');
       return {name:ins[0].value, qty:ins[1].value, unit:ins[2].value, price:ins[4].value};
     }).filter(i=>i.name);
-    return {mode:'cost', recipe:$('costName').value, portions:$('costPortions').value,
-      menuPrice:$('costPrice').value, targetFC:$('costTarget').value,
-      batchCost:$('resBatchCost').textContent, perPortion:$('resPerPortion').textContent,
-      foodCostPct:$('resFoodCostPct').textContent, ingredients:ings};
+    return {mode:'cost', recipe:$$('costName').value, portions:$$('costPortions').value,
+      menuPrice:$$('costPrice').value, targetFC:$$('costTarget').value,
+      batchCost:$$('resBatchCost').textContent, perPortion:$$('resPerPortion').textContent,
+      foodCostPct:$$('resFoodCostPct').textContent, ingredients:ings};
   } else if(tab==='scale'){
-    return {mode:'scale', recipe:$('scaleName').value,
-      from:$('scaleFrom').value, to:$('scaleTo').value, unit:$('scaleUnit').value,
-      factor:$('scaleFactor').textContent};
+    return {mode:'scale', recipe:$$('scaleName').value,
+      from:$$('scaleFrom').value, to:$$('scaleTo').value, unit:$$('scaleUnit').value,
+      factor:$$('scaleFactor').textContent};
   } else {
-    return {mode:'yield', product:$('yieldName').value,
-      raw:$('yieldRaw').value, cooked:$('yieldCooked').value,
-      yieldPct:$('yieldPct').textContent, wastePct:$('yieldWaste').textContent,
-      epCost:$('yieldEpCost').textContent};
+    return {mode:'yield', product:$$('yieldName').value,
+      raw:$$('yieldRaw').value, cooked:$$('yieldCooked').value,
+      yieldPct:$$('yieldPct').textContent, wastePct:$$('yieldWaste').textContent,
+      epCost:$$('yieldEpCost').textContent};
   }
 }
 
 async function sendToHaiku(){
-  const input = $('haikuInput');
+  const input = $$('haikuInput');
   const text = input.value.trim();
   if(!text) return;
   const key = localStorage.getItem('haiku_key')||haikuKey;
   if(!key){
-    logHaikuMsg('sous','⚠ Please enter your Gemini API key in the field above to use the AI assistant.');
+    logHaikuMsg('sous','⚠ Please enter your Anthropic API key in the field above to use the AI assistant.');
     return;
   }
   input.value=''; input.style.height='auto';
-  $('haikuSend').disabled=true;
+  $$('haikuSend').disabled=true;
   logHaikuMsg('user',text);
   haikuHistory.push({role:'user', content:text});
   const thinking = logHaikuMsg('sous','Thinking…',{thinking:true});
@@ -3619,11 +3603,14 @@ Guidelines:
 - When asked for a haiku, write one that captures the essence of the current recipe or cost situation`;
 
     const messages = haikuHistory.slice(-12);
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+key, {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body: JSON.stringify({
-        contents:[{role:'user',parts:[{text:systemPrompt+'\n\n'+text}]}]
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:800,
+        system:systemPrompt,
+        messages
       })
     });
     if(!response.ok){
@@ -3631,7 +3618,7 @@ Guidelines:
       throw new Error(err.error?.message || 'API error '+response.status);
     }
     const data = await response.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || '(no response)';
+    const reply = data.content?.[0]?.text || '(no response)';
     thinking.remove();
     logHaikuMsg('sous', reply);
     haikuHistory.push({role:'assistant', content:reply});
@@ -3642,13 +3629,13 @@ Guidelines:
     thinking.remove();
     logHaikuMsg('sous','⚠ '+e.message);
   } finally {
-    $('haikuSend').disabled=false;
-    $('haikuInput').focus();
+    $$('haikuSend').disabled=false;
+    $$('haikuInput').focus();
   }
 }
 
 function quickAsk(text){
-  $('haikuInput').value = text;
+  $$('haikuInput').value = text;
   sendToHaiku();
 }
 
@@ -3665,9 +3652,9 @@ function updateHaikuPoem(customText=null){
   if(customText && customText.includes('—')){
     // If it looks like a haiku, display it
     const lines = customText.split('\n').map(l=>l.trim()).filter(l=>l&&!l.startsWith('Here')).slice(0,3);
-    if(lines.length>=2) {$('haikuPoem').innerHTML=lines.join('<br>');return;}
+    if(lines.length>=2) {$$('haikuPoem').innerHTML=lines.join('<br>');return;}
   }
-  $('haikuPoem').innerHTML = haiku_poems[poemIdx % haiku_poems.length];
+  $$('haikuPoem').innerHTML = haiku_poems[poemIdx % haiku_poems.length];
   poemIdx++;
 }
 
@@ -3675,12 +3662,12 @@ function updateHaikuPoem(customText=null){
 // PRINT CARD
 // ════════════════════════════════════════════════════════════════
 function printCard(){
-  const name = $('rcTitle').textContent;
-  const total = $('rcTotal').textContent;
-  const portion = $('rcPortion').textContent;
-  const pct = $('rcPct').textContent;
-  const tblHTML = $('rcIngTable').innerHTML;
-  const stepsHTML = $('rcSteps').innerHTML;
+  const name = $$('rcTitle').textContent;
+  const total = $$('rcTotal').textContent;
+  const portion = $$('rcPortion').textContent;
+  const pct = $$('rcPct').textContent;
+  const tblHTML = $$('rcIngTable').innerHTML;
+  const stepsHTML = $$('rcSteps').innerHTML;
   const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${name}</title>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;700&family=Fraunces:ital,wght@0,400;0,600;0,900&display=swap" rel="stylesheet">
   <style>
@@ -3709,7 +3696,7 @@ function printCard(){
   </style></head><body>
   <div class="card"><div class="gutter"></div>
     <h1>${name}</h1>
-    <div class="meta">${$('rcMeta').textContent}</div>
+    <div class="meta">${$$('rcMeta').textContent}</div>
     <div class="costs">
       <div><div class="cl">Batch Cost</div><div class="cv">${total}</div></div>
       <div><div class="cl">Per Portion</div><div class="cv" style="font-size:28px">${portion}</div></div>
@@ -3725,15 +3712,12 @@ function printCard(){
 
 <script>
 function switchApp(id,el){
-  document.querySelectorAll('.app-pane').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.app-tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.app-pane').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.app-tab').forEach(function(t){t.classList.remove('on');});
   document.getElementById('pane-'+id).classList.add('on');
   el.classList.add('on');
 }
-let miseAIHistory = [];
-let miseAIOpen = false;
 </script>
-
 <script>
 
 'use strict';
@@ -4606,13 +4590,12 @@ function toggleVoice(){
 }
 
 </script>
-
 <script>
 
 // ════════════════════════════════════════════════════════════════
 // SEED DATA — 30 Recipes
 // ════════════════════════════════════════════════════════════════
-const SEED_RECIPES = [
+const RD_SEED_RECIPES = [
   { id:'r01', name:'Beef Bourguignon', category:'meat', servings:6, menu_price:38,
     ingredients:[
       {name:'Beef chuck, cubed',qty:3,unit:'lb',pkg_size:1,price:8.50},
@@ -4937,21 +4920,21 @@ const SEED_RECIPES = [
 // ════════════════════════════════════════════════════════════════
 let currentTab = 'cost';
 let supaClient = null;
-let vaultRecipes = [...SEED_RECIPES];
+let vaultRecipes = [...RD_SEED_RECIPES];
 let currentFilter = 'all';
-
-let miseAIHistory = [];
-let miseAIOpen = false;
+let haikuKey = localStorage.getItem('haiku_key') || '';
+let haikuHistory = [];
+let haikuOpen = false;
 
 // ════════════════════════════════════════════════════════════════
 // HELPERS
 // ════════════════════════════════════════════════════════════════
-const $ = id => document.getElementById(id);
+const $$ = id => document.getElementById(id);
 const money = v => '$' + (+v||0).toFixed(2);
 const pct   = v => ((+v||0)*100).toFixed(1) + '%';
 
 function showToast(msg, dur=2800){
-  const t = $('toast');
+  const t = $$('toast');
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'), dur);
@@ -4969,7 +4952,7 @@ function switchTab(name, el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   el.classList.add('on');
-  $('panel-'+name).classList.add('on');
+  $$('panel-'+name).classList.add('on');
   setTimeout(updateCard, 60);
 }
 
@@ -4977,7 +4960,7 @@ function switchTab(name, el){
 // COST CALCULATOR
 // ════════════════════════════════════════════════════════════════
 function addCostIng(data=null){
-  const list = $('costIngList');
+  const list = $$('costIngList');
   const row = document.createElement('div');
   row.className = 'ing-row';
   row.innerHTML = `
@@ -4993,7 +4976,7 @@ function addCostIng(data=null){
 }
 
 function calcCost(){
-  const rows = $('costIngList').querySelectorAll('.ing-row');
+  const rows = $$('costIngList').querySelectorAll('.ing-row');
   let batch = 0;
   rows.forEach(r => {
     const ins = r.querySelectorAll('input');
@@ -5004,38 +4987,38 @@ function calcCost(){
     ins[5].value = lineCost > 0 ? money(lineCost) : '';
     batch += lineCost;
   });
-  const portions = parseFloat($('costPortions').value)||1;
-  const menuPrice = parseFloat($('costPrice').value)||0;
-  const target = parseFloat($('costTarget').value)||30;
+  const portions = parseFloat($$('costPortions').value)||1;
+  const menuPrice = parseFloat($$('costPrice').value)||0;
+  const target = parseFloat($$('costTarget').value)||30;
   const perPortion = batch / portions;
   const fcPct = menuPrice > 0 ? (perPortion / menuPrice) * 100 : null;
   const idealPrice = target > 0 ? perPortion / (target/100) : null;
 
-  $('resBatchCost').textContent  = money(batch);
-  $('resPerPortion').textContent = money(perPortion);
+  $$('resBatchCost').textContent  = money(batch);
+  $$('resPerPortion').textContent = money(perPortion);
   if(fcPct !== null){
-    $('resFoodCostPct').textContent = fcPct.toFixed(1) + '%';
-    $('resFoodCostPct').className = 'stat-val ' + (fcPct < target ? 'ok' : fcPct < target*1.2 ? 'orange' : 'red');
-    $('resFoodCostNote').textContent = fcPct < target ? '✓ Under target' : fcPct < target*1.2 ? '↑ Slightly high' : '⚠ Over target';
+    $$('resFoodCostPct').textContent = fcPct.toFixed(1) + '%';
+    $$('resFoodCostPct').className = 'stat-val ' + (fcPct < target ? 'ok' : fcPct < target*1.2 ? 'orange' : 'red');
+    $$('resFoodCostNote').textContent = fcPct < target ? '✓ Under target' : fcPct < target*1.2 ? '↑ Slightly high' : '⚠ Over target';
   } else {
-    $('resFoodCostPct').textContent = '—';
-    $('resFoodCostPct').className = 'stat-val';
-    $('resFoodCostNote').textContent = 'Enter menu price';
+    $$('resFoodCostPct').textContent = '—';
+    $$('resFoodCostPct').className = 'stat-val';
+    $$('resFoodCostNote').textContent = 'Enter menu price';
   }
   if(idealPrice !== null){
-    $('resIdealPrice').textContent = money(idealPrice);
-    $('resCostNote').textContent = `@ ${target}% food cost`;
+    $$('resIdealPrice').textContent = money(idealPrice);
+    $$('resCostNote').textContent = `@ ${target}% food cost`;
   } else {
-    $('resIdealPrice').textContent = '—';
-    $('resCostNote').textContent = 'Set target above';
+    $$('resIdealPrice').textContent = '—';
+    $$('resCostNote').textContent = 'Set target above';
   }
 }
 
 function clearCost(){
-  $('costName').value='';$('costPortions').value='4';
-  $('costPrice').value='';$('costTarget').value='30';
-  $('costDirections').value='';
-  $('costIngList').innerHTML='';
+  $$('costName').value='';$$('costPortions').value='4';
+  $$('costPrice').value='';$$('costTarget').value='30';
+  $$('costDirections').value='';
+  $$('costIngList').innerHTML='';
   calcCost();updateCard();
 }
 
@@ -5043,7 +5026,7 @@ function clearCost(){
 // SCALE CALCULATOR
 // ════════════════════════════════════════════════════════════════
 function addScaleIng(data=null){
-  const list = $('scaleIngList');
+  const list = $$('scaleIngList');
   const row = document.createElement('div');
   row.className = 'scale-ing';
   row.innerHTML = `
@@ -5057,14 +5040,14 @@ function addScaleIng(data=null){
 }
 
 function calcScale(){
-  const from = parseFloat($('scaleFrom').value)||1;
-  const to   = parseFloat($('scaleTo').value)||1;
+  const from = parseFloat($$('scaleFrom').value)||1;
+  const to   = parseFloat($$('scaleTo').value)||1;
   const factor = from > 0 ? to/from : 1;
-  $('scaleFactor').textContent = '×' + factor.toFixed(3);
-  const unit = $('scaleUnit').value || 'portions';
-  $('scaleOrigLabel').textContent = from + ' ' + unit;
-  $('scaleTargLabel').textContent = to + ' ' + unit;
-  $('scaleIngList').querySelectorAll('.scale-ing').forEach(r=>{
+  $$('scaleFactor').textContent = '×' + factor.toFixed(3);
+  const unit = $$('scaleUnit').value || 'portions';
+  $$('scaleOrigLabel').textContent = from + ' ' + unit;
+  $$('scaleTargLabel').textContent = to + ' ' + unit;
+  $$('scaleIngList').querySelectorAll('.scale-ing').forEach(r=>{
     const ins = r.querySelectorAll('input');
     const baseQty = parseFloat(ins[1].value)||0;
     ins[3].value = baseQty > 0 ? (baseQty*factor).toFixed(3) + (ins[2].value ? ' '+ins[2].value : '') : '';
@@ -5073,9 +5056,9 @@ function calcScale(){
 }
 
 function clearScale(){
-  $('scaleName').value='';$('scaleUnit').value='';
-  $('scaleFrom').value='4';$('scaleTo').value='20';
-  $('scaleIngList').innerHTML='';
+  $$('scaleName').value='';$$('scaleUnit').value='';
+  $$('scaleFrom').value='4';$$('scaleTo').value='20';
+  $$('scaleIngList').innerHTML='';
   calcScale();updateCard();
 }
 
@@ -5083,33 +5066,33 @@ function clearScale(){
 // YIELD CALCULATOR
 // ════════════════════════════════════════════════════════════════
 function calcYield(){
-  const raw     = parseFloat($('yieldRaw').value)||0;
-  const cooked  = parseFloat($('yieldCooked').value)||0;
-  const portion = parseFloat($('yieldPortion').value)||0;
-  const costPer = parseFloat($('yieldCostPer').value)||0;
-  const unit    = $('yieldUnit').value||'lb';
+  const raw     = parseFloat($$('yieldRaw').value)||0;
+  const cooked  = parseFloat($$('yieldCooked').value)||0;
+  const portion = parseFloat($$('yieldPortion').value)||0;
+  const costPer = parseFloat($$('yieldCostPer').value)||0;
+  const unit    = $$('yieldUnit').value||'lb';
 
-  $('yRaw').textContent    = raw > 0    ? raw + ' ' + unit : '—';
-  $('yCooked').textContent = cooked > 0 ? cooked + ' ' + unit : '—';
-  $('yPer').textContent    = portion > 0 ? portion + ' ' + unit : '—';
+  $$('yRaw').textContent    = raw > 0    ? raw + ' ' + unit : '—';
+  $$('yCooked').textContent = cooked > 0 ? cooked + ' ' + unit : '—';
+  $$('yPer').textContent    = portion > 0 ? portion + ' ' + unit : '—';
 
   const yPct   = raw > 0 && cooked > 0 ? (cooked/raw)*100 : null;
   const epCost = yPct !== null && costPer > 0 ? costPer / (yPct/100) : null;
   const portions = cooked > 0 && portion > 0 ? Math.floor(cooked/portion) : null;
   const portCost = epCost !== null && portion > 0 ? epCost * portion : null;
 
-  $('yieldPct').textContent  = yPct !== null ? yPct.toFixed(1)+'%' : '—';
-  $('yieldWaste').textContent = yPct !== null ? (100-yPct).toFixed(1)+'%' : '—';
-  $('yieldEpCost').textContent = epCost !== null ? money(epCost)+'/'+unit : '—';
-  $('yieldCostPortion').textContent = portCost !== null ? money(portCost) : '—';
-  $('yieldPortionCount').textContent = portions !== null ? portions + ' portions possible' : '';
+  $$('yieldPct').textContent  = yPct !== null ? yPct.toFixed(1)+'%' : '—';
+  $$('yieldWaste').textContent = yPct !== null ? (100-yPct).toFixed(1)+'%' : '—';
+  $$('yieldEpCost').textContent = epCost !== null ? money(epCost)+'/'+unit : '—';
+  $$('yieldCostPortion').textContent = portCost !== null ? money(portCost) : '—';
+  $$('yieldPortionCount').textContent = portions !== null ? portions + ' portions possible' : '';
   updateCard();
 }
 
 function clearYield(){
   ['yieldName','yieldCostPer','yieldRaw','yieldCooked','yieldPortion']
     .forEach(id=>$(id).value='');
-  $('yieldUnit').value='lb';
+  $$('yieldUnit').value='lb';
   calcYield();
 }
 
@@ -5117,13 +5100,13 @@ function clearYield(){
 // RECIPE CARD
 // ════════════════════════════════════════════════════════════════
 function toggleCard(){
-  const bar = $('cardBar'), wrap = $('cardWrap');
+  const bar = $$('cardBar'), wrap = $$('cardWrap');
   const open = wrap.classList.toggle('open');
   bar.classList.toggle('open', open);
 }
 
 function toggleVault(){
-  const bar = $('vaultBar'), wrap = $('vaultWrap'), chev = $('vaultChevron');
+  const bar = $$('vaultBar'), wrap = $$('vaultWrap'), chev = $$('vaultChevron');
   const open = wrap.classList.toggle('open');
   bar.classList.toggle('open', open);
   chev.textContent = open ? '▲' : '▼';
@@ -5132,17 +5115,17 @@ function toggleVault(){
 
 function updateCard(){
   const tab = currentTab;
-  $('rcMeta').textContent = tab.charAt(0).toUpperCase()+tab.slice(1)+' · '+
+  $$('rcMeta').textContent = tab.charAt(0).toUpperCase()+tab.slice(1)+' · '+
     new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 
   let title='', ings=[], batchCost=0, perCost=0, menuPrice=0, fcPct='', portions='';
 
   if(tab==='cost'){
-    title = $('costName').value;
-    const n = parseFloat($('costPortions').value)||1;
+    title = $$('costName').value;
+    const n = parseFloat($$('costPortions').value)||1;
     portions = n + ' portion'+(n>1?'s':'');
-    menuPrice = parseFloat($('costPrice').value)||0;
-    const rows = $('costIngList').querySelectorAll('.ing-row');
+    menuPrice = parseFloat($$('costPrice').value)||0;
+    const rows = $$('costIngList').querySelectorAll('.ing-row');
     rows.forEach(r=>{
       const ins = r.querySelectorAll('input');
       const nm = ins[0].value; const qty = parseFloat(ins[1].value)||0;
@@ -5155,17 +5138,17 @@ function updateCard(){
     perCost = batchCost/n;
     if(menuPrice>0 && perCost>0) fcPct = ((perCost/menuPrice)*100).toFixed(1)+'%';
   } else if(tab==='scale'){
-    title = $('scaleName').value;
-    const to = $('scaleTo').value; const u = $('scaleUnit').value||'portions';
+    title = $$('scaleName').value;
+    const to = $$('scaleTo').value; const u = $$('scaleUnit').value||'portions';
     portions = to + ' ' + u;
-    $('scaleIngList').querySelectorAll('.scale-ing').forEach(r=>{
+    $$('scaleIngList').querySelectorAll('.scale-ing').forEach(r=>{
       const ins = r.querySelectorAll('input');
       if(ins[0].value) ings.push({name:ins[0].value, qty:ins[3].value||'—', cost:''});
     });
   } else {
-    title = $('yieldName').value;
-    const raw = $('yieldRaw').value; const cooked = $('yieldCooked').value;
-    const u = $('yieldUnit').value;
+    title = $$('yieldName').value;
+    const raw = $$('yieldRaw').value; const cooked = $$('yieldCooked').value;
+    const u = $$('yieldUnit').value;
     const yp = raw>0&&cooked>0 ? ((cooked/raw)*100).toFixed(1)+'%' : '—';
     ings = [
       {name:'As-purchased weight', qty:(raw||'—')+' '+u, cost:''},
@@ -5175,7 +5158,7 @@ function updateCard(){
   }
 
   // title
-  const rcTitle = $('rcTitle');
+  const rcTitle = $$('rcTitle');
   if(title){rcTitle.textContent=title;rcTitle.classList.remove('rc-title-empty');}
   else{rcTitle.textContent='Untitled Recipe';rcTitle.classList.add('rc-title-empty');}
 
@@ -5184,19 +5167,19 @@ function updateCard(){
   chips.push(`<span class="rc-chip rc-chip-olive">${tab}</span>`);
   if(portions) chips.push(`<span class="rc-chip rc-chip-olive">${portions}</span>`);
   if(fcPct) chips.push(`<span class="rc-chip rc-chip-orange">${fcPct} food cost</span>`);
-  $('rcChips').innerHTML = chips.join('');
+  $$('rcChips').innerHTML = chips.join('');
 
   // costs
   if(tab==='cost' && batchCost>0){
-    $('rcTotal').textContent  = money(batchCost);
-    $('rcPortion').textContent = money(perCost)+' / portion';
-    $('rcPct').textContent = fcPct||'—';
+    $$('rcTotal').textContent  = money(batchCost);
+    $$('rcPortion').textContent = money(perCost)+' / portion';
+    $$('rcPct').textContent = fcPct||'—';
   } else {
-    $('rcTotal').textContent='$—';$('rcPortion').textContent='batch cost';$('rcPct').textContent='—';
+    $$('rcTotal').textContent='$—';$$('rcPortion').textContent='batch cost';$$('rcPct').textContent='—';
   }
 
   // table
-  const tbl = $('rcIngTable');
+  const tbl = $$('rcIngTable');
   if(ings.length){
     const rows = ings.map(i =>
       `<tr><td class="rc-td-name">${i.name}</td><td class="rc-td-qty">${i.qty}</td><td class="rc-td-cost">${i.cost}</td></tr>`
@@ -5209,8 +5192,8 @@ function updateCard(){
   }
 
   // directions
-  const stepsEl = $('rcSteps');
-  const dirs = tab==='cost' ? ($('costDirections').value||'') : '';
+  const stepsEl = $$('rcSteps');
+  const dirs = tab==='cost' ? ($$('costDirections').value||'') : '';
   if(dirs.trim()){
     stepsEl.innerHTML = dirs.trim().split('\n').filter(Boolean).map((line,i)=>{
       const clean = line.replace(/^\d+[\.\)]\s*/,'');
@@ -5221,15 +5204,15 @@ function updateCard(){
   }
 
   // auto-open
-  if(ings.length && !$('cardWrap').classList.contains('open')) toggleCard();
+  if(ings.length && !$$('cardWrap').classList.contains('open')) toggleCard();
 }
 
 // ════════════════════════════════════════════════════════════════
 // VAULT
 // ════════════════════════════════════════════════════════════════
 function renderVault(){
-  const grid = $('vaultGrid');
-  const q = ($('vaultSearch').value||'').toLowerCase();
+  const grid = $$('vaultGrid');
+  const q = ($$('vaultSearch').value||'').toLowerCase();
   const filtered = vaultRecipes.filter(r => {
     const matchCat = currentFilter==='all' || r.category===currentFilter;
     const matchQ   = !q || r.name.toLowerCase().includes(q) || r.category.toLowerCase().includes(q);
@@ -5255,7 +5238,7 @@ function renderVault(){
       <button class="tile-load-btn" onclick="loadRecipe('${r.id}')">→ Load into Calculator</button>
     </div>`;
   }).join('');
-  $('vaultCount').textContent = `Showing ${filtered.length} of ${vaultRecipes.length} recipes`;
+  $$('vaultCount').textContent = `Showing ${filtered.length} of ${vaultRecipes.length} recipes`;
 }
 
 function filterVault(){ renderVault(); }
@@ -5274,14 +5257,14 @@ function loadRecipe(id){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.tab')[0].classList.add('on');
-  $('panel-cost').classList.add('on');
+  $$('panel-cost').classList.add('on');
   currentTab = 'cost';
   // Fill form
-  $('costName').value = r.name;
-  $('costPortions').value = r.servings;
-  $('costPrice').value = r.menu_price||'';
-  $('costDirections').value = r.directions||'';
-  $('costIngList').innerHTML = '';
+  $$('costName').value = r.name;
+  $$('costPortions').value = r.servings;
+  $$('costPrice').value = r.menu_price||'';
+  $$('costDirections').value = r.directions||'';
+  $$('costIngList').innerHTML = '';
   (r.ingredients||[]).forEach(i => addCostIng(i));
   calcCost(); updateCard();
   scrollToSection('calc');
@@ -5291,27 +5274,27 @@ function loadRecipe(id){
 async function saveToVault(mode){
   let name, servings, ingredients, directions, menu_price;
   if(mode==='cost'){
-    name = $('costName').value || 'Untitled Recipe';
-    servings = parseFloat($('costPortions').value)||1;
-    menu_price = parseFloat($('costPrice').value)||0;
-    directions = $('costDirections').value;
-    ingredients = [...$('costIngList').querySelectorAll('.ing-row')].map(r=>{
+    name = $$('costName').value || 'Untitled Recipe';
+    servings = parseFloat($$('costPortions').value)||1;
+    menu_price = parseFloat($$('costPrice').value)||0;
+    directions = $$('costDirections').value;
+    ingredients = [...$$('costIngList').querySelectorAll('.ing-row')].map(r=>{
       const ins = r.querySelectorAll('input');
       return {name:ins[0].value,qty:parseFloat(ins[1].value)||0,unit:ins[2].value,pkg_size:parseFloat(ins[3].value)||1,price:parseFloat(ins[4].value)||0};
     }).filter(i=>i.name);
   } else if(mode==='scale'){
-    name = $('scaleName').value || 'Untitled Scale';
-    servings = parseFloat($('scaleTo').value)||1;
+    name = $$('scaleName').value || 'Untitled Scale';
+    servings = parseFloat($$('scaleTo').value)||1;
     menu_price = 0;
     directions = '';
-    ingredients = [...$('scaleIngList').querySelectorAll('.scale-ing')].map(r=>{
+    ingredients = [...$$('scaleIngList').querySelectorAll('.scale-ing')].map(r=>{
       const ins = r.querySelectorAll('input');
       return {name:ins[0].value,qty:parseFloat(ins[1].value)||0,unit:ins[2].value,pkg_size:1,price:0};
     }).filter(i=>i.name);
   } else {
-    name = $('yieldName').value || 'Yield Analysis';
+    name = $$('yieldName').value || 'Yield Analysis';
     servings = 1; menu_price = 0; directions = '';
-    ingredients = [{name:'AP Weight',qty:parseFloat($('yieldRaw').value)||0,unit:$('yieldUnit').value,pkg_size:1,price:parseFloat($('yieldCostPer').value)||0}];
+    ingredients = [{name:'AP Weight',qty:parseFloat($$('yieldRaw').value)||0,unit:$$('yieldUnit').value,pkg_size:1,price:parseFloat($$('yieldCostPer').value)||0}];
   }
 
   const recipe = {
@@ -5347,24 +5330,24 @@ async function saveToVault(mode){
 // SUPABASE CONFIG
 // ════════════════════════════════════════════════════════════════
 function openConfig(){
-  $('cfgUrl').value  = localStorage.getItem('sb_url')||'';
-  $('cfgKey').value  = localStorage.getItem('sb_key')||'';
-  $('cfgAntKey').value = localStorage.getItem('gemini_key')||'';
-  $('configModal').classList.add('open');
+  $$('cfgUrl').value  = localStorage.getItem('sb_url')||'';
+  $$('cfgKey').value  = localStorage.getItem('sb_key')||'';
+  $$('cfgAntKey').value = localStorage.getItem('haiku_key')||'';
+  $$('configModal').classList.add('open');
 }
-function closeConfig(){ $('configModal').classList.remove('open'); }
+function closeConfig(){ $$('configModal').classList.remove('open'); }
 
 async function applyConfig(){
-  const url = $('cfgUrl').value.trim();
-  const key = $('cfgKey').value.trim();
-  const antKey = $('cfgAntKey').value.trim();
-  $('cfgStatus').textContent = 'Connecting…';
+  const url = $$('cfgUrl').value.trim();
+  const key = $$('cfgKey').value.trim();
+  const antKey = $$('cfgAntKey').value.trim();
+  $$('cfgStatus').textContent = 'Connecting…';
 
   if(antKey){
-    localStorage.setItem('gemini_key', antKey);
-     = antKey;
-    $('').value = antKey;
-    $('haikuCfg').style.display = 'none';
+    localStorage.setItem('haiku_key', antKey);
+    haikuKey = antKey;
+    $$('haikuKey').value = antKey;
+    $$('haikuCfg').style.display = 'none';
   }
 
   if(url && key){
@@ -5378,16 +5361,16 @@ async function applyConfig(){
       setSyncStatus('live');
       // Load cloud recipes
       await loadCloudRecipes();
-      $('cfgStatus').textContent = '✓ Connected to Supabase!';
+      $$('cfgStatus').textContent = '✓ Connected to Supabase!';
       // Subscribe realtime
       subscribeRealtime();
       setTimeout(closeConfig, 1200);
     } catch(e){
-      $('cfgStatus').textContent = '⚠ Connection failed: '+e.message;
+      $$('cfgStatus').textContent = '⚠ Connection failed: '+e.message;
       setSyncStatus('error');
     }
   } else {
-    $('cfgStatus').textContent = url||key ? '⚠ Both URL and key required' : '✓ API key saved. No Supabase config.';
+    $$('cfgStatus').textContent = url||key ? '⚠ Both URL and key required' : '✓ API key saved. No Supabase config.';
     if(!url&&!key) setTimeout(closeConfig, 1200);
   }
 }
@@ -5420,7 +5403,7 @@ function subscribeRealtime(){
 }
 
 function setSyncStatus(status){
-  const dot = $('syncDot'), lbl = $('syncLabel');
+  const dot = $$('syncDot'), lbl = $$('syncLabel');
   dot.className = 'sync-dot ' + status;
   const labels = {live:'live sync', syncing:'syncing…', error:'error', offline:'offline'};
   lbl.textContent = labels[status]||status;
@@ -5430,9 +5413,9 @@ function setSyncStatus(status){
 // HAIKU AI ASSISTANT
 // ════════════════════════════════════════════════════════════════
 function toggleHaiku(){
-  miseAIOpen = !miseAIOpen;
-  $('haikuPanel').classList.toggle('open', miseAIOpen);
-  if(miseAIOpen && !miseAIHistory.length){
+  haikuOpen = !haikuOpen;
+  $$('haikuPanel').classList.toggle('open', haikuOpen);
+  if(haikuOpen && !haikuHistory.length){
     logHaikuMsg('sous',
       "I'm your Sous Chef — ask me anything about your recipe costs, scaling, or yield.\n\n" +
       "I can help you:\n• Audit ingredient costs and find savings\n• Set the right menu price for your target food cost\n• Scale recipes for service volumes\n• Suggest smart ingredient substitutions\n\n" +
@@ -5440,18 +5423,18 @@ function toggleHaiku(){
     // Show a poem
     updateHaikuPoem();
   }
-  if(miseAIOpen) setTimeout(()=>$('haikuInput').focus(), 400);
-  const key = localStorage.getItem('gemini_key')||'';
-  if(key) $('haikuCfg').style.display = 'none';
+  if(haikuOpen) setTimeout(()=>$$('haikuInput').focus(), 400);
+  const key = localStorage.getItem('haiku_key')||'';
+  if(key) $$('haikuCfg').style.display = 'none';
 }
 
 function saveHaikuKey(){
-  const k = $('').value.trim();
-  if(k){ localStorage.setItem('gemini_key',k); =k; $('haikuCfg').style.display='none'; showToast('✓ API key saved');}
+  const k = $$('haikuKey').value.trim();
+  if(k){ localStorage.setItem('haiku_key',k); haikuKey=k; $$('haikuCfg').style.display='none'; showToast('✓ API key saved');}
 }
 
 function logHaikuMsg(role, text, opts={}){
-  const msgs = $('haikuMsgs');
+  const msgs = $$('haikuMsgs');
   const div = document.createElement('div');
   div.className = 'msg '+role;
   div.innerHTML = `
@@ -5465,71 +5448,90 @@ function logHaikuMsg(role, text, opts={}){
 function buildContext(){
   const tab = currentTab;
   if(tab==='cost'){
-    const ings = [...$('costIngList').querySelectorAll('.ing-row')].map(r=>{
+    const ings = [...$$('costIngList').querySelectorAll('.ing-row')].map(r=>{
       const ins = r.querySelectorAll('input');
       return {name:ins[0].value, qty:ins[1].value, unit:ins[2].value, price:ins[4].value};
     }).filter(i=>i.name);
-    return {mode:'cost', recipe:$('costName').value, portions:$('costPortions').value,
-      menuPrice:$('costPrice').value, targetFC:$('costTarget').value,
-      batchCost:$('resBatchCost').textContent, perPortion:$('resPerPortion').textContent,
-      foodCostPct:$('resFoodCostPct').textContent, ingredients:ings};
+    return {mode:'cost', recipe:$$('costName').value, portions:$$('costPortions').value,
+      menuPrice:$$('costPrice').value, targetFC:$$('costTarget').value,
+      batchCost:$$('resBatchCost').textContent, perPortion:$$('resPerPortion').textContent,
+      foodCostPct:$$('resFoodCostPct').textContent, ingredients:ings};
   } else if(tab==='scale'){
-    return {mode:'scale', recipe:$('scaleName').value,
-      from:$('scaleFrom').value, to:$('scaleTo').value, unit:$('scaleUnit').value,
-      factor:$('scaleFactor').textContent};
+    return {mode:'scale', recipe:$$('scaleName').value,
+      from:$$('scaleFrom').value, to:$$('scaleTo').value, unit:$$('scaleUnit').value,
+      factor:$$('scaleFactor').textContent};
   } else {
-    return {mode:'yield', product:$('yieldName').value,
-      raw:$('yieldRaw').value, cooked:$('yieldCooked').value,
-      yieldPct:$('yieldPct').textContent, wastePct:$('yieldWaste').textContent,
-      epCost:$('yieldEpCost').textContent};
+    return {mode:'yield', product:$$('yieldName').value,
+      raw:$$('yieldRaw').value, cooked:$$('yieldCooked').value,
+      yieldPct:$$('yieldPct').textContent, wastePct:$$('yieldWaste').textContent,
+      epCost:$$('yieldEpCost').textContent};
   }
 }
 
-async function sendToMiseAI(){
-  const input = document.getElementById('haikuInput');
+async function sendToHaiku(){
+  const input = $$('haikuInput');
   const text = input.value.trim();
   if(!text) return;
-  const key = localStorage.getItem('gemini_key') || '';
+  const key = localStorage.getItem('haiku_key')||haikuKey;
   if(!key){
-    logMiseAIMsg('sous', '⚠ Enter your Gemini API key above to use MISE.AI assistant.');
+    logHaikuMsg('sous','⚠ Please enter your Anthropic API key in the field above to use the AI assistant.');
     return;
   }
-  input.value = ''; input.style.height = 'auto';
-  document.getElementById('haikuSend').disabled = true;
-  logMiseAIMsg('user', text);
-  miseAIHistory.push({role:'user', parts:[{text}]});
-  const thinking = logMiseAIMsg('sous', 'Thinking…', {thinking:true});
+  input.value=''; input.style.height='auto';
+  $$('haikuSend').disabled=true;
+  logHaikuMsg('user',text);
+  haikuHistory.push({role:'user', content:text});
+  const thinking = logHaikuMsg('sous','Thinking…',{thinking:true});
   try{
-    const ctx = buildContext ? buildContext() : {};
-    const systemText = `You are MISE.AI — a culinary food cost expert helping chefs analyze recipe costs, improve profitability, and make smart kitchen decisions. Current board state: ${JSON.stringify(ctx)}. Give precise, actionable advice in 2-4 paragraphs.`;
-    const contents = [{role:'user', parts:[{text: systemText + '
+    const ctx = buildContext();
+    const systemPrompt = `You are a highly skilled culinary sous chef and food cost expert. You help chefs and restaurant operators analyze recipe costs, improve profitability, and make smart kitchen decisions. You have access to the user's current calculator state.
 
-User: ' + text}]},
-      ...miseAIHistory.slice(-10)];
-    const response = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + key,
-      { method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ contents:[{role:'user', parts:[{text: systemText + '
+Current board state: ${JSON.stringify(ctx, null,0)}
 
-' + text}]}] }) }
-    );
-    if(!response.ok){ const err = await response.json().catch(()=>({})); throw new Error(err.error?.message || 'API error ' + response.status); }
+Guidelines:
+- Give precise, actionable advice about food costing, scaling, and yield
+- Reference the actual numbers from the board state when relevant
+- Suggest specific substitutions with realistic cost comparisons
+- Use culinary terms naturally
+- Keep answers focused and practical (2-4 paragraphs max)
+- When asked for a haiku, write one that captures the essence of the current recipe or cost situation`;
+
+    const messages = haikuHistory.slice(-12);
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body: JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:800,
+        system:systemPrompt,
+        messages
+      })
+    });
+    if(!response.ok){
+      const err = await response.json().catch(()=>({}));
+      throw new Error(err.error?.message || 'API error '+response.status);
+    }
     const data = await response.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || '(no response)';
+    const reply = data.content?.[0]?.text || '(no response)';
     thinking.remove();
-    logMiseAIMsg('sous', reply);
-    miseAIHistory.push({role:'model', parts:[{text:reply}]});
-    if(miseAIHistory.length > 20) miseAIHistory.splice(0,2);
+    logHaikuMsg('sous', reply);
+    haikuHistory.push({role:'assistant', content:reply});
+    while(haikuHistory.length>12) haikuHistory.shift();
+    // Update poem if haiku was requested
+    if(text.toLowerCase().includes('haiku')) updateHaikuPoem(reply);
   } catch(e){
     thinking.remove();
-    logMiseAIMsg('sous', '⚠ ' + e.message);
+    logHaikuMsg('sous','⚠ '+e.message);
   } finally {
-    document.getElementById('haikuSend').disabled = false;
-    input.focus();
+    $$('haikuSend').disabled=false;
+    $$('haikuInput').focus();
   }
 }
-function quickAsk(text){ document.getElementById('haikuInput').value = text; sendToMiseAI(); }
 
+function quickAsk(text){
+  $$('haikuInput').value = text;
+  sendToHaiku();
+}
 
 const haiku_poems = [
   'Hot pan sizzles—<br>numbers become nourishment,<br>cost becomes art.',
@@ -5544,9 +5546,9 @@ function updateHaikuPoem(customText=null){
   if(customText && customText.includes('—')){
     // If it looks like a haiku, display it
     const lines = customText.split('\n').map(l=>l.trim()).filter(l=>l&&!l.startsWith('Here')).slice(0,3);
-    if(lines.length>=2) {$('haikuPoem').innerHTML=lines.join('<br>');return;}
+    if(lines.length>=2) {$$('haikuPoem').innerHTML=lines.join('<br>');return;}
   }
-  $('haikuPoem').innerHTML = haiku_poems[poemIdx % haiku_poems.length];
+  $$('haikuPoem').innerHTML = haiku_poems[poemIdx % haiku_poems.length];
   poemIdx++;
 }
 
@@ -5554,12 +5556,12 @@ function updateHaikuPoem(customText=null){
 // PRINT CARD
 // ════════════════════════════════════════════════════════════════
 function printCard(){
-  const name = $('rcTitle').textContent;
-  const total = $('rcTotal').textContent;
-  const portion = $('rcPortion').textContent;
-  const pct = $('rcPct').textContent;
-  const tblHTML = $('rcIngTable').innerHTML;
-  const stepsHTML = $('rcSteps').innerHTML;
+  const name = $$('rcTitle').textContent;
+  const total = $$('rcTotal').textContent;
+  const portion = $$('rcPortion').textContent;
+  const pct = $$('rcPct').textContent;
+  const tblHTML = $$('rcIngTable').innerHTML;
+  const stepsHTML = $$('rcSteps').innerHTML;
   const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${name}</title>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;700&family=Fraunces:ital,wght@0,400;0,600;0,900&display=swap" rel="stylesheet">
   <style>
@@ -5588,7 +5590,7 @@ function printCard(){
   </style></head><body>
   <div class="card"><div class="gutter"></div>
     <h1>${name}</h1>
-    <div class="meta">${$('rcMeta').textContent}</div>
+    <div class="meta">${$$('rcMeta').textContent}</div>
     <div class="costs">
       <div><div class="cl">Batch Cost</div><div class="cv">${total}</div></div>
       <div><div class="cl">Per Portion</div><div class="cv" style="font-size:28px">${portion}</div></div>
@@ -5609,10 +5611,10 @@ function printCard(){
 // INIT
 // ════════════════════════════════════════════════════════════════
 // Close modal on backdrop click
-$('configModal').addEventListener('click', e => { if(e.target===$('configModal')) closeConfig(); });
+$$('configModal').addEventListener('click', e => { if(e.target===$$('configModal')) closeConfig(); });
 
 // Init haiku key display
-if(localStorage.getItem('gemini_key')) $('haikuCfg').style.display = 'none';
+if(localStorage.getItem('haiku_key')) $$('haikuCfg').style.display = 'none';
 
 // Auto-connect Supabase if keys exist
 (async ()=>{
@@ -5635,16 +5637,16 @@ if(localStorage.getItem('gemini_key')) $('haikuCfg').style.display = 'none';
 addCostIng({name:'Beef chuck, cubed', qty:3, unit:'lb', pkg_size:1, price:8.50});
 addCostIng({name:'Burgundy wine', qty:1, unit:'bottle', pkg_size:1, price:14.00});
 addCostIng({name:'Pearl onions', qty:1, unit:'lb', pkg_size:1, price:3.50});
-$('costName').value = 'Beef Bourguignon';
-$('costPortions').value = 6;
-$('costPrice').value = 38;
+$$('costName').value = 'Beef Bourguignon';
+$$('costPortions').value = 6;
+$$('costPrice').value = 38;
 calcCost();
 
 // Add starter scale ingredients
 addScaleIng({name:'Beef chuck', qty:3, unit:'lb'});
 addScaleIng({name:'Burgundy wine', qty:1, unit:'bottle'});
 addScaleIng({name:'Pearl onions', qty:1, unit:'lb'});
-$('scaleName').value = 'Beef Bourguignon';
+$$('scaleName').value = 'Beef Bourguignon';
 calcScale();
 
 // Render vault
@@ -5652,6 +5654,5 @@ renderVault();
 updateCard();
 
 </script>
-
 </body>
 </html>
